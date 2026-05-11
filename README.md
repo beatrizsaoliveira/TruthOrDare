@@ -1,8 +1,8 @@
 # Verdade ou Desafio 🎲
 
-> **Do familiar ao extremo — tu decides.**
+> **Do familiar ao ousado — tu decides.**
 >
-> Jogo social de festa em português europeu, construído como uma aplicação de página única estática em TypeScript + Vite. Quatro níveis de intensidade, desde o familiar ao explicitamente ousado. Implementável no GitHub Pages sem qualquer requisito de servidor.
+> Jogo social de festa em português europeu, construído como uma aplicação de página única estática em TypeScript + Vite. Quatro níveis de intensidade, desde o familiar ao adulto. Implementável no GitHub Pages sem qualquer requisito de servidor.
 
 ---
 
@@ -23,7 +23,7 @@
 
 ## Features
 
-- **4 Tier system** — from family-friendly to explicit adult content
+- **4 Tier system** — from family-friendly to mature adult content (18+)
 - **Age-gating** — mandatory 18+ confirmation for Tiers 2–4
 - **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status)
 - **Orientation & relationship-aware matching engine** (Tiers 3–4) — ensures targets are mutually compatible
@@ -161,8 +161,8 @@ Opens at `http://localhost:4173`.
 |------|---------|:-:|:-:|---|
 | 1 | 🌟 Diversão Familiar | ✗ | ✗ | Perguntas leves e desafios divertidos — adequado a todas as idades |
 | 2 | 🎉 Noite entre Amigos | 18+ | ✓ | Conteúdo mais picante sobre vida pessoal, segredos e momentos embaraosos |
-| 3 | 🔥 Onde a Ousadia Começa | 18+ | ✓ | Conteúdo adulto físico e sensual; atribuição de alvos com orientação sexual |
-| 4 | 💀 Extremo | 18+ | ✓ | Conteúdo explícito para grupos completamente à vontade entre si |
+| 3 | 🔥 Onde a Ousadia Começa | 18+ | ✓ | Conteúdo adulto com desafios físicos entre jogadores; motor de alvos com base na orientação sexual |
+| 4 | 💀 Extremo | 18+ | ✓ | Conteúdo adulto intenso para grupos completamente à vontade entre si |
 
 ### Turn Flow
 
@@ -329,4 +329,4 @@ MIT © 2026 Beatriz Oliveira
 
 ---
 
-> **Note on content:** Tiers 3 and 4 contain explicit adult content intended for consenting adults. Always play responsibly. Participation in any challenge must be fully voluntary — no one should ever feel pressured. Drinks can always be substituted with water or any non-alcoholic beverage.
+> **Note on content:** Tiers 3 and 4 are intended exclusively for consenting adults (18+). Always play responsibly. Participation in any challenge must be fully voluntary — no one should ever feel pressured. Drinks can always be substituted with water or any non-alcoholic beverage.
