@@ -1,17 +1,17 @@
 import { pickRandomTarget } from '../engine/matchingEngine.js';
 import { recordCardShown, selectCard } from '../engine/repetitionEngine.js';
 import type {
-  Card,
-  CardType,
-  GamePhase,
-  GameState,
-  PersistedState,
-  Player,
-  PlayerHistories,
-  PlayerHistory,
-  SerializedHistory,
-  Theme,
-  Tier,
+    Card,
+    CardType,
+    GamePhase,
+    GameState,
+    PersistedState,
+    Player,
+    PlayerHistories,
+    PlayerHistory,
+    SerializedHistory,
+    Theme,
+    Tier,
 } from '../types/index.js';
 
 // ─── Storage key ─────────────────────────────────────────────────────────────
@@ -21,25 +21,28 @@ const STORAGE_KEY = 'tod_state_v1';
 // ─── Initial state ────────────────────────────────────────────────────────────
 
 export function buildInitialState(allCards: readonly Card[]): GameState {
-  return {
-    phase: 'home',
-    tier: null,
-    penaltiesEnabled: false,
-    ageConfirmed: false,
-    players: [],
-    currentPlayerIndex: 0,
-    pendingCardType: null,
-    currentCard: null,
-    currentTargetPlayerId: null,
-    showingPenalty: false,
-    playerHistories: {},
-    theme: prefersDark() ? 'dark' : 'light',
-    allCards,
-  };
+    return {
+        phase: 'home',
+        tier: null,
+        penaltiesEnabled: false,
+        ageConfirmed: false,
+        players: [],
+        currentPlayerIndex: 0,
+        pendingCardType: null,
+        currentCard: null,
+        currentTargetPlayerId: null,
+        showingPenalty: false,
+        playerHistories: {},
+        theme: prefersDark() ? 'dark' : 'light',
+        allCards,
+    };
 }
 
 function prefersDark(): boolean {
-  return globalThis.window?.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+    return (
+        globalThis.window?.matchMedia?.('(prefers-color-scheme: dark)')
+            .matches ?? false
+    );
 }
 
 // ─── Store ────────────────────────────────────────────────────────────────────
@@ -48,266 +51,303 @@ type Subscriber = (state: GameState) => void;
 type Updater = (prev: GameState) => GameState;
 
 export class GameStore {
-  private _state: GameState;
-  private readonly _subscribers = new Set<Subscriber>();
+    private _state: GameState;
+    private readonly _subscribers = new Set<Subscriber>();
 
-  constructor(allCards: readonly Card[]) {
-    const persisted = loadFromStorage();
-    if (persisted) {
-      this._state = { ...deserialize(persisted), allCards };
-    } else {
-      this._state = buildInitialState(allCards);
+    constructor(allCards: readonly Card[]) {
+        const persisted = loadFromStorage();
+        if (persisted) {
+            this._state = { ...deserialize(persisted), allCards };
+        } else {
+            this._state = buildInitialState(allCards);
+        }
     }
-  }
 
-  get state(): GameState {
-    return this._state;
-  }
+    get state(): GameState {
+        return this._state;
+    }
 
-  update(updater: Updater): void {
-    this._state = updater(this._state);
-    persist(this._state);
-    this._subscribers.forEach(fn => fn(this._state));
-  }
+    update(updater: Updater): void {
+        this._state = updater(this._state);
+        persist(this._state);
+        this._subscribers.forEach((fn) => fn(this._state));
+    }
 
-  subscribe(fn: Subscriber): () => void {
-    this._subscribers.add(fn);
-    return () => this._subscribers.delete(fn);
-  }
+    subscribe(fn: Subscriber): () => void {
+        this._subscribers.add(fn);
+        return () => this._subscribers.delete(fn);
+    }
 
-  /** Notify all subscribers without changing state (e.g. after theme change). */
-  notify(): void {
-    this._subscribers.forEach(fn => fn(this._state));
-  }
+    /** Notify all subscribers without changing state (e.g. after theme change). */
+    notify(): void {
+        this._subscribers.forEach((fn) => fn(this._state));
+    }
 }
 
 // ─── Actions ─────────────────────────────────────────────────────────────────
 // Pure state-updater factories consumed by UI event handlers.
 
 export const Actions = {
-  setTheme:
-    (theme: Theme): Updater =>
-    state => ({ ...state, theme }),
+    setTheme:
+        (theme: Theme): Updater =>
+        (state) => ({ ...state, theme }),
 
-  selectTier:
-    (tier: Tier): Updater =>
-    state => ({
-      ...state,
-      tier,
-      phase: tier === 1 ? 'setup' : 'age-gate',
-      ageConfirmed: false,
-      players: [],
-      playerHistories: {},
-      currentCard: null,
-      currentTargetPlayerId: null,
-      showingPenalty: false,
-      penaltiesEnabled: false,
+    selectTier:
+        (tier: Tier): Updater =>
+        (state) => ({
+            ...state,
+            tier,
+            phase: tier === 1 ? 'setup' : 'age-gate',
+            ageConfirmed: false,
+            players: [],
+            playerHistories: {},
+            currentCard: null,
+            currentTargetPlayerId: null,
+            showingPenalty: false,
+            penaltiesEnabled: false,
+        }),
+
+    confirmAge: (): Updater => (state) => ({
+        ...state,
+        ageConfirmed: true,
+        phase: 'setup',
     }),
 
-  confirmAge: (): Updater => state => ({ ...state, ageConfirmed: true, phase: 'setup' }),
+    goBack: (): Updater => (state) => ({ ...state, phase: 'home' }),
 
-  goBack: (): Updater => state => ({ ...state, phase: 'home' }),
+    addPlayer:
+        (player: Player): Updater =>
+        (state) => {
+            let players = [...state.players, player];
 
-  addPlayer:
-    (player: Player): Updater =>
-    state => {
-      let players = [...state.players, player];
+            // Bidirectional partner linking
+            if (player.partnerId) {
+                players = players.map((p) =>
+                    p.id === player.partnerId
+                        ? { ...p, partnerId: player.id }
+                        : p
+                );
+            }
 
-      // Bidirectional partner linking
-      if (player.partnerId) {
-        players = players.map(p =>
-          p.id === player.partnerId ? { ...p, partnerId: player.id } : p,
-        );
-      }
+            return { ...state, players };
+        },
 
-      return { ...state, players };
-    },
+    removePlayer:
+        (playerId: string): Updater =>
+        (state) => {
+            const players = state.players
+                // Remove the target player
+                .filter((p) => p.id !== playerId)
+                // Clear any partner reference pointing to the removed player
+                .map((p) =>
+                    p.partnerId === playerId ? { ...p, partnerId: null } : p
+                );
 
-  removePlayer:
-    (playerId: string): Updater =>
-    state => {
-      const players = state.players
-        // Remove the target player
-        .filter(p => p.id !== playerId)
-        // Clear any partner reference pointing to the removed player
-        .map(p => (p.partnerId === playerId ? { ...p, partnerId: null } : p));
+            return {
+                ...state,
+                players,
+                playerHistories: omitKey(state.playerHistories, playerId),
+            };
+        },
 
-      return {
+    updatePlayer:
+        (updated: Player): Updater =>
+        (state) => {
+            const players = state.players.map((p) =>
+                p.id === updated.id ? updated : p
+            );
+            return { ...state, players };
+        },
+
+    setPenalties:
+        (enabled: boolean): Updater =>
+        (state) => ({ ...state, penaltiesEnabled: enabled }),
+
+    startGame: (): Updater => (state) => ({
         ...state,
-        players,
-        playerHistories: omitKey(state.playerHistories, playerId),
-      };
-    },
-
-  updatePlayer:
-    (updated: Player): Updater =>
-    state => {
-      const players = state.players.map(p => (p.id === updated.id ? updated : p));
-      return { ...state, players };
-    },
-
-  setPenalties:
-    (enabled: boolean): Updater =>
-    state => ({ ...state, penaltiesEnabled: enabled }),
-
-  startGame: (): Updater => state => ({
-    ...state,
-    phase: 'game-selecting',
-    currentPlayerIndex: 0,
-    playerHistories: {},
-    currentCard: null,
-    pendingCardType: null,
-    currentTargetPlayerId: null,
-    showingPenalty: false,
-  }),
-
-  /**
-   * Selects a card for the active player, using the anti-repetition engine and
-   * (for T3/T4) the matching engine to pick an eligible target.
-   */
-  chooseCardType:
-    (type: CardType): Updater =>
-    state => {
-      if (!state.tier) return state;
-
-      const activePlayer = state.players[state.currentPlayerIndex];
-      if (!activePlayer) return state;
-
-      const partner = getPartner(activePlayer, state.players);
-
-      // Determine whether we need a card with no target (fallback)
-      const hasEligibleTarget =
-        state.tier < 3 || pickRandomTarget(activePlayer, state.players, state.tier) !== undefined;
-
-      const card = selectCard(
-        state.allCards,
-        state.tier,
-        type,
-        activePlayer,
-        partner,
-        state.playerHistories,
-        hasEligibleTarget ? undefined : true,
-      );
-
-      const targetPlayer = card.hasTarget
-        ? pickRandomTarget(activePlayer, state.players, state.tier)
-        : undefined;
-
-      const histories = recordCardShown(state.playerHistories, activePlayer.id, card);
-
-      return {
-        ...state,
-        phase: 'game-showing',
-        pendingCardType: type,
-        currentCard: card,
-        currentTargetPlayerId: targetPlayer?.id ?? null,
+        phase: 'game-selecting',
+        currentPlayerIndex: 0,
+        playerHistories: {},
+        currentCard: null,
+        pendingCardType: null,
+        currentTargetPlayerId: null,
         showingPenalty: false,
-        playerHistories: histories,
-      };
-    },
+    }),
 
-  /** Player accepted the card — advance to the next player. */
-  acceptCard: (): Updater => state => ({
-    ...state,
-    phase: 'game-selecting',
-    currentPlayerIndex: (state.currentPlayerIndex + 1) % state.players.length,
-    currentCard: null,
-    pendingCardType: null,
-    currentTargetPlayerId: null,
-    showingPenalty: false,
-  }),
+    /**
+     * Selects a card for the active player, using the anti-repetition engine and
+     * (for T3/T4) the matching engine to pick an eligible target.
+     */
+    chooseCardType:
+        (type: CardType): Updater =>
+        (state) => {
+            if (!state.tier) return state;
 
-  /** Player refused — show penalty overlay (if penalties are on). */
-  refuseCard: (): Updater => state => ({
-    ...state,
-    showingPenalty: state.penaltiesEnabled,
-    // If penalties are disabled, just advance
-    ...(state.penaltiesEnabled
-      ? {}
-      : {
-          phase: 'game-selecting' as GamePhase,
-          currentPlayerIndex: (state.currentPlayerIndex + 1) % state.players.length,
-          currentCard: null,
-          pendingCardType: null,
-          currentTargetPlayerId: null,
-        }),
-  }),
+            const activePlayer = state.players[state.currentPlayerIndex];
+            if (!activePlayer) return state;
 
-  /** Penalty acknowledged — advance to next player. */
-  dismissPenalty: (): Updater => state => ({
-    ...state,
-    phase: 'game-selecting',
-    currentPlayerIndex: (state.currentPlayerIndex + 1) % state.players.length,
-    currentCard: null,
-    pendingCardType: null,
-    currentTargetPlayerId: null,
-    showingPenalty: false,
-  }),
+            const partner = getPartner(activePlayer, state.players);
 
-  endGame: (): Updater => state => ({
-    ...buildInitialState(state.allCards),
-    theme: state.theme,
-  }),
+            // Determine whether we need a card with no target (fallback)
+            const hasEligibleTarget =
+                state.tier < 3 ||
+                pickRandomTarget(activePlayer, state.players, state.tier) !==
+                    undefined;
+
+            const card = selectCard(
+                state.allCards,
+                state.tier,
+                type,
+                activePlayer,
+                partner,
+                state.playerHistories,
+                hasEligibleTarget ? undefined : true
+            );
+
+            const targetPlayer = card.hasTarget
+                ? pickRandomTarget(activePlayer, state.players, state.tier)
+                : undefined;
+
+            const histories = recordCardShown(
+                state.playerHistories,
+                activePlayer.id,
+                card
+            );
+
+            return {
+                ...state,
+                phase: 'game-showing',
+                pendingCardType: type,
+                currentCard: card,
+                currentTargetPlayerId: targetPlayer?.id ?? null,
+                showingPenalty: false,
+                playerHistories: histories,
+            };
+        },
+
+    /** Player accepted the card — advance to the next player. */
+    acceptCard: (): Updater => (state) => ({
+        ...state,
+        phase: 'game-selecting',
+        currentPlayerIndex:
+            (state.currentPlayerIndex + 1) % state.players.length,
+        currentCard: null,
+        pendingCardType: null,
+        currentTargetPlayerId: null,
+        showingPenalty: false,
+    }),
+
+    /** Player refused — show penalty overlay (if penalties are on). */
+    refuseCard: (): Updater => (state) => ({
+        ...state,
+        showingPenalty: state.penaltiesEnabled,
+        // If penalties are disabled, just advance
+        ...(state.penaltiesEnabled
+            ? {}
+            : {
+                  phase: 'game-selecting' as GamePhase,
+                  currentPlayerIndex:
+                      (state.currentPlayerIndex + 1) % state.players.length,
+                  currentCard: null,
+                  pendingCardType: null,
+                  currentTargetPlayerId: null,
+              }),
+    }),
+
+    /** Penalty acknowledged — advance to next player. */
+    dismissPenalty: (): Updater => (state) => ({
+        ...state,
+        phase: 'game-selecting',
+        currentPlayerIndex:
+            (state.currentPlayerIndex + 1) % state.players.length,
+        currentCard: null,
+        pendingCardType: null,
+        currentTargetPlayerId: null,
+        showingPenalty: false,
+    }),
+
+    endGame: (): Updater => (state) => ({
+        ...buildInitialState(state.allCards),
+        theme: state.theme,
+    }),
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function getPartner(player: Player, players: readonly Player[]): Player | null {
-  if (!player.partnerId) return null;
-  return players.find(p => p.id === player.partnerId) ?? null;
+    if (!player.partnerId) return null;
+    return players.find((p) => p.id === player.partnerId) ?? null;
 }
 
 function omitKey<T>(obj: Record<string, T>, key: string): Record<string, T> {
-  const { [key]: _removed, ...rest } = obj;
-  return rest;
+    const { [key]: _removed, ...rest } = obj;
+    return rest;
 }
 
 // ─── LocalStorage persistence ─────────────────────────────────────────────────
 
 function persist(state: GameState): void {
-  try {
-    const { allCards: _ignored, playerHistories: _ph, ...rest } = state;
-    const serialized: PersistedState = {
-      ...rest,
-      playerHistories: serializeHistories(state.playerHistories),
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(serialized));
-  } catch {
-    // Storage quota exceeded — silently continue
-  }
+    try {
+        const { allCards: _ignored, playerHistories: _ph, ...rest } = state;
+        const serialized: PersistedState = {
+            ...rest,
+            playerHistories: serializeHistories(state.playerHistories),
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(serialized));
+    } catch {
+        // Storage quota exceeded — silently continue
+    }
 }
 
 function loadFromStorage(): PersistedState | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as PersistedState;
-  } catch {
-    return null;
-  }
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw) as PersistedState;
+    } catch {
+        return null;
+    }
 }
 
-function serializeHistories(histories: PlayerHistories): Record<string, SerializedHistory> {
-  const result: Record<string, SerializedHistory> = {};
-  for (const [id, h] of Object.entries(histories)) {
-    result[id] = {
-      playerId: h.playerId,
-      seenCards: Array.from(h.seenCards),
-      recentCards: Array.from(h.recentCards),
-    };
-  }
-  return result;
+function serializeHistories(
+    histories: PlayerHistories
+): Record<string, SerializedHistory> {
+    const result: Record<string, SerializedHistory> = {};
+    for (const [id, h] of Object.entries(histories)) {
+        result[id] = {
+            playerId: h.playerId,
+            seenCards: Array.from(h.seenCards),
+            recentCards: Array.from(h.recentCards),
+        };
+    }
+    return result;
 }
+
+const VALID_THEMES = new Set<string>([
+    'light',
+    'dark',
+    'light-ocean',
+    'dark-ocean',
+    'light-warm',
+    'dark-warm',
+    'light-rose',
+    'dark-rose',
+]);
 
 function deserialize(persisted: PersistedState): Omit<GameState, 'allCards'> {
-  const mutableHistories: Record<string, PlayerHistory> = {};
-  for (const [id, h] of Object.entries(persisted.playerHistories)) {
-    mutableHistories[id] = {
-      playerId: h.playerId,
-      seenCards: new Set(h.seenCards),
-      recentCards: Array.from(h.recentCards),
-    };
-  }
-  const playerHistories: PlayerHistories = mutableHistories;
-  return { ...persisted, playerHistories };
+    const mutableHistories: Record<string, PlayerHistory> = {};
+    for (const [id, h] of Object.entries(persisted.playerHistories)) {
+        mutableHistories[id] = {
+            playerId: h.playerId,
+            seenCards: new Set(h.seenCards),
+            recentCards: Array.from(h.recentCards),
+        };
+    }
+    const playerHistories: PlayerHistories = mutableHistories;
+    const theme: Theme = VALID_THEMES.has(persisted.theme)
+        ? (persisted.theme as Theme)
+        : prefersDark()
+          ? 'dark'
+          : 'light';
+    return { ...persisted, playerHistories, theme };
 }

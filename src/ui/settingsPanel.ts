@@ -1,260 +1,756 @@
 import type { GameStore } from '../state/store.js';
 import { Actions } from '../state/store.js';
+import type { Theme } from '../types/index.js';
+
+// ─── LocalStorage key for frosted glass preference ────────────────────────────
+const GLASS_KEY = 'tod_glass';
 
 // ─── Public ───────────────────────────────────────────────────────────────────
 
 /**
- * Injects the persistent settings FAB and modal into document.body.
- * Called once at app startup; survives screen transitions.
+ * Injects the persistent glass dock + themes menu + settings menu + wiki modal
+ * into document.body. Called once at app startup; survives screen transitions.
  */
 export function createSettingsPanel(store: GameStore): void {
-  // ── Floating action button ─────────────────────────────────
-  const fab = document.createElement('button');
-  fab.className = 'settings-fab';
-  fab.setAttribute('aria-label', 'Abrir definições');
-  fab.setAttribute('aria-expanded', 'false');
-  fab.setAttribute('aria-haspopup', 'dialog');
-  fab.setAttribute('aria-controls', 'settings-modal');
-  fab.innerHTML = '<span aria-hidden="true">⚙️</span>';
+    // ── Glass dock ─────────────────────────────────────────────
+    const dock = buildDock();
+    document.body.appendChild(dock);
 
-  // ── Modal overlay ──────────────────────────────────────────
-  const overlay = document.createElement('div');
-  overlay.id = 'settings-modal';
-  overlay.className = 'settings-overlay';
-  overlay.setAttribute('role', 'dialog');
-  overlay.setAttribute('aria-modal', 'true');
-  overlay.setAttribute('aria-labelledby', 'settings-modal-title');
-  overlay.hidden = true;
+    // ── Themes menu ────────────────────────────────────────────
+    const { menu: themesMenu, updateThemeRows } = buildThemesMenu(store);
+    document.body.appendChild(themesMenu);
 
-  // ── Panel ──────────────────────────────────────────────────
-  const panel = document.createElement('div');
-  panel.className = 'settings-panel';
+    // ── Platform menu (settings / definições) ──────────────────
+    const {
+        menu: settingsMenu,
+        frostedToggle,
+        darkToggle,
+        darkIconSvg,
+    } = buildSettingsMenu(store);
+    document.body.appendChild(settingsMenu);
 
-  const handle = document.createElement('div');
-  handle.className = 'settings-panel__handle';
-  handle.setAttribute('aria-hidden', 'true');
+    // ── Wiki modal ─────────────────────────────────────────────
+    const { modal, openModal, closeModal } = buildWikiModal();
+    document.body.appendChild(modal);
 
-  // Header
-  const panelHeader = document.createElement('div');
-  panelHeader.className = 'settings-panel__header';
+    // ── Wire buttons ───────────────────────────────────────────
+    const btnThemes = dock.querySelector<HTMLButtonElement>('#btn-themes');
+    const btnSettings = dock.querySelector<HTMLButtonElement>('#btn-settings');
 
-  const title = document.createElement('h2');
-  title.id = 'settings-modal-title';
-  title.className = 'heading-md';
-  title.textContent = 'Definições';
-
-  const closeBtn = document.createElement('button');
-  closeBtn.className = 'btn btn--ghost btn--sm settings-panel__close';
-  closeBtn.setAttribute('aria-label', 'Fechar definições');
-  closeBtn.textContent = '✕ Fechar';
-
-  panelHeader.append(title, closeBtn);
-
-  // ── Appearance section ─────────────────────────────────────
-  const appearanceSection = document.createElement('section');
-  appearanceSection.className = 'settings-section';
-
-  const appearanceTitle = document.createElement('h3');
-  appearanceTitle.className = 'settings-section__title';
-  appearanceTitle.textContent = 'Aparência';
-
-  const themeRow = buildThemeToggle(store);
-  appearanceSection.append(appearanceTitle, themeRow);
-
-  // ── Divider ────────────────────────────────────────────────
-  const divider = document.createElement('div');
-  divider.className = 'divider';
-  divider.setAttribute('aria-hidden', 'true');
-
-  // ── Wiki section ───────────────────────────────────────────
-  const wikiSection = buildWikiSection();
-
-  panel.append(handle, panelHeader, appearanceSection, divider, wikiSection);
-  overlay.appendChild(panel);
-  document.body.append(fab, overlay);
-
-  // ── Interaction ────────────────────────────────────────────
-  let previouslyFocused: HTMLElement | null = null;
-
-  function openPanel(): void {
-    previouslyFocused = document.activeElement as HTMLElement | null;
-    overlay.hidden = false;
-    fab.setAttribute('aria-expanded', 'true');
-    requestAnimationFrame(() => closeBtn.focus());
-  }
-
-  function closePanel(): void {
-    overlay.hidden = true;
-    fab.setAttribute('aria-expanded', 'false');
-    previouslyFocused?.focus();
-  }
-
-  fab.addEventListener('click', openPanel);
-  closeBtn.addEventListener('click', closePanel);
-  overlay.addEventListener('click', e => {
-    if (e.target === overlay) closePanel();
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && !overlay.hidden) {
-      e.preventDefault();
-      closePanel();
+    function closeThemesMenu(): void {
+        themesMenu.classList.remove('visible');
+        btnThemes?.setAttribute('aria-expanded', 'false');
     }
-  });
 
-  // Keep toggle in sync with store state changes
-  store.subscribe(state => {
-    const toggle = document.getElementById('settings-theme-toggle') as HTMLInputElement | null;
-    if (toggle) toggle.checked = state.theme === 'dark';
-  });
+    function closeSettingsMenu(): void {
+        settingsMenu.classList.remove('visible');
+        btnSettings?.setAttribute('aria-expanded', 'false');
+    }
+
+    btnThemes?.addEventListener('click', () => {
+        const isOpen = themesMenu.classList.contains('visible');
+        closeSettingsMenu();
+        if (isOpen) {
+            closeThemesMenu();
+        } else {
+            themesMenu.classList.add('visible');
+            btnThemes.setAttribute('aria-expanded', 'true');
+        }
+    });
+
+    btnSettings?.addEventListener('click', () => {
+        const isOpen = settingsMenu.classList.contains('visible');
+        closeThemesMenu();
+        if (isOpen) {
+            closeSettingsMenu();
+        } else {
+            settingsMenu.classList.add('visible');
+            btnSettings.setAttribute('aria-expanded', 'true');
+        }
+    });
+
+    // Wire wiki button inside settings menu
+    const btnWikiInMenu = settingsMenu.querySelector<HTMLButtonElement>(
+        '#btn-wiki-in-settings'
+    );
+    btnWikiInMenu?.addEventListener('click', () => {
+        closeSettingsMenu();
+        openModal();
+    });
+
+    // Close menus when clicking outside
+    document.addEventListener('click', (e) => {
+        const target = e.target as Node;
+        if (
+            themesMenu.classList.contains('visible') &&
+            !themesMenu.contains(target) &&
+            !btnThemes?.contains(target)
+        ) {
+            closeThemesMenu();
+        }
+        if (
+            settingsMenu.classList.contains('visible') &&
+            !settingsMenu.contains(target) &&
+            !btnSettings?.contains(target)
+        ) {
+            closeSettingsMenu();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeThemesMenu();
+            closeSettingsMenu();
+            closeModal();
+        }
+    });
+
+    // ── Sync dark toggle + theme buttons with store state ───────
+    store.subscribe((state) => {
+        const isDark = state.theme.startsWith('dark');
+        if (darkToggle.getAttribute('aria-checked') !== String(isDark)) {
+            darkToggle.setAttribute('aria-checked', String(isDark));
+            animateLiquidToggle(darkToggle, isDark);
+        }
+        darkIconSvg.innerHTML = isDark ? SVG_SUN : SVG_MOON;
+        updateThemeRows(state.theme);
+    });
+
+    // ── Dark mode toggle ───────────────────────────────────────
+    darkToggle.addEventListener('click', () => {
+        const current = darkToggle.getAttribute('aria-checked') === 'true';
+        const next = !current;
+        darkToggle.setAttribute('aria-checked', String(next));
+        animateLiquidToggle(darkToggle, next);
+        const newTheme = flipThemeMode(
+            store.state.theme,
+            next ? 'dark' : 'light'
+        );
+        document.documentElement.dataset['theme'] = newTheme;
+        store.update(Actions.setTheme(newTheme));
+    });
+
+    // ── Frosted glass toggle ───────────────────────────────────
+    frostedToggle.addEventListener('click', () => {
+        const current = frostedToggle.getAttribute('aria-checked') === 'true';
+        const next = !current;
+        frostedToggle.setAttribute('aria-checked', String(next));
+        animateLiquidToggle(frostedToggle, next);
+        if (next) {
+            document.documentElement.dataset['glass'] = 'frosted';
+            localStorage.setItem(GLASS_KEY, 'frosted');
+        } else {
+            delete document.documentElement.dataset['glass'];
+            localStorage.removeItem(GLASS_KEY);
+        }
+    });
 }
 
-// ─── Theme toggle row ─────────────────────────────────────────────────────────
-
-function buildThemeToggle(store: GameStore): HTMLElement {
-  const wrap = document.createElement('div');
-  wrap.className = 'toggle-wrap';
-
-  const labelDiv = document.createElement('div');
-  labelDiv.className = 'toggle-label';
-  const labelTitle = document.createElement('div');
-  labelTitle.className = 'toggle-label__title';
-  labelTitle.textContent = 'Modo escuro';
-  const labelDesc = document.createElement('div');
-  labelDesc.className = 'toggle-label__desc';
-  labelDesc.textContent = 'Alterna entre tema claro e escuro';
-  labelDiv.append(labelTitle, labelDesc);
-
-  const toggleLabel = document.createElement('label');
-  toggleLabel.className = 'toggle';
-  toggleLabel.htmlFor = 'settings-theme-toggle';
-
-  const toggleInput = document.createElement('input');
-  toggleInput.type = 'checkbox';
-  toggleInput.id = 'settings-theme-toggle';
-  toggleInput.setAttribute('role', 'switch');
-  toggleInput.setAttribute('aria-label', 'Ativar modo escuro');
-  toggleInput.checked = store.state.theme === 'dark';
-
-  const toggleTrack = document.createElement('span');
-  toggleTrack.className = 'toggle__track';
-
-  toggleLabel.append(toggleInput, toggleTrack);
-  wrap.append(labelDiv, toggleLabel);
-
-  toggleInput.addEventListener('change', () => {
-    const next = toggleInput.checked ? 'dark' : 'light';
-    document.documentElement.dataset['theme'] = next;
-    store.update(Actions.setTheme(next));
-  });
-
-  return wrap;
+/** Read persisted glass preference and apply to <html>. Call on startup. */
+export function initGlassState(): void {
+    const saved = localStorage.getItem(GLASS_KEY);
+    if (saved === 'frosted') {
+        document.documentElement.dataset['glass'] = 'frosted';
+    }
 }
 
-// ─── Wiki / Help section ──────────────────────────────────────────────────────
+// ─── Glass Dock ──────────────────────────────────────────────────────────────
+
+function buildDock(): HTMLElement {
+    const dock = document.createElement('div');
+    dock.id = 'glass-dock';
+    dock.className = 'glass-dock';
+    dock.setAttribute('role', 'toolbar');
+    dock.setAttribute('aria-label', 'Barra de ações');
+
+    dock.innerHTML = `
+    <div class="glass-effect" aria-hidden="true"></div>
+    <div class="glass-tint" aria-hidden="true"></div>
+    <div class="glass-shine" aria-hidden="true"></div>
+    <div class="glass-content">
+      <button id="btn-themes" class="dock-btn has-menu"
+        aria-label="Temas de cor" aria-expanded="false" aria-haspopup="true">
+        <svg class="dock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+          <circle cx="8.5" cy="11.5" r="1.5" fill="currentColor" stroke="none"/>
+          <circle cx="12.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/>
+          <circle cx="16.5" cy="11.5" r="1.5" fill="currentColor" stroke="none"/>
+        </svg>
+        <span class="dock-label">Temas</span>
+      </button>
+      <div class="dock-sep" aria-hidden="true"></div>
+      <button id="btn-settings" class="dock-btn has-menu"
+        aria-label="Definições" aria-expanded="false" aria-haspopup="true">
+        <svg class="dock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="4" y1="21" x2="4" y2="14"/>
+          <line x1="4" y1="10" x2="4" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12" y2="3"/>
+          <line x1="20" y1="21" x2="20" y2="16"/>
+          <line x1="20" y1="12" x2="20" y2="3"/>
+          <line x1="1" y1="14" x2="7" y2="14"/>
+          <line x1="9" y1="8" x2="15" y2="8"/>
+          <line x1="17" y1="16" x2="23" y2="16"/>
+        </svg>
+        <span class="dock-label">Definições</span>
+      </button>
+    </div>
+  `;
+
+    return dock;
+}
+
+// ─── Themes Platform Menu ────────────────────────────────────────────────────
+
+function buildThemesMenu(store: GameStore): {
+    menu: HTMLElement;
+    updateThemeRows: (theme: Theme) => void;
+} {
+    const menu = document.createElement('div');
+    menu.id = 'menu-themes';
+    menu.className = 'platform-menu';
+    menu.setAttribute('role', 'dialog');
+    menu.setAttribute('aria-label', 'Temas');
+
+    const content = document.createElement('div');
+    content.className = 'platform-menu-content';
+
+    const label = document.createElement('div');
+    label.className = 'platform-menu-label';
+    label.textContent = 'Paleta de cor';
+    content.appendChild(label);
+
+    const paletteRows: Array<{ btn: HTMLButtonElement; id: string }> = [];
+
+    PALETTES.forEach(({ id, label: palLabel, desc, swatch }) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'palette-row';
+        btn.dataset['palette'] = id;
+        const isActive = getThemePalette(store.state.theme) === id;
+        if (isActive) btn.classList.add('palette-row--active');
+        btn.innerHTML = `
+      <span class="palette-row-dot" style="background:${swatch}" aria-hidden="true"></span>
+      <span class="palette-row-text">
+        <span class="palette-row-name">${palLabel}</span>
+        <span class="palette-row-desc">${desc}</span>
+      </span>
+      <svg class="palette-row-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    `;
+        btn.addEventListener('click', () => {
+            const mode = getThemeMode(store.state.theme);
+            const newTheme: Theme =
+                id === 'violet' ? (mode as Theme) : (`${mode}-${id}` as Theme);
+            document.documentElement.dataset['theme'] = newTheme;
+            store.update(Actions.setTheme(newTheme));
+        });
+        content.appendChild(btn);
+        paletteRows.push({ btn, id });
+    });
+
+    function updateThemeRows(theme: Theme): void {
+        const palette = getThemePalette(theme);
+        paletteRows.forEach(({ btn, id }) => {
+            btn.classList.toggle('palette-row--active', id === palette);
+        });
+    }
+
+    menu.innerHTML = `
+    <div class="glass-effect" aria-hidden="true"></div>
+    <div class="glass-tint" aria-hidden="true"></div>
+    <div class="glass-shine" aria-hidden="true"></div>
+  `;
+    menu.appendChild(content);
+
+    return { menu, updateThemeRows };
+}
+
+// ─── Settings (Definições) Platform Menu ─────────────────────────────────────
+
+const SVG_MOON = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+const SVG_SUN =
+    '<circle cx="12" cy="12" r="5"/>' +
+    '<line x1="12" y1="1" x2="12" y2="3"/>' +
+    '<line x1="12" y1="21" x2="12" y2="23"/>' +
+    '<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>' +
+    '<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>' +
+    '<line x1="1" y1="12" x2="3" y2="12"/>' +
+    '<line x1="21" y1="12" x2="23" y2="12"/>' +
+    '<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>' +
+    '<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+
+function buildSettingsMenu(store: GameStore): {
+    menu: HTMLElement;
+    frostedToggle: HTMLButtonElement;
+    darkToggle: HTMLButtonElement;
+    darkIconSvg: SVGSVGElement;
+} {
+    const isFrosted = document.documentElement.dataset['glass'] === 'frosted';
+    const frostedToggle = buildLiquidToggle('toggle-frosted-glass', isFrosted);
+    const isDark = store.state.theme.startsWith('dark');
+    const darkToggle = buildLiquidToggle('toggle-dark-mode', isDark);
+
+    const menu = document.createElement('div');
+    menu.id = 'menu-settings';
+    menu.className = 'platform-menu';
+    menu.setAttribute('role', 'dialog');
+    menu.setAttribute('aria-label', 'Definições');
+
+    const content = document.createElement('div');
+    content.className = 'platform-menu-content';
+
+    // ── Appearance section ─────────────────────────────────────
+    const appearLabel = document.createElement('div');
+    appearLabel.className = 'platform-menu-label';
+    appearLabel.textContent = 'Aparência';
+
+    const darkRow = document.createElement('div');
+    darkRow.className = 'settings-row';
+    darkRow.innerHTML = `
+    <div class="settings-row-icon" aria-hidden="true">
+      <svg id="icon-dark-mode" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" stroke-linejoin="round">
+        ${isDark ? SVG_SUN : SVG_MOON}
+      </svg>
+    </div>
+    <div class="settings-row-text">
+      <div class="settings-row-name">Modo escuro</div>
+      <div class="settings-row-desc">Alterna claro / escuro</div>
+    </div>
+  `;
+    darkRow.appendChild(darkToggle);
+    const darkIconSvg =
+        darkRow.querySelector<SVGSVGElement>('#icon-dark-mode')!;
+
+    // ── Interface section ──────────────────────────────────────
+    const sep1 = document.createElement('div');
+    sep1.className = 'settings-sep';
+    sep1.setAttribute('aria-hidden', 'true');
+
+    const glassLabel = document.createElement('div');
+    glassLabel.className = 'platform-menu-label';
+    glassLabel.textContent = 'Interface';
+
+    const frostedRow = document.createElement('div');
+    frostedRow.className = 'settings-row';
+    frostedRow.innerHTML = `
+    <div class="settings-row-icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+      </svg>
+    </div>
+    <div class="settings-row-text">
+      <div class="settings-row-name">Vidro fosco</div>
+      <div class="settings-row-desc">Desfoque mais intenso nos painéis</div>
+    </div>
+  `;
+    frostedRow.appendChild(frostedToggle);
+
+    // ── Wiki / help row ────────────────────────────────────────
+    const sep2 = document.createElement('div');
+    sep2.className = 'settings-sep';
+    sep2.setAttribute('aria-hidden', 'true');
+
+    const helpLabel = document.createElement('div');
+    helpLabel.className = 'platform-menu-label';
+    helpLabel.textContent = 'Ajuda';
+
+    const wikiRow = document.createElement('div');
+    wikiRow.className = 'settings-row settings-row--link';
+
+    const wikiBtn = document.createElement('button');
+    wikiBtn.id = 'btn-wiki-in-settings';
+    wikiBtn.className = 'settings-row-link-btn';
+    wikiBtn.setAttribute('aria-label', 'Abrir guia de como jogar');
+    wikiBtn.innerHTML = `
+    <div class="settings-row-icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+    </div>
+    <div class="settings-row-text">
+      <div class="settings-row-name">Como Jogar</div>
+      <div class="settings-row-desc">Regras, níveis e opções do jogo</div>
+    </div>
+    <svg class="settings-row-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
+  `;
+    wikiRow.appendChild(wikiBtn);
+
+    content.append(
+        appearLabel,
+        darkRow,
+        sep1,
+        glassLabel,
+        frostedRow,
+        sep2,
+        helpLabel,
+        wikiRow
+    );
+
+    menu.innerHTML = `
+    <div class="glass-effect" aria-hidden="true"></div>
+    <div class="glass-tint" aria-hidden="true"></div>
+    <div class="glass-shine" aria-hidden="true"></div>
+  `;
+    menu.appendChild(content);
+
+    return { menu, frostedToggle, darkToggle, darkIconSvg };
+}
+
+function getThemeMode(theme: Theme): 'light' | 'dark' {
+    return theme.startsWith('dark') ? 'dark' : 'light';
+}
+
+function getThemePalette(theme: Theme): string {
+    if (theme === 'light' || theme === 'dark') return 'violet';
+    return theme.replace(/^(light|dark)-/, '');
+}
+
+function flipThemeMode(theme: Theme, mode: 'light' | 'dark'): Theme {
+    const palette = getThemePalette(theme);
+    if (palette === 'violet') return mode as Theme;
+    return `${mode}-${palette}` as Theme;
+}
+
+interface PaletteOption {
+    id: string;
+    label: string;
+    desc: string;
+    swatch: string;
+}
+
+const PALETTES: PaletteOption[] = [
+    {
+        id: 'violet',
+        label: 'Violeta',
+        desc: 'Roxo · profundo e clássico',
+        swatch: '#8b5cf6',
+    },
+    {
+        id: 'ocean',
+        label: 'Oceano',
+        desc: 'Azul · fresco e sereno',
+        swatch: '#0ea5e9',
+    },
+    {
+        id: 'warm',
+        label: 'Âmbar',
+        desc: 'Âmbar · quente e aconchegante',
+        swatch: '#f59e0b',
+    },
+    {
+        id: 'rose',
+        label: 'Rosa',
+        desc: 'Rosa · vivo e apaixonado',
+        swatch: '#f43f5e',
+    },
+    {
+        id: 'forest',
+        label: 'Floresta',
+        desc: 'Verde · natural e sereno',
+        swatch: '#22c55e',
+    },
+];
+
+// ─── Wiki Modal ───────────────────────────────────────────────────────────────
+
+function buildWikiModal(): {
+    modal: HTMLElement;
+    openModal: () => void;
+    closeModal: () => void;
+} {
+    const modal = document.createElement('div');
+    modal.id = 'help-modal';
+    modal.className = 'help-modal';
+    modal.setAttribute('inert', '');
+
+    const backdrop = document.createElement('div');
+    backdrop.className = 'help-modal-backdrop';
+    backdrop.id = 'help-modal-backdrop';
+
+    const panel = document.createElement('div');
+    panel.className = 'help-modal-panel';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.id = 'btn-close-help';
+    closeBtn.className = 'modal-close-btn';
+    closeBtn.setAttribute('aria-label', 'Fechar ajuda');
+    closeBtn.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="18" y1="6" x2="6" y2="18"/>
+      <line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  `;
+
+    const content = document.createElement('div');
+    content.className = 'help-modal-content';
+
+    const header = document.createElement('div');
+    header.className = 'help-modal-header';
+
+    const titleEl = document.createElement('span');
+    titleEl.className = 'help-modal-title';
+    titleEl.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"
+      fill="none" stroke="currentColor" stroke-width="1.8"
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+      <line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+    Como Jogar
+  `;
+
+    header.append(titleEl, closeBtn);
+
+    const body = document.createElement('div');
+    body.className = 'help-body';
+    body.appendChild(buildWikiContent());
+
+    content.append(header, body);
+
+    panel.innerHTML = `
+    <div class="glass-effect" aria-hidden="true"></div>
+    <div class="glass-tint" aria-hidden="true"></div>
+    <div class="glass-shine" aria-hidden="true"></div>
+  `;
+    panel.appendChild(content);
+
+    modal.append(backdrop, panel);
+
+    function openModal(): void {
+        modal.removeAttribute('inert');
+        modal.classList.add('visible');
+        requestAnimationFrame(() => closeBtn.focus());
+    }
+
+    function closeModal(): void {
+        if (!modal.classList.contains('visible')) return;
+        modal.classList.remove('visible');
+        modal.setAttribute('inert', '');
+    }
+
+    backdrop.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    return { modal, openModal, closeModal };
+}
+
+// ─── Liquid Toggle factory ────────────────────────────────────────────────────
+
+export function buildLiquidToggle(
+    id: string,
+    initialChecked: boolean
+): HTMLButtonElement {
+    const btn = document.createElement('button');
+    btn.id = id;
+    btn.type = 'button';
+    btn.className = 'liquid-toggle';
+    btn.setAttribute('role', 'switch');
+    btn.setAttribute('aria-checked', String(initialChecked));
+    // Matches the exact DOM structure from the reference implementation
+    btn.innerHTML = `
+    <div class="knockout" aria-hidden="true">
+      <div class="indicator indicator--masked">
+        <div class="mask"></div>
+      </div>
+    </div>
+    <div class="indicator__liquid" aria-hidden="true">
+      <div class="shadow"></div>
+      <div class="wrapper">
+        <div class="liquids">
+          <div class="liquid__shadow"></div>
+          <div class="liquid__track"></div>
+        </div>
+      </div>
+      <div class="cover"></div>
+    </div>
+  `;
+    btn.style.setProperty('--complete', initialChecked ? '100' : '0');
+    return btn;
+}
+
+export function animateLiquidToggle(
+    btn: HTMLButtonElement,
+    toChecked: boolean
+): void {
+    const startVal = Number.parseFloat(
+        btn.style.getPropertyValue('--complete') || '0'
+    );
+    const endVal = toChecked ? 100 : 0;
+    if (startVal === endVal) return;
+
+    // Phase 1: set active (squish) immediately
+    btn.dataset['active'] = 'true';
+
+    // Phase 2: after brief delay, animate --complete (matches GSAP delay: 180ms)
+    const DELAY = 180;
+    const DURATION = 140;
+    let phaseStart: number | null = null;
+    let animPhase = false;
+    let animStart = 0;
+
+    function frame(ts: number): void {
+        phaseStart ??= ts;
+        if (!animPhase) {
+            if (ts - phaseStart < DELAY) {
+                requestAnimationFrame(frame);
+                return;
+            }
+            animPhase = true;
+            animStart = ts;
+        }
+        const progress = Math.min((ts - animStart) / DURATION, 1);
+        // power1.inOut
+        const eased =
+            progress < 0.5
+                ? 2 * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        btn.style.setProperty(
+            '--complete',
+            String(Math.round(startVal + (endVal - startVal) * eased))
+        );
+        if (progress < 1) {
+            requestAnimationFrame(frame);
+        } else {
+            // Phase 3: clear active after 50ms (matches GSAP onComplete delay)
+            setTimeout(() => {
+                delete btn.dataset['active'];
+            }, 50);
+        }
+    }
+
+    requestAnimationFrame(frame);
+}
+
+// ─── Wiki content ─────────────────────────────────────────────────────────────
 
 interface WikiBlock {
-  title: string;
-  html: string;
-  warn?: boolean;
+    title: string;
+    html: string;
+    warn?: boolean;
 }
 
-function buildWikiSection(): HTMLElement {
-  const section = document.createElement('section');
-  section.className = 'settings-section wiki-section';
+function buildWikiContent(): DocumentFragment {
+    const frag = document.createDocumentFragment();
 
-  const sectionTitle = document.createElement('h3');
-  sectionTitle.className = 'settings-section__title';
-  sectionTitle.innerHTML = '📖&nbsp; Como Jogar';
-
-  const content = document.createElement('div');
-  content.className = 'wiki-content';
-
-  const blocks: WikiBlock[] = [
-    {
-      title: 'O que é o Truth or Dare?',
-      html: `<p>Um jogo social em que cada jogador escolhe, na sua vez, entre <strong>Verdade</strong> (responder honestamente a uma pergunta) ou <strong>Desafio</strong> (completar uma tarefa divertida ou ousada). Há 4 níveis de intensidade crescente — escolhe o que melhor se adapta ao teu grupo.</p>`,
-    },
-    {
-      title: 'Os 4 Níveis (Tiers)',
-      html: `<ul>
-        <li><strong>🟢 Tier 1 — Diversão Familiar:</strong> Perguntas e desafios leves para qualquer grupo e idade. Sem conteúdo adulto nem penalizações. Ideal para reuniões de família ou grupos mistos.</li>
-        <li><strong>🔵 Tier 2 — Noite entre Amigos:</strong> Conteúdo mais picante sobre experiências, segredos e situações embaraçosas. Inclui o sistema de <em>shots</em> como penalização por recusar. Requer confirmação de 18+.</li>
-        <li><strong>🟣 Tier 3 — Onde a Ousadia Começa:</strong> Conteúdo adulto com envolvimento físico e sensual entre jogadores. O motor de <em>targets</em> entra em ação, respeitando orientações sexuais e o estado relacional de cada pessoa. Requer 18+.</li>
-        <li><strong>🔴 Tier 4 — Extremo:</strong> O nível mais intenso, sem limites dentro do consenso. Apenas para grupos completamente à vontade entre si. Conteúdo explícito. Requer 18+.</li>
+    const blocks: WikiBlock[] = [
+        {
+            title: 'O que é o Verdade ou Desafio?',
+            html: `<p>Um jogo social em que cada jogador escolhe, na sua vez, entre <strong>Verdade</strong> (responder honestamente a uma pergunta) ou <strong>Desafio</strong> (completar uma tarefa divertida ou ousada). Há 4 níveis de intensidade crescente — do familiar ao extremo. Escolhe o que melhor se adapta ao teu grupo.</p>`,
+        },
+        {
+            title: 'Os 4 Níveis',
+            html: `<ul>
+        <li><strong>🌟 Diversão Familiar:</strong> Perguntas e desafios leves para qualquer grupo e idade. Sem conteúdo adulto nem penalizações. Ideal para reuniões de família ou grupos mistos.</li>
+        <li><strong>🎉 Noite entre Amigos:</strong> Conteúdo mais picante sobre experiências, segredos e situações embaraçosas. Inclui o sistema de <em>shots</em> como penalização por recusar. Requer confirmação de 18+.</li>
+        <li><strong>🔥 Onde a Ousadia Começa:</strong> Conteúdo adulto com envolvimento físico e sensual entre jogadores. O motor de alvos entra em ação, respeitando orientações sexuais e o estado relacional de cada pessoa. Requer 18+.</li>
+        <li><strong>💀 Extremo:</strong> O nível mais intenso, sem limites dentro do consenso. Apenas para grupos completamente à vontade entre si. Conteúdo explícito. Requer 18+.</li>
       </ul>`,
-    },
-    {
-      title: 'Configuração de Jogadores',
-      html: `<p>Consoante o nível escolhido, é pedida diferente informação ao registar cada jogador:</p>
-      <ul>
-        <li><strong>Tier 1:</strong> Apenas o nome.</li>
-        <li><strong>Tier 2:</strong> Nome + género (para concordância gramatical nas cartas em português).</li>
-        <li><strong>Tiers 3 e 4:</strong> Nome, género, orientação sexual, estado relacional (solteiro/a, relação aberta ou fechada), parceiro/a presente no jogo (opcional) e preferência de alvo (homens, mulheres ou ambos).</li>
-      </ul>`,
-    },
-    {
-      title: 'Penalizações (Shots)',
-      html: `<p>Nos Tiers 2–4, cada carta indica quantos <em>shots</em> o jogador deve beber se recusar responder ou completar o desafio. Um ecrã de penalização aparece automaticamente ao recusar.</p>
-      <p>Este sistema pode ser <strong>desativado</strong> no ecrã de configuração antes de iniciar o jogo.</p>
-      <p><em>Joga sempre com responsabilidade. Podes substituir álcool por água, sumo ou qualquer outra bebida à tua escolha.</em></p>`,
-    },
-    {
-      title: 'Sistema de Targets (Alvos)',
-      html: `<p>Algumas cartas envolvem um <strong>[Target Player]</strong> — um jogador alvo selecionado automaticamente pelo motor de afinidades. Nos Tiers 3 e 4, o motor respeita:</p>
-      <ul>
-        <li><strong>Orientação sexual:</strong> o sistema só seleciona pares com atração mútua (ex: um jogador heterossexual não será alvo de outro do mesmo género).</li>
-        <li><strong>Relação fechada:</strong> jogadores nesta situação interagem exclusivamente com o/a seu/sua parceiro/a registado/a no jogo.</li>
-        <li><strong>Relação aberta:</strong> requer o campo "aberto/a a interações fora da relação" ativo para ser elegível como alvo por outros jogadores.</li>
-        <li><strong>Preferência de alvo:</strong> podes especificar se preferes interagir com homens, mulheres ou ambos.</li>
-      </ul>`,
-    },
-    {
-      title: 'Motor Anti-Repetição',
-      html: `<p>O jogo pontua cada carta antes de a selecionar, dando sempre preferência às menos vistas recentemente:</p>
-      <ul>
-        <li>Cartas nos últimos <strong>12 turnos</strong> do jogador têm penalização elevada.</li>
-        <li>Cartas nos últimos <strong>6 turnos do/a parceiro/a</strong> também são penalizadas (casais partilham histórico).</li>
-        <li>Cartas nunca vistas têm prioridade máxima.</li>
-      </ul>
-      <p>Isso garante variedade ao longo de toda a sessão de jogo.</p>`,
-    },
-    {
-      title: 'Como Jogar — Passo a Passo',
-      html: `<ol>
-        <li>Escolhe o nível (Tier) na ecrã inicial.</li>
-        <li>Confirma a idade, se necessário.</li>
+        },
+        {
+            title: 'Como Jogar — Passo a Passo',
+            html: `<ol>
+        <li>Escolhe o nível na ecrã inicial.</li>
+        <li>Confirma a idade, se necessário (18+ para os níveis 2, 3 e 4).</li>
         <li>Adiciona todos os jogadores com as respetivas informações.</li>
-        <li>Ativa ou desativa as penalizações em <em>shots</em>.</li>
+        <li>Ativa ou desativa o sistema de penalizações em <em>shots</em>.</li>
         <li>Carrega em <strong>Iniciar Jogo</strong>.</li>
         <li>Na tua vez, escolhe <strong>Verdade</strong> ou <strong>Desafio</strong>.</li>
         <li>Responde ou completa o desafio. Carrega em ✅ Feito! para passar a vez.</li>
-        <li>Se recusares, carrega em ❌ Recusar e bebe a penalização indicada.</li>
+        <li>Se recusares, carrega em ❌ Recusar e aceita a penalização indicada.</li>
       </ol>`,
-    },
-    {
-      title: '⚠️ Segurança e Consentimento',
-      html: `<p>A participação em qualquer desafio deve ser <strong>sempre voluntária e consensual</strong>. Ninguém deve sentir pressão para fazer algo com que não se sinta confortável.</p>
-      <p>Qualquer pessoa pode <strong>passar a vez a qualquer momento</strong>, sem julgamentos. O jogo é diversão partilhada — o bem-estar e os limites de cada pessoa vêm sempre em primeiro lugar.</p>`,
-      warn: true,
-    },
-  ];
+        },
+        {
+            title: 'Aparência e Temas',
+            html: `<p>A dock flutuante no fundo do ecrã tem dois botões de personalização:</p>
+      <ul>
+        <li><strong>Temas</strong> — abre a seleção de paleta de cor (Violeta, Oceano, Âmbar, Rosa, Floresta) e o toggle de modo escuro / claro (10 combinações no total).</li>
+        <li><strong>Definições</strong> — abre as opções de interface: vidro fosco e acesso ao guia <em>Como Jogar</em>.</li>
+      </ul>
+      <p>Na primeira visita, o modo claro/escuro segue a preferência do sistema. A partir da primeira alteração, o tema escolhido fica guardado automaticamente.</p>`,
+        },
+        {
+            title: 'Configuração de Jogadores',
+            html: `<p>Consoante o nível escolhido, é pedida diferente informação ao registar cada jogador:</p>
+      <ul>
+        <li><strong>Nível 1:</strong> Apenas o nome.</li>
+        <li><strong>Nível 2:</strong> Nome + género (para concordância gramatical nas cartas em português).</li>
+        <li><strong>Níveis 3 e 4:</strong> Nome, género, orientação sexual, estado relacional (solteiro/a, relação aberta ou fechada), parceiro/a presente no jogo (opcional) e preferência de alvo (homens, mulheres ou ambos).</li>
+      </ul>`,
+        },
+        {
+            title: 'Sistema de Alvos (Níveis 3 e 4)',
+            html: `<p>Algumas cartas envolvem um <strong>jogador alvo</strong>, selecionado automaticamente pelo motor de afinidades. O motor respeita:</p>
+      <ul>
+        <li><strong>Orientação sexual:</strong> apenas pares com atração mútua são elegíveis.</li>
+        <li><strong>Relação fechada:</strong> jogadores nesta situação interagem exclusivamente com o/a seu/sua parceiro/a registado/a no jogo.</li>
+        <li><strong>Relação aberta:</strong> requer o campo "aberto/a a interações fora da relação" ativo para ser elegível como alvo por outros jogadores.</li>
+        <li><strong>Preferência de alvo:</strong> podes especificar se preferes interagir com homens, mulheres ou ambos.</li>
+      </ul>
+      <p>Se não existir nenhum alvo elegível, o jogador ativo realiza o desafio sozinho.</p>`,
+        },
+        {
+            title: 'Penalizações (Shots)',
+            html: `<p>Nos níveis 2–4, cada carta indica quantos <em>shots</em> o jogador deve beber se recusar responder ou completar o desafio. Um ecrã de penalização aparece automaticamente ao recusar.</p>
+      <p>Este sistema pode ser <strong>desativado</strong> no ecrã de configuração antes de iniciar o jogo.</p>
+      <p><em>Joga sempre com responsabilidade. Podes substituir álcool por água, sumo ou qualquer outra bebida à tua escolha.</em></p>`,
+        },
+        {
+            title: 'Motor Anti-Repetição',
+            html: `<p>O jogo pontua cada carta antes de a selecionar, favorecendo sempre as menos vistas recentemente:</p>
+      <ul>
+        <li>Cartas nos últimos <strong>12 turnos</strong> do jogador têm penalização elevada.</li>
+        <li>Cartas vistas pelo/a <strong>parceiro/a nos últimos 6 turnos</strong> também são penalizadas.</li>
+        <li>Cartas nunca vistas têm prioridade máxima.</li>
+      </ul>
+      <p>Isto garante variedade ao longo de toda a sessão, mesmo em grupos pequenos.</p>`,
+        },
+        {
+            title: '⚠️ Consentimento e Segurança',
+            html: `<p>A participação em qualquer desafio deve ser <strong>sempre voluntária e consensual</strong>. Ninguém deve sentir pressão para fazer algo com que não se sinta confortável.</p>
+      <p>Qualquer pessoa pode <strong>passar a vez a qualquer momento</strong>, sem julgamentos. O bem-estar e os limites de cada pessoa vêm sempre em primeiro lugar.</p>`,
+            warn: true,
+        },
+    ];
 
-  for (const block of blocks) {
-    const blockEl = document.createElement('div');
-    blockEl.className = `wiki-block${block.warn === true ? ' wiki-block--warn' : ''}`;
+    for (const block of blocks) {
+        const el = document.createElement('div');
+        el.className = block.warn
+            ? 'wiki-block wiki-block--warn'
+            : 'wiki-block';
 
-    const blockTitle = document.createElement('h4');
-    blockTitle.textContent = block.title;
+        const heading = document.createElement('h4');
+        heading.textContent = block.title;
 
-    const blockBody = document.createElement('div');
-    blockBody.className = 'wiki-block__body';
-    // Content is hardcoded source strings, not user input — no XSS risk
-    blockBody.innerHTML = block.html;
+        const body = document.createElement('div');
+        body.className = 'wiki-block__body';
+        body.innerHTML = block.html;
 
-    blockEl.append(blockTitle, blockBody);
-    content.appendChild(blockEl);
-  }
+        el.append(heading, body);
+        frag.appendChild(el);
+    }
 
-  section.append(sectionTitle, content);
-  return section;
+    return frag;
 }

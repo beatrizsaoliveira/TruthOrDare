@@ -1,6 +1,8 @@
-# Truth or Dare 🎲
+# Verdade ou Desafio 🎲
 
-> A web-based social party game in European Portuguese, built as a fully static TypeScript + Vite single-page application. Deployable to GitHub Pages with zero server-side requirements.
+> **Do familiar ao extremo — tu decides.**
+>
+> Jogo social de festa em português europeu, construído como uma aplicação de página única estática em TypeScript + Vite. Quatro níveis de intensidade, desde o familiar ao explicitamente ousado. Implementável no GitHub Pages sem qualquer requisito de servidor.
 
 ---
 
@@ -28,12 +30,24 @@
 - **Anti-repetition card engine** — weighted scoring prevents recently seen cards from reappearing; couples share history
 - **Drink/shot penalty system** — dismissible overlay on card refusal; can be disabled before starting
 - **pt-PT gender agreement parser** — resolves `word/a` patterns (e.g. `sozinho/a`) based on the active player's gender
-- **Persistent game state** — `localStorage` survives page refreshes; only card data is re-loaded from the bundle
-- **Persistent settings panel** — ⚙️ accessible from any screen, contains theme toggle and full in-game wiki/help
-- **Dark / light mode** — respects OS preference by default; overridable via settings
+- **Persistent game state** — `localStorage` survives page refreshes; first visit uses OS dark/light preference; theme is persisted after the first manual change
+- **Ambient background** — floating bokeh particles (tsParticles v2 via CDN) that smoothly re-colour to match the active palette when the theme changes
+- **Liquid Glass dock** — physics-based floating glass toolbar (always visible) with a **Temas** button (colour palette + dark/light mode) and a **Definições** button (frosted glass toggle + in-game wiki)
+- **Dark / light mode** — respects OS preference on first visit; toggle via the dock Temas menu without losing the chosen palette; persisted across sessions
+- **10 vivid colour themes** — 5 palettes (Violeta, Oceano, Âmbar, Rosa, Floresta) × 2 modes (light / dark); all with saturated, vibrant tones and per-palette glass tokens
+- **Liquid toggle switches** — all binary controls (dark mode, frosted glass, penalties, open-to-outside) use a morphing goo animation toggle whose colour follows the active theme
+- **Frosted glass mode** — optional heavier blur/tint on all glass surfaces, toggled from the Definições menu
 - **Mobile-first responsive design** — no vertical or horizontal scroll at the page level; content areas scroll internally where needed
 - **Landscape optimisation** — wider containers and compact layouts on rotated devices
-- **WCAG AA colour contrast** — both light and dark palettes verified
+- **WCAG AA colour contrast** — all 10 themes verified for interactive element contrast
+
+---
+
+## Design
+
+The UI uses a **Liquid Glass** design system — a physics-based refraction effect that simulates real optical glass through SVG displacement maps computed from Snell's law. Each glass surface (dock, menus, modals) has four stacked layers: a displacement+blur backdrop, a colour-mix tint, an inset edge-shine, and the interactive content. Toggle switches use a goo/morphing animation via SVG colour-matrix filters, and their hue automatically follows the active palette. All 10 themes (5 palettes × light/dark) are built with vibrant, saturated tones and a two-layer CSS cascade: a shared dark-base selector followed by per-palette variable overrides, maintaining WCAG AA contrast across all combinations. A tsParticles (v2) ambient background adds depth with soft bokeh particles that re-colour on every theme change.
+
+Design reference: [kube.io/blog/liquid-glass-css-svg](https://kube.io/blog/liquid-glass-css-svg/)
 
 ---
 
@@ -103,9 +117,10 @@ Opens at `http://localhost:4173`.
 │   ├── data/
 │   │   └── dataset.json       # 400 cards (bundled at build time)
 │   ├── engine/
+│   │   ├── glassDistortion.ts # Physics-based SVG displacement map (Liquid Glass)
 │   │   ├── markdownParser.ts  # JSON loader + filterCards utility
 │   │   ├── genderParser.ts    # pt-PT gender agreement & HTML formatter
-│   │   ├── matchingEngine.ts  # Eligible target selection (Tiers 3–4)
+│   │   ├── matchingEngine.ts  # Eligible target selection (levels 3–4)
 │   │   └── repetitionEngine.ts# Anti-repetition weighted card selection
 │   ├── state/
 │   │   └── store.ts           # Reactive store, all Actions, localStorage persistence
@@ -113,7 +128,7 @@ Opens at `http://localhost:4173`.
 │   │   └── index.ts           # All shared domain types
 │   ├── ui/
 │   │   ├── router.ts          # GamePhase → screen factory, focus management
-│   │   ├── settingsPanel.ts   # Persistent ⚙️ FAB + settings modal (theme + wiki)
+│   │   ├── settingsPanel.ts   # Glass dock + settings platform-menu + wiki modal
 │   │   └── screens/
 │   │       ├── homeScreen.ts  # Tier selection grid
 │   │       ├── ageGateScreen.ts # 18+ confirmation
@@ -142,12 +157,12 @@ Opens at `http://localhost:4173`.
 
 ### The 4 Tiers
 
-| Tier | Name | Age restriction | Shots penalty | Description |
-|------|------|:-:|:-:|---|
-| 1 | Family Fun | ✗ | ✗ | Light-hearted questions and silly dares — suitable for all ages |
-| 2 | Friends' Night | 18+ | ✓ | Spicy questions about personal life, secrets, and embarrassing moments |
-| 3 | Bold & Daring | 18+ | ✓ | Adult physical and sensual content; orientation-aware target assignment |
-| 4 | Extreme | 18+ | ✓ | Explicit content for groups fully comfortable with each other |
+| Nível | Nome | Restrição de idade | Penalização shots | Descrição |
+|------|---------|:-:|:-:|---|
+| 1 | 🌟 Diversão Familiar | ✗ | ✗ | Perguntas leves e desafios divertidos — adequado a todas as idades |
+| 2 | 🎉 Noite entre Amigos | 18+ | ✓ | Conteúdo mais picante sobre vida pessoal, segredos e momentos embaraosos |
+| 3 | 🔥 Onde a Ousadia Começa | 18+ | ✓ | Conteúdo adulto físico e sensual; atribuição de alvos com orientação sexual |
+| 4 | 💀 Extremo | 18+ | ✓ | Conteúdo explícito para grupos completamente à vontade entre si |
 
 ### Turn Flow
 
@@ -275,7 +290,7 @@ Push to `main`. The GitHub Actions workflow in `.github/workflows/deploy.yml` wi
 3. Upload `dist/` as a GitHub Pages artefact
 4. Deploy via the official `actions/deploy-pages` action
 
-The live site will be available at: **https://beatrizsaoliveira.github.io/TruthOrDare/**
+The live site will be available at: **<https://beatrizsaoliveira.github.io/TruthOrDare/>**
 
 > Before the first deployment, go to **Settings → Pages → Source** and set it to **GitHub Actions**.
 

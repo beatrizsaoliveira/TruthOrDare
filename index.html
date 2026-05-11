@@ -1,28 +1,143 @@
 <!doctype html>
-<html lang="pt-PT" data-theme="light">
+<html lang="pt-PT">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <meta
       name="description"
-      content="Truth or Dare — jogo social em português, 4 níveis de dificuldade."
+      content="Verdade ou Desafio — jogo social em português, do familiar ao extremo."
     />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#7C3AED" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#A78BFA" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#7C3AED"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#A78BFA"
+    />
 
     <!-- iOS / Android PWA meta -->
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
 
-    <title>Truth or Dare 🎲</title>
+    <title>Verdade ou Desafio 🎲</title>
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎲</text></svg>"
     />
   </head>
   <body>
+    <div id="particles-bg" aria-hidden="true"></div>
     <main id="app" aria-live="polite" aria-atomic="true"></main>
+
+    <!-- SVG filter: Liquid Glass displacement map (dock — pill) -->
+    <svg
+      aria-hidden="true"
+      style="position: absolute; width: 0; height: 0; overflow: hidden"
+    >
+      <defs>
+        <filter
+          id="glass-distortion-dock"
+          x="0"
+          y="0"
+          width="1"
+          height="1"
+          color-interpolation-filters="sRGB"
+          primitiveUnits="userSpaceOnUse"
+        >
+          <feImage
+            id="glass-distortion-dock-img"
+            result="displacement_map"
+            preserveAspectRatio="none"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="displacement_map"
+            scale="0"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- SVG filter: Liquid Glass displacement map (panels / menus) -->
+    <svg
+      aria-hidden="true"
+      style="position: absolute; width: 0; height: 0; overflow: hidden"
+    >
+      <defs>
+        <filter
+          id="glass-distortion-panel"
+          x="0"
+          y="0"
+          width="1"
+          height="1"
+          color-interpolation-filters="sRGB"
+          primitiveUnits="objectBoundingBox"
+        >
+          <feImage
+            id="glass-distortion-panel-img"
+            result="displacement_map"
+            preserveAspectRatio="none"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="displacement_map"
+            scale="0"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- SVG filters: Liquid Toggle goo effects -->
+    <svg
+      aria-hidden="true"
+      style="position: absolute; width: 0; height: 0; overflow: hidden"
+    >
+      <defs>
+        <filter id="lt-goo" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="4" />
+          <feColorMatrix
+            in="blur"
+            result="matrix"
+            type="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
+          />
+          <feComposite in="matrix" operator="atop" />
+        </filter>
+        <filter id="lt-remove-black" color-interpolation-filters="sRGB">
+          <feColorMatrix
+            type="matrix"
+            values="1 0 0 0 0
+                    0 1 0 0 0
+                    0 0 1 0 0
+                    -255 -255 -255 0 1"
+            result="black-pixels"
+          />
+          <feMorphology
+            in="black-pixels"
+            operator="dilate"
+            radius="0.5"
+            result="smoothed"
+          />
+          <feComposite in="SourceGraphic" in2="smoothed" operator="out" />
+        </filter>
+      </defs>
+    </svg>
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
