@@ -1,0 +1,23 @@
+{
+  "name": "truth-or-dare",
+  "version": "1.0.0",
+  "description": "Truth or Dare – Web Game (pt-PT, 4 tiers, static site)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "prepare": "husky",
+    "lint:format": "prettier --check \"src/**/*.{ts,css}\" index.html"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@types/node": "^25.6.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0"
+  }
+}
