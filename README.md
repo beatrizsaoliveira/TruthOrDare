@@ -32,8 +32,9 @@
 - **pt-PT gender agreement parser** — resolves `word/a` patterns (e.g. `sozinho/a`) based on the active player's gender
 - **Persistent game state** — `localStorage` survives page refreshes; first visit uses OS dark/light preference; theme is persisted after the first manual change
 - **Ambient background** — floating bokeh particles (tsParticles v2 via CDN) that smoothly re-colour to match the active palette when the theme changes
-- **Liquid Glass dock** — physics-based floating glass toolbar (always visible) with a **Temas** button (colour palette + dark/light mode) and a **Definições** button (frosted glass toggle + in-game wiki)
-- **Dark / light mode** — respects OS preference on first visit; toggle via the dock Temas menu without losing the chosen palette; persisted across sessions
+- **Liquid Glass dock** — physics-based floating glass toolbar (always visible) with a **Temas** button (colour palette) and a **Definições** button (dark/light mode toggle, frosted glass toggle + in-game wiki)
+- **Dark / light mode** — respects OS preference on first visit; toggle via the dock **Definições** menu; persisted across sessions
+- **PWA installable** — add to home screen on Android, iOS, macOS and Windows; works offline via Service Worker
 - **10 vivid colour themes** — 5 palettes (Violeta, Oceano, Âmbar, Rosa, Floresta) × 2 modes (light / dark); all with saturated, vibrant tones and per-palette glass tokens
 - **Liquid toggle switches** — all binary controls (dark mode, frosted glass, penalties, open-to-outside) use a morphing goo animation toggle whose colour follows the active theme
 - **Frosted glass mode** — optional heavier blur/tint on all glass surfaces, toggled from the Definições menu
@@ -56,7 +57,7 @@ Design reference: [kube.io/blog/liquid-glass-css-svg](https://kube.io/blog/liqui
 | Layer | Choice | Notes |
 |---|---|---|
 | Language | TypeScript 5.7 | Strict mode, `noUncheckedIndexedAccess`, `noImplicitOverride` |
-| Bundler | Vite 6 | JSON imports, hot-module replacement, esbuild minification |
+| Bundler | Vite 6 + vite-plugin-pwa | JSON imports, HMR, esbuild minification, PWA / Service Worker |
 | UI | Vanilla DOM | No framework — pure TypeScript DOM manipulation |
 | Styling | CSS Custom Properties | Mobile-first, tokenised design system, dark/light theming |
 | State | Hand-rolled reactive store | Observer pattern, `localStorage` persistence |
@@ -139,7 +140,14 @@ Opens at `http://localhost:4173`.
 │   ├── main.ts                # Application entry point
 │   └── vite-env.d.ts          # Vite type declarations
 ├── index.html                 # SPA shell
-├── vite.config.ts             # Vite configuration (base path, esbuild target)
+├── vite.config.ts             # Vite configuration (base path, esbuild target, PWA / Service Worker)
+├── public/
+│   ├── pwa-512.svg            # Master PWA icon source (used to generate raster icons)
+│   ├── pwa-192x192.png        # PWA icon — standard
+│   ├── pwa-512x512.png        # PWA icon — large
+│   ├── maskable-icon-512x512.png # PWA icon — maskable (Android adaptive)
+│   ├── apple-touch-icon-180x180.png # iOS home-screen icon
+│   └── favicon.ico            # Browser tab favicon
 ├── tsconfig.json              # TypeScript configuration (strict, ES2021)
 ├── tsconfig.node.json         # TypeScript config for vite.config.ts (Node context)
 ├── package.json

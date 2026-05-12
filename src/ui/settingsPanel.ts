@@ -686,10 +686,20 @@ function buildWikiContent(): DocumentFragment {
             title: 'Aparência e Temas',
             html: `<p>A dock flutuante no fundo do ecrã tem dois botões de personalização:</p>
       <ul>
-        <li><strong>Temas</strong> — abre a seleção de paleta de cor (Violeta, Oceano, Âmbar, Rosa, Floresta) e o toggle de modo escuro / claro (10 combinações no total).</li>
-        <li><strong>Definições</strong> — abre as opções de interface: vidro fosco e acesso ao guia <em>Como Jogar</em>.</li>
+        <li><strong>Temas</strong> — abre a seleção de paleta de cor (Violeta, Oceano, Âmbar, Rosa, Floresta).</li>
+        <li><strong>Definições</strong> — abre as opções de interface: toggle de modo escuro / claro, vidro fosco e acesso ao guia <em>Como Jogar</em>.</li>
       </ul>
       <p>Na primeira visita, o modo claro/escuro segue a preferência do sistema. A partir da primeira alteração, o tema escolhido fica guardado automaticamente.</p>`,
+        },
+        {
+            title: 'Instalar como App (PWA)',
+            html: `<p>Este jogo pode ser instalado no teu dispositivo como uma aplicação nativa — sem App Store, sem Play Store.</p>
+      <ul>
+        <li><strong>Android (Chrome):</strong> aparece automaticamente um banner ou um botão <em>Instalar</em> na barra de endereço. Também podes ir ao menu ⋮ → <em>Adicionar ao ecrã principal</em>.</li>
+        <li><strong>iOS (Safari):</strong> toca no botão de partilha <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> e escolhe <em>Adicionar ao ecrã de início</em>.</li>
+        <li><strong>macOS / Windows (Chrome ou Edge):</strong> clica no ícone de instalação <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> na barra de endereço.</li>
+      </ul>
+      <p>Depois de instalado, o jogo abre em ecrã inteiro, sem barra do browser, e funciona <strong>sem ligação à internet</strong>.</p>`,
         },
         {
             title: 'Configuração de Jogadores',
