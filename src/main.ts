@@ -132,3 +132,14 @@ if (document.readyState === 'loading') {
 } else {
     main();
 }
+
+// ─── PWA: reload when a new service worker takes control ─────────────────────
+// vite-plugin-pwa (registerType: 'autoUpdate') calls skipWaiting() automatically
+// once a new SW finishes installing. When it claims this client the
+// 'controllerchange' event fires and we do a hard reload so the user always
+// gets the latest version without having to manually close/reopen the app.
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload();
+    });
+}

@@ -25,6 +25,7 @@ export type GamePhase =
     | 'setup'
     | 'game-selecting'
     | 'game-showing'
+    | 'ranking'
     | 'end';
 
 // ─── Card ────────────────────────────────────────────────────────────────────

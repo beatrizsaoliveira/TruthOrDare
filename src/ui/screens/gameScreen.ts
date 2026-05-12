@@ -168,7 +168,12 @@ function buildShowingScreen(store: GameStore): HTMLElement {
     const container = el('div', 'container stack stack--5');
 
     if (currentCard) {
-        const cardEl = buildGameCard(currentCard, currentPlayer, targetPlayer);
+        const cardEl = buildGameCard(
+            currentCard,
+            currentPlayer,
+            targetPlayer,
+            penaltiesEnabled
+        );
         container.appendChild(cardEl);
     }
 
@@ -220,7 +225,8 @@ function buildShowingScreen(store: GameStore): HTMLElement {
 function buildGameCard(
     card: Card,
     activePlayer: Player,
-    targetPlayer?: Player
+    targetPlayer?: Player,
+    penaltiesEnabled = false
 ): HTMLElement {
     const cardEl = el('div', `game-card game-card--${card.type}`);
     cardEl.setAttribute('role', 'article');
@@ -244,7 +250,7 @@ function buildGameCard(
 
     cardEl.append(badge, textEl);
 
-    if (card.shots !== null) {
+    if (penaltiesEnabled && card.shots !== null) {
         const shotsEl = el('div', 'game-card__shots');
         shotsEl.setAttribute('aria-label', `Penalização: ${card.shots} shots`);
         shotsEl.textContent = `🍺 ${card.shots} shot${card.shots > 1 ? 's' : ''} se recusar`;

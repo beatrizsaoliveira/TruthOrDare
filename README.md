@@ -29,14 +29,15 @@
 - **Saved-player roster** — registered players are persisted to `localStorage` (`tod_roster_v1`) and offered for reuse at the start of every new session via a dedicated Roster screen; couples are displayed grouped with a visual connector
 - **Orientation & relationship-aware matching engine** (Tiers 3–4) — ensures targets are mutually compatible
 - **Anti-repetition card engine** — weighted scoring prevents recently seen cards from reappearing; couples share history
-- **Drink/shot penalty system** — on card refusal a penalty overlay with a `−`/value/`+` stepper appears; the player confirms how many shots they actually drank (zero is valid — nobody is forced); the **Recusar** button is always visible; a running shot count chip (🍺 Conta) is shown in the turn banner, persisted per player, and reset on new game; can be disabled before starting
+- **Drink/shot penalty system** — on card refusal a penalty overlay with a `−`/value/`+` stepper appears; the player confirms how many shots they actually drank (zero is valid — nobody is forced); the **Recusar** button is always visible; the card's penalty hint (`🍺 N shots se recusar`) is only displayed when the penalty mode is active; a running shot count chip (🍺 Conta) is shown in the turn banner, persisted per player, and reset on new game; can be disabled before starting
+- **End-of-game ranking** — when a game with penalties ends and at least one player drank, a ranking screen is shown before returning home: players with shots are listed descending with 🥇🥈🥉 medals, followed by zero-shot players sorted alphabetically (dimmed); shot counts remain in `localStorage` while the ranking is on screen (so a refresh still shows the ranking correctly) and are only cleared when the player navigates to the home screen
 - **pt-PT gender agreement parser** — resolves `word/a` patterns (e.g. `sozinho/a`) based on the active player's gender
 - **Player editing** — each registered player chip shows an edit (pencil) button that opens a pre-filled glass modal; the modal warns with a `confirm()` dialog before discarding unsaved changes (dirty check covers all close paths: X, ESC, backdrop, Cancel)
 - **Persistent game state** — full game state is saved to `localStorage` (`tod_state_v1`) on every update, including the active theme and per-player shot counts; player roster is persisted separately in `tod_roster_v1`; first visit uses OS dark/light preference
 - **Ambient background** — floating bokeh particles (tsParticles v2 via CDN) that smoothly re-colour to match the active palette when the theme changes
 - **Liquid Glass dock** — physics-based floating glass toolbar (always visible) with a **Temas** button (colour palette) and a **Definições** button (dark/light mode toggle, frosted glass toggle + in-game wiki)
 - **Dark / light mode** — respects OS preference on first visit; toggle via the dock **Definições** menu; persisted across sessions
-- **PWA installable** — add to home screen on Android, iOS, macOS and Windows; works offline via Service Worker
+- **PWA installable** — add to home screen on Android, iOS, macOS and Windows; works offline via Service Worker; **auto-reloads** when a new version is deployed — a `controllerchange` listener in `main.ts` triggers `location.reload()` the moment the new SW takes control, so players always get the latest version without manually reopening the app
 - **10 vivid colour themes** — 5 palettes (Violeta, Oceano, Âmbar, Rosa, Floresta) × 2 modes (light / dark); all with saturated, vibrant tones and per-palette glass tokens
 - **Liquid toggle switches** — all binary controls (dark mode, frosted glass, penalties, open-to-outside) use a morphing goo animation toggle whose colour follows the active theme
 - **Frosted glass mode** — optional heavier blur/tint on all glass surfaces, toggled from the Definições menu
@@ -59,7 +60,7 @@ Design reference: [kube.io/blog/liquid-glass-css-svg](https://kube.io/blog/liqui
 | Layer | Choice | Notes |
 |---|---|---|
 | Language | TypeScript 5.7 | Strict mode, `noUncheckedIndexedAccess`, `noImplicitOverride` |
-| Bundler | Vite 6 + vite-plugin-pwa | JSON imports, HMR, esbuild minification, PWA / Service Worker |
+| Bundler | Vite 6 + vite-plugin-pwa | JSON imports, HMR, esbuild minification, PWA / Service Worker (`registerType: 'autoUpdate'` + `controllerchange` reload) |
 | UI | Vanilla DOM | No framework — pure TypeScript DOM manipulation |
 | Styling | CSS Custom Properties | Mobile-first, tokenised design system, dark/light theming |
 | State | Hand-rolled reactive store | Observer pattern, `localStorage` persistence |
@@ -137,7 +138,8 @@ Opens at `http://localhost:4173`.
 │   │       ├── ageGateScreen.ts # 18+ confirmation (Tiers 2–4)
 │   │       ├── rosterScreen.ts  # Saved-player roster recovery screen
 │   │       ├── setupScreen.ts   # Adaptive player registration form (conditional fields at Tier 3–4)
-│   │       └── gameScreen.ts    # Truth/Dare selection + card reveal + penalty overlay
+│   │       ├── gameScreen.ts    # Truth/Dare selection + card reveal + penalty overlay
+│   │       └── rankingScreen.ts # End-of-game shot ranking (shown when penalties > 0)
 │   ├── styles/
 │   │   └── main.css           # Full stylesheet — tokens, components, landscape queries
 │   ├── main.ts                # Application entry point
@@ -179,16 +181,21 @@ Opens at `http://localhost:4173`.
 
 1. The current player's name is displayed.
 2. They choose **VERDADE** (Truth) or **DESAFIO** (Dare).
-3. A card is drawn and displayed. The target player (if any) is resolved automatically.
+3. A card is drawn and displayed. The target player (if any) is resolved automatically. If penalties are enabled, the card shows `🍺 N shots se recusar`.
 4. The player either completes the challenge (✅ Feito!) or refuses (❌ Recusar).
 5. Refusing triggers a penalty overlay with a stepper. The player adjusts the quantity to what they actually drank (can be zero) and confirms. Nobody is forced to drink — the game records only what is confirmed.
 6. The turn passes to the next player in registration order.
+7. When the game ends (via **Terminar Jogo**), if penalties were active and at least one player drank, a **ranking screen** is shown with all players sorted by shots consumed before returning to the home screen.
 
 ### Penalty System
 
 Each card in Tiers 2–4 carries a shot count (`[N shots]` in the source data). Refusing a card triggers a full-screen penalty overlay with a `−` / value / `+` stepper defaulting to the card's shot count. The player adjusts the quantity to what they actually drank (including zero) and confirms — the game records only the confirmed amount. The **Recusar** button is always shown; if the card has no shot count, refusing simply advances the turn.
 
-A **shot count chip** (🍺 Conta: N shots) appears in the selecting-phase turn banner showing the player's session total. It is stored in `shotCounts` (part of `GameState`), persisted to `localStorage`, and reset to zero when a new game starts.
+The `🍺 N shots se recusar` hint on the card face is **only rendered when the penalty mode is active** — games with penalties disabled show a clean card.
+
+A **shot count chip** (🍺 Conta: N shots) appears in the selecting-phase turn banner showing the player's session total. It is stored in `shotCounts` (part of `GameState`) and persisted to `localStorage` throughout the active game, including while the ranking screen is visible (so a refresh on the ranking screen restores the correct data). Shot counts are only erased when `confirmEndGame` resets the full state on return to home.
+
+At the end of a game where penalties were on and at least one player drank, a **ranking screen** is shown listing all players: those with shots sorted descending (with 🥇🥈🥉 medals), then zero-shot players sorted alphabetically (dimmed). The **Voltar ao Início** button resets the full state and returns to the home screen.
 
 The feature can be disabled in the setup screen before the game starts — useful for alcohol-free play.
 
@@ -247,7 +254,8 @@ The router maps `GamePhase` values to screen factory functions:
 
 ```
 Tier 1:   home → player-roster → setup → game-selecting ↔ game-showing → home
-Tiers 2–4: home → age-gate → player-roster → setup → game-selecting ↔ game-showing → home
+Tiers 2–4 (no penalties / no shots):  home → age-gate → player-roster → setup → game-selecting ↔ game-showing → home
+Tiers 2–4 (penalties + shots drank):  home → age-gate → player-roster → setup → game-selecting ↔ game-showing → ranking → home
 ```
 
 The `player-roster` phase shows saved players from `tod_roster_v1` and lets the group reuse them or start fresh.

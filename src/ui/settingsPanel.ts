@@ -681,6 +681,7 @@ function buildWikiContent(): DocumentFragment {
         <li>Na tua vez, escolhe <strong>Verdade</strong> ou <strong>Desafio</strong>.</li>
         <li>Responde ou completa o desafio. Carrega em ✅ Feito! para passar a vez.</li>
         <li>Se recusares, carrega em ❌ Recusar e aceita a penalização indicada.</li>
+        <li>Quando o jogo terminar com penalizações ativas e algum jogador tiver bebido, é apresentado um <strong>ranking dos mais bêbados</strong> antes de voltar ao início.</li>
       </ol>`,
         },
         {
@@ -700,7 +701,8 @@ function buildWikiContent(): DocumentFragment {
         <li><strong>iOS (Safari):</strong> toca no botão de partilha <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> e escolhe <em>Adicionar ao ecrã de início</em>.</li>
         <li><strong>macOS / Windows (Chrome ou Edge):</strong> clica no ícone de instalação <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> na barra de endereço.</li>
       </ul>
-      <p>Depois de instalado, o jogo abre em ecrã inteiro, sem barra do browser, e funciona <strong>sem ligação à internet</strong>.</p>`,
+      <p>Depois de instalado, o jogo abre em ecrã inteiro, sem barra do browser, e funciona <strong>sem ligação à internet</strong>.</p>
+      <p>Quando uma nova versão for publicada, a app <strong>atualiza-se automaticamente</strong> assim que a abrires — não precisas de fazer nada.</p>`,
         },
         {
             title: 'Configuração de Jogadores',
@@ -724,10 +726,12 @@ function buildWikiContent(): DocumentFragment {
         },
         {
             title: 'Penalizações (Shots)',
-            html: `<p>Nos níveis 2–4, cada carta indica quantos <em>shots</em> o jogador deve beber se recusar responder ou completar o desafio. Ao carregar em <strong>❌ Recusar</strong>, aparece um ecrã de penalização com um seletor de quantidade.</p>
+            html: `<p>Nos níveis 2–4, cada carta indica quantos <em>shots</em> o jogador deve beber se recusar responder ou completar o desafio. Esta indicação (<em>🍺 N shots se recusar</em>) só é visível na carta quando o modo de penalizações está ativo.</p>
+      <p>Ao carregar em <strong>❌ Recusar</strong>, aparece um ecrã de penalização com um seletor de quantidade.</p>
       <p>No ecrã de penalização podes ajustar quantos shots bebeste de facto (menos do que o indicado, ou mesmo nenhum) e confirmar. Ninguém é obrigado a beber — o jogo regista apenas o que confirmares.</p>
       <p>O botão <strong>❌ Recusar</strong> está sempre disponível — se a carta não tiver shots associados, a recusa avança diretamente para o próximo jogador.</p>
       <p>Enquanto o jogo decorre, é exibida uma <strong>conta de shots</strong> no cabeçalho de cada turno, mostrando o total acumulado pelo jogador nessa sessão. A conta é reiniciada sempre que começa um novo jogo.</p>
+      <p>Quando o jogo termina, se algum jogador tiver bebido, é apresentado um <strong>ranking dos mais bêbados 🍺</strong> com todos os jogadores ordenados pelos shots consumidos, antes de voltar ao início.</p>
       <p>Este sistema pode ser <strong>desativado</strong> no ecrã de configuração antes de iniciar o jogo.</p>
       <p><em>Joga sempre com responsabilidade. Podes substituir álcool por água, sumo ou qualquer outra bebida à tua escolha.</em></p>`,
         },

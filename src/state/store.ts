@@ -350,7 +350,19 @@ export const Actions = {
         showingPenalty: false,
     }),
 
-    endGame: (): Updater => (state) => ({
+    endGame: (): Updater => (state) => {
+        // If penalties were enabled and at least one player drank, show ranking first.
+        // shotCounts are kept in memory for display but cleared from localStorage immediately.
+        const hasShots =
+            state.penaltiesEnabled &&
+            Object.values(state.shotCounts).some((n) => n > 0);
+        if (hasShots) {
+            return { ...state, phase: 'ranking' };
+        }
+        return { ...buildInitialState(state.allCards), theme: state.theme };
+    },
+
+    confirmEndGame: (): Updater => (state) => ({
         ...buildInitialState(state.allCards),
         theme: state.theme,
     }),

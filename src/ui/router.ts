@@ -3,6 +3,7 @@ import type { GamePhase } from '../types/index.js';
 import { createAgeGateScreen } from './screens/ageGateScreen.js';
 import { createGameScreen } from './screens/gameScreen.js';
 import { createHomeScreen } from './screens/homeScreen.js';
+import { createRankingScreen } from './screens/rankingScreen.js';
 import { createRosterScreen } from './screens/rosterScreen.js';
 import { createSetupScreen } from './screens/setupScreen.js';
 
@@ -17,6 +18,7 @@ const SCREENS: Partial<Record<GamePhase, ScreenFactory>> = {
     setup: createSetupScreen,
     'game-selecting': createGameScreen,
     'game-showing': createGameScreen,
+    ranking: createRankingScreen,
 };
 
 // ─── Router ───────────────────────────────────────────────────────────────────
