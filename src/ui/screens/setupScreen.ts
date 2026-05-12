@@ -49,7 +49,7 @@ export function createSetupScreen(store: GameStore): HTMLElement {
     // ── Main content ──────────────────────────────────────────
     const main = el('main', '');
     main.style.cssText =
-        'flex:1; min-height:0; padding-top: 1.5rem; padding-bottom: max(116px, calc(env(safe-area-inset-bottom, 0px) + 116px)); overflow-y:auto; overflow-x:hidden;';
+        'flex:1; min-height:0; padding-top: 1.5rem; padding-bottom: var(--dock-clearance); overflow-y:auto; overflow-x:hidden;';
 
     const container = el('div', 'container container--wide stack stack--6');
 
@@ -137,6 +137,29 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
     let targetSexGroup: HTMLElement | null = null;
 
     if (tier >= 3) {
+        // Defined first so all listeners below can safely reference it.
+        // (Block-scoped function declarations are not hoisted in TS strict mode.)
+        function updateConditionalFields() {
+            const status = (statusSelect?.value ??
+                'single') as RelationshipStatus;
+            const showPartner = status === 'open' || status === 'closed';
+            const showOpen = status !== 'closed';
+
+            if (partnerGroup)
+                partnerGroup.style.display = showPartner ? '' : 'none';
+            if (openWrap) openWrap.style.display = showOpen ? '' : 'none';
+
+            // Target sex only when the "open to outside" toggle is on
+            if (targetSexGroup) {
+                targetSexGroup.style.display = openChecked ? '' : 'none';
+            }
+
+            // Populate partner dropdown with current players
+            if (partnerSelect) {
+                populatePartnerSelect(partnerSelect, store);
+            }
+        }
+
         // Orientation
         const oriGroup = buildRadioGroup<Orientation>(
             'player-ori',
@@ -182,7 +205,7 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
         const openLabelDiv = el('div', 'toggle-label');
         openLabelDiv.innerHTML =
             '<div class="toggle-label__title">Aberto/a a interações externas</div>' +
-            '<div class="toggle-label__desc">Aceita desafios com jogadores fora da relação</div>';
+            '<div class="toggle-label__desc">Pode participar em desafios com qualquer outro jogador</div>';
 
         openLiquidToggle = buildLiquidToggle('player-open', false);
         openLiquidToggle.addEventListener('click', () => {
@@ -206,32 +229,6 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
         );
         targetSexGroup.style.display = 'none';
         form.appendChild(targetSexGroup);
-
-        // Conditional visibility logic
-        function updateConditionalFields() {
-            const status = (statusSelect?.value ??
-                'single') as RelationshipStatus;
-            const showPartner = status === 'open' || status === 'closed';
-            const showOpen = status !== 'closed';
-
-            if (partnerGroup)
-                partnerGroup.style.display = showPartner ? '' : 'none';
-            if (openWrap) openWrap.style.display = showOpen ? '' : 'none';
-
-            // Target sex only when open to outside or single
-            const isOpenToOutside = openChecked;
-            if (targetSexGroup) {
-                targetSexGroup.style.display =
-                    status === 'single' || (showOpen && isOpenToOutside)
-                        ? ''
-                        : 'none';
-            }
-
-            // Populate partner dropdown with current players
-            if (partnerSelect) {
-                populatePartnerSelect(partnerSelect, store);
-            }
-        }
 
         statusSelect.addEventListener('change', updateConditionalFields);
         updateConditionalFields();
@@ -308,6 +305,19 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
 
         store.update(Actions.addPlayer(player));
         form.reset();
+        // Reset open-to-outside toggle state and re-sync conditional fields.
+        // We dispatch a 'change' event on the status select (which form.reset()
+        // reverted to 'single') so the listener inside the if(tier>=3) block
+        // — which is block-scoped and not reachable directly — re-evaluates
+        // visibility correctly.
+        if (tier >= 3) {
+            openChecked = false;
+            if (openLiquidToggle) {
+                openLiquidToggle.setAttribute('aria-checked', 'false');
+                animateLiquidToggle(openLiquidToggle, false);
+            }
+            statusSelect?.dispatchEvent(new Event('change'));
+        }
         nameInput.focus();
     });
 
@@ -354,13 +364,68 @@ function updatePlayerList(section: HTMLElement, store: GameStore): void {
         return;
     }
 
-    const list = el('ul', 'stack stack--2');
+    const list = el('ul', 'stack stack--3');
     list.setAttribute('aria-label', 'Lista de jogadores');
 
-    players.forEach((player, idx) => {
-        const chip = buildPlayerChip(player, idx, tier ?? 1, store);
-        list.appendChild(chip);
-    });
+    if (tier && tier >= 3) {
+        type CoupleEntry = { a: Player; aIdx: number; b: Player; bIdx: number };
+        const rendered = new Set<string>();
+        const coupleGroups: CoupleEntry[] = [];
+        const singles: Array<{ player: Player; idx: number }> = [];
+
+        players.forEach((player, idx) => {
+            if (rendered.has(player.id)) return;
+            rendered.add(player.id);
+            const partnerIdx = player.partnerId
+                ? players.findIndex((p) => p.id === player.partnerId)
+                : -1;
+            const partner =
+                partnerIdx >= 0 ? (players[partnerIdx] ?? null) : null;
+            if (partner && !rendered.has(partner.id)) {
+                rendered.add(partner.id);
+                coupleGroups.push({
+                    a: player,
+                    aIdx: idx,
+                    b: partner,
+                    bIdx: partnerIdx,
+                });
+            } else {
+                singles.push({ player, idx });
+            }
+        });
+
+        const hasBoth = coupleGroups.length > 0 && singles.length > 0;
+
+        if (coupleGroups.length > 0) {
+            if (hasBoth) {
+                const label = el('li', 'player-group-label');
+                label.textContent = 'Casais';
+                list.appendChild(label);
+            }
+            coupleGroups.forEach(({ a, aIdx, b, bIdx }) => {
+                const group = el('li', 'player-couple-group');
+                group.appendChild(buildPlayerChip(a, aIdx, tier, store, true));
+                group.appendChild(buildCoupleConnector(true));
+                group.appendChild(buildPlayerChip(b, bIdx, tier, store, true));
+                list.appendChild(group);
+            });
+        }
+
+        if (singles.length > 0) {
+            if (hasBoth) {
+                const label = el('li', 'player-group-label');
+                label.textContent = 'Individuais';
+                list.appendChild(label);
+            }
+            singles.forEach(({ player, idx }) => {
+                list.appendChild(buildPlayerChip(player, idx, tier, store));
+            });
+        }
+    } else {
+        players.forEach((player, idx) => {
+            list.appendChild(buildPlayerChip(player, idx, tier ?? 1, store));
+        });
+    }
 
     section.append(heading, list);
 }
@@ -369,9 +434,10 @@ function buildPlayerChip(
     player: Player,
     idx: number,
     tier: Tier,
-    store: GameStore
+    store: GameStore,
+    asDiv = false
 ): HTMLElement {
-    const li = el('li', 'player-chip');
+    const li = el(asDiv ? 'div' : 'li', 'player-chip');
 
     const avatar = el('div', 'player-chip__avatar');
     avatar.style.background =
@@ -392,7 +458,15 @@ function buildPlayerChip(
             metaParts.push(relationshipLabel(player.relationshipStatus));
     }
     const meta = el('div', 'player-chip__meta');
-    meta.textContent = metaParts.join(' · ') || '—';
+    if (tier >= 3 && player.openToOutside && player.targetSex) {
+        meta.textContent = metaParts.join(' · ') || '—';
+        const sep = document.createTextNode(' → ');
+        const badge = el<HTMLSpanElement>('span', 'player-chip__target-badge');
+        badge.textContent = targetSexLabel(player.targetSex);
+        meta.append(sep, badge);
+    } else {
+        meta.textContent = metaParts.join(' · ') || '—';
+    }
 
     info.append(name, meta);
 
@@ -433,7 +507,7 @@ function buildPenaltyToggle(store: GameStore): HTMLElement {
 // ─── Start button ─────────────────────────────────────────────────────────────
 
 function buildStartButton(store: GameStore): HTMLElement {
-    const section = el('div', 'stack stack--3 pb-safe');
+    const section = el('div', 'stack stack--3');
     const btn = el<HTMLButtonElement>(
         'button',
         'btn btn--primary btn--xl btn--full'
@@ -497,6 +571,23 @@ function getCheckedValue<T extends string>(
         if (input.checked) return input.value as T;
     }
     return undefined;
+}
+
+function buildCoupleConnector(asDiv = false): HTMLElement {
+    const container = el(asDiv ? 'div' : 'li', 'player-couple-connector');
+    container.setAttribute('aria-hidden', 'true');
+    const lineA = el('span', 'player-couple-connector__line');
+    const heart = el('span', '');
+    heart.textContent = '❤';
+    const lineB = el('span', 'player-couple-connector__line');
+    container.append(lineA, heart, lineB);
+    return container;
+}
+
+function targetSexLabel(t: TargetSex): string {
+    if (t === 'male') return '♂ masc.';
+    if (t === 'female') return '♀ fem.';
+    return '⚥ ambos';
 }
 
 function el<T extends HTMLElement = HTMLDivElement>(

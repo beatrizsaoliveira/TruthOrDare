@@ -102,7 +102,7 @@ function buildSelectingScreen(store: GameStore): HTMLElement {
     // ── Footer ────────────────────────────────────────────────
     const footer = el('footer', 'container pb-safe');
     footer.style.cssText =
-        'padding-top:.75rem;padding-bottom:max(100px, calc(env(safe-area-inset-bottom, 0px) + 100px));';
+        'padding-top:.75rem;padding-bottom:var(--dock-clearance);';
     const endBtn = el<HTMLButtonElement>('button', 'btn btn--ghost btn--sm');
     endBtn.style.cssText = 'width:100%;color:var(--clr-text-muted);';
     endBtn.textContent = 'Terminar Jogo';
@@ -166,7 +166,7 @@ function buildShowingScreen(store: GameStore): HTMLElement {
     // ── Action buttons ────────────────────────────────────────
     const footer = el('footer', 'container stack stack--3 pb-safe');
     footer.style.cssText =
-        'padding-top:1rem;padding-bottom:max(100px, calc(env(safe-area-inset-bottom, 0px) + 100px));';
+        'padding-top:1rem;padding-bottom:var(--dock-clearance);';
 
     const acceptBtn = el<HTMLButtonElement>(
         'button',

@@ -196,6 +196,11 @@ a {
   --glass-btn-active-bg: rgba(124, 58, 237, 0.18);
   --glass-sep: rgba(0, 0, 0, 0.2);
 
+  /* Dock clearance — ensures scrollable content is never hidden behind the
+     floating glass dock on any screen size or safe-area. Screens with a
+     fixed footer use this value for their bottom padding too. */
+  --dock-clearance: max(120px, calc(env(safe-area-inset-bottom, 0px) + 120px));
+
   /* Liquid toggle hue — violet (default) */
   --lt-hue: 270;
 }
@@ -1401,6 +1406,69 @@ a {
   outline-offset: 2px;
 }
 
+/* Couple connector — rendered between two partnered player chips */
+.player-couple-connector {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-5);
+  color: var(--clr-accent);
+  font-size: 0.85rem;
+}
+.player-couple-connector__line {
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.35;
+}
+
+/* Couple group card — wraps a partnered pair */
+.player-couple-group {
+  background: var(--clr-primary-lt);
+  border: 1px solid color-mix(in srgb, var(--clr-primary) 35%, transparent);
+  border-radius: var(--r-lg);
+  padding: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+}
+.player-couple-group .player-chip {
+  background: var(--clr-surface);
+  border: none;
+  box-shadow: none;
+  border-radius: var(--r-md);
+}
+.player-couple-group .player-couple-connector {
+  padding: 0 var(--sp-4);
+  font-size: 0.75rem;
+}
+
+/* Section label separating couples from singles */
+.player-group-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--clr-text-muted);
+  padding: var(--sp-2) var(--sp-1) var(--sp-1);
+  list-style: none;
+}
+
+/* Target-sex badge shown next to name when player is open to outside interactions */
+.player-chip__target-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: var(--sp-2);
+  padding: 1px 5px;
+  background: var(--clr-primary-lt);
+  color: var(--clr-primary);
+  border-radius: var(--r-full);
+  font-size: 0.65rem;
+  font-weight: 600;
+  vertical-align: middle;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
 /* ── Divider ──────────────────────────────────────────────── */
 .divider {
   height: 1px;
@@ -1528,6 +1596,7 @@ a {
   justify-content: center;
   min-height: 100dvh;
   padding: var(--sp-7) var(--sp-5);
+  padding-bottom: var(--dock-clearance);
   text-align: center;
   gap: var(--sp-6);
 }
@@ -1607,7 +1676,7 @@ a {
   margin-bottom: var(--sp-4);
 }
 .pb-safe {
-  padding-bottom: max(var(--sp-5), env(safe-area-inset-bottom));
+  padding-bottom: var(--dock-clearance);
 }
 
 /* ── Responsive ───────────────────────────────────────────── */
@@ -1640,7 +1709,7 @@ a {
   display: flex;
   flex-direction: column;
   /* Ensure content is not hidden behind the floating dock */
-  padding-bottom: max(116px, calc(env(safe-area-inset-bottom, 0px) + 116px));
+  padding-bottom: var(--dock-clearance);
 }
 
 /* ── Floating Glass Dock ──────────────────────────────────── */

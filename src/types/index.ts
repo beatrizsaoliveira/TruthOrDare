@@ -21,6 +21,7 @@ export type Theme =
 export type GamePhase =
     | 'home'
     | 'age-gate'
+    | 'player-roster'
     | 'setup'
     | 'game-selecting'
     | 'game-showing'

@@ -14,9 +14,28 @@ import type {
     Tier,
 } from '../types/index.js';
 
-// ─── Storage key ─────────────────────────────────────────────────────────────
+// ─── Storage keys ────────────────────────────────────────────────────────────
 
 const STORAGE_KEY = 'tod_state_v1';
+const ROSTER_KEY = 'tod_roster_v1';
+
+export function loadSavedPlayers(): readonly Player[] {
+    try {
+        const raw = localStorage.getItem(ROSTER_KEY);
+        if (!raw) return [];
+        return JSON.parse(raw) as Player[];
+    } catch {
+        return [];
+    }
+}
+
+function persistRoster(players: readonly Player[]): void {
+    try {
+        localStorage.setItem(ROSTER_KEY, JSON.stringify(players));
+    } catch {
+        // ignore
+    }
+}
 
 // ─── Initial state ────────────────────────────────────────────────────────────
 
@@ -68,8 +87,18 @@ export class GameStore {
     }
 
     update(updater: Updater): void {
+        const prev = this._state;
         this._state = updater(this._state);
         persist(this._state);
+        // Only persist roster when players change during the setup phase itself
+        // (not on load/reset transitions).
+        if (
+            this._state.players !== prev.players &&
+            this._state.phase === 'setup' &&
+            prev.phase === 'setup'
+        ) {
+            persistRoster(this._state.players);
+        }
         this._subscribers.forEach((fn) => fn(this._state));
     }
 
@@ -97,7 +126,7 @@ export const Actions = {
         (state) => ({
             ...state,
             tier,
-            phase: tier === 1 ? 'setup' : 'age-gate',
+            phase: tier === 1 ? 'player-roster' : 'age-gate',
             ageConfirmed: false,
             players: [],
             playerHistories: {},
@@ -110,6 +139,16 @@ export const Actions = {
     confirmAge: (): Updater => (state) => ({
         ...state,
         ageConfirmed: true,
+        phase: 'player-roster',
+    }),
+
+    useRoster:
+        (players: readonly Player[]): Updater =>
+        (state) => ({ ...state, players: [...players], phase: 'setup' }),
+
+    skipRoster: (): Updater => (state) => ({
+        ...state,
+        players: [],
         phase: 'setup',
     }),
 
