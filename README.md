@@ -25,12 +25,13 @@
 
 - **4 Tier system** — from family-friendly to mature adult content (18+)
 - **Age-gating** — mandatory 18+ confirmation for Tiers 2–4
-- **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status)
+- **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status); at Tier 3–4, partner dropdown, _open-to-outside_ toggle and target-sex selector are conditionally shown only when relevant
+- **Saved-player roster** — registered players are persisted to `localStorage` (`tod_roster_v1`) and offered for reuse at the start of every new session via a dedicated Roster screen; couples are displayed grouped with a visual connector
 - **Orientation & relationship-aware matching engine** (Tiers 3–4) — ensures targets are mutually compatible
 - **Anti-repetition card engine** — weighted scoring prevents recently seen cards from reappearing; couples share history
 - **Drink/shot penalty system** — dismissible overlay on card refusal; can be disabled before starting
 - **pt-PT gender agreement parser** — resolves `word/a` patterns (e.g. `sozinho/a`) based on the active player's gender
-- **Persistent game state** — `localStorage` survives page refreshes; first visit uses OS dark/light preference; theme is persisted after the first manual change
+- **Persistent game state** — full game state is saved to `localStorage` (`tod_state_v1`) on every update, including the active theme; player roster is persisted separately in `tod_roster_v1`; first visit uses OS dark/light preference
 - **Ambient background** — floating bokeh particles (tsParticles v2 via CDN) that smoothly re-colour to match the active palette when the theme changes
 - **Liquid Glass dock** — physics-based floating glass toolbar (always visible) with a **Temas** button (colour palette) and a **Definições** button (dark/light mode toggle, frosted glass toggle + in-game wiki)
 - **Dark / light mode** — respects OS preference on first visit; toggle via the dock **Definições** menu; persisted across sessions
@@ -132,8 +133,9 @@ Opens at `http://localhost:4173`.
 │   │   ├── settingsPanel.ts   # Glass dock + settings platform-menu + wiki modal
 │   │   └── screens/
 │   │       ├── homeScreen.ts  # Tier selection grid
-│   │       ├── ageGateScreen.ts # 18+ confirmation
-│   │       ├── setupScreen.ts   # Adaptive player registration form
+│   │       ├── ageGateScreen.ts # 18+ confirmation (Tiers 2–4)
+│   │       ├── rosterScreen.ts  # Saved-player roster recovery screen
+│   │       ├── setupScreen.ts   # Adaptive player registration form (conditional fields at Tier 3–4)
 │   │       └── gameScreen.ts    # Truth/Dare selection + card reveal + penalty overlay
 │   ├── styles/
 │   │   └── main.css           # Full stylesheet — tokens, components, landscape queries
@@ -190,8 +192,8 @@ Each card in Tiers 2–4 carries a shot count (`[N shots]` in the source data). 
 When a card contains `[Target Player]`, the engine selects an eligible target by applying three constraints in sequence:
 
 1. **Mutual orientation** — only pairs where both players are attracted to the other's gender are eligible.
-2. **Relationship exclusivity** — players in a *closed relationship* interact exclusively with their registered partner.
-3. **Open relationship gate** — players in an *open relationship* must have `openToOutside = true` to be eligible as targets for others.
+2. **Relationship exclusivity** — players in a _closed relationship_ interact exclusively with their registered partner.
+3. **Open relationship gate** — players in an _open relationship_ must have `openToOutside = true` to be eligible as targets for others.
 
 If no eligible target exists, the active player performs the challenge alone.
 
@@ -239,8 +241,11 @@ State is persisted to `localStorage` on every update. `allCards` (static bundle 
 The router maps `GamePhase` values to screen factory functions:
 
 ```
-home → age-gate → setup → game-selecting ↔ game-showing → home
+Tier 1:   home → player-roster → setup → game-selecting ↔ game-showing → home
+Tiers 2–4: home → age-gate → player-roster → setup → game-selecting ↔ game-showing → home
 ```
+
+The `player-roster` phase shows saved players from `tod_roster_v1` and lets the group reuse them or start fresh.
 
 Each screen is fully re-created on phase transitions (no DOM diffing). Focus is programmatically moved to the first interactive element after each render for accessibility.
 
@@ -255,6 +260,8 @@ html / body (height: 100%, overflow: hidden)
           ├─ header.app-header   ← sticky, always visible
           └─ .screen-body        ← flex: 1, overflow-y: auto (scrolls if needed)
 ```
+
+A `--dock-clearance` CSS custom property (`max(120px, env(safe-area-inset-bottom) + 120px)`) is set on `:root` and applied as `padding-bottom` on every scrollable container, ensuring the floating dock never obscures content on any screen or device.
 
 ---
 

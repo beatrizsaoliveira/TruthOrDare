@@ -674,7 +674,8 @@ function buildWikiContent(): DocumentFragment {
             html: `<ol>
         <li>Escolhe o nível na ecrã inicial.</li>
         <li>Confirma a idade, se necessário (18+ para os níveis 2, 3 e 4).</li>
-        <li>Adiciona todos os jogadores com as respetivas informações.</li>
+        <li>Se já tiveres jogadores guardados, podes reutilizá-los diretamente ou começar do zero.</li>
+        <li>Adiciona (ou ajusta) os jogadores com as respetivas informações.</li>
         <li>Ativa ou desativa o sistema de penalizações em <em>shots</em>.</li>
         <li>Carrega em <strong>Iniciar Jogo</strong>.</li>
         <li>Na tua vez, escolhe <strong>Verdade</strong> ou <strong>Desafio</strong>.</li>
@@ -707,7 +708,7 @@ function buildWikiContent(): DocumentFragment {
       <ul>
         <li><strong>Nível 1:</strong> Apenas o nome.</li>
         <li><strong>Nível 2:</strong> Nome + género (para concordância gramatical nas cartas em português).</li>
-        <li><strong>Níveis 3 e 4:</strong> Nome, género, orientação sexual, estado relacional (solteiro/a, relação aberta ou fechada), parceiro/a presente no jogo (opcional) e preferência de alvo (homens, mulheres ou ambos).</li>
+        <li><strong>Níveis 3 e 4:</strong> Nome, género, orientação sexual e estado relacional (solteiro/a, relação aberta ou fechada). Se tiveres parceiro/a no jogo, podes ligar os dois — o campo aparece automaticamente quando o estado é <em>relação aberta</em> ou <em>fechada</em>. O toggle “aberto/a a interações externas” só aparece em relação aberta. A preferência de alvo (homens, mulheres ou ambos) só é mostrada quando esse toggle está ativo.</li>
       </ul>`,
         },
         {

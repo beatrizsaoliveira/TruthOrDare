@@ -371,6 +371,8 @@ const VALID_THEMES = new Set<string>([
     'dark-warm',
     'light-rose',
     'dark-rose',
+    'light-forest',
+    'dark-forest',
 ]);
 
 function deserialize(persisted: PersistedState): Omit<GameState, 'allCards'> {
