@@ -106,13 +106,18 @@ function main(): void {
     // 8. Render the current screen on phase change; re-colour particles on theme switch
     let lastTheme = store.state.theme;
     let lastPhase = store.state.phase;
+    let lastShowingPenalty = store.state.showingPenalty;
     store.subscribe(() => {
         if (store.state.theme !== lastTheme) {
             lastTheme = store.state.theme;
             void startParticles(store.state.theme);
         }
-        if (store.state.phase !== lastPhase) {
+        const phaseChanged = store.state.phase !== lastPhase;
+        const penaltyChanged =
+            store.state.showingPenalty !== lastShowingPenalty;
+        if (phaseChanged || penaltyChanged) {
             lastPhase = store.state.phase;
+            lastShowingPenalty = store.state.showingPenalty;
             renderScreen(appEl, store);
         }
     });

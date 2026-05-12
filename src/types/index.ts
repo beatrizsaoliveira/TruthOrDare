@@ -89,6 +89,8 @@ export interface GameState {
     readonly showingPenalty: boolean;
     readonly playerHistories: PlayerHistories;
     readonly theme: Theme;
+    /** Accumulated shots per player id (reset when a new game starts). Persisted. */
+    readonly shotCounts: Readonly<Record<string, number>>;
     /**
      * All parsed cards for the active tier. NOT persisted to localStorage —
      * re-derived from the markdown at startup.

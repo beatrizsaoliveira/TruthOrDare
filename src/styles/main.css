@@ -1389,21 +1389,94 @@ a {
   margin-top: 1px;
 }
 
+/* Actions wrapper — groups edit + remove buttons at the end of a chip */
+.player-chip__actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+/* Edit (pencil) button */
+.player-chip__edit {
+  padding: var(--sp-1);
+  border-radius: var(--r-sm);
+  color: var(--clr-text-muted);
+  transition:
+    color var(--dur-fast),
+    background var(--dur-fast),
+    box-shadow var(--dur-fast),
+    transform var(--dur-fast);
+}
+.player-chip__edit:hover {
+  color: var(--clr-primary);
+  background: color-mix(in srgb, var(--glass-c-light) 14%, transparent);
+  backdrop-filter: blur(6px) saturate(1.3);
+  -webkit-backdrop-filter: blur(6px) saturate(1.3);
+  box-shadow:
+    inset 1.5px 2.5px 0 0
+      color-mix(
+        in srgb,
+        var(--glass-c-light) calc(var(--glass-reflex-light) * 55%),
+        transparent
+      ),
+    inset 0 0 0 0.8px
+      color-mix(
+        in srgb,
+        var(--glass-c-light) calc(var(--glass-reflex-light) * 22%),
+        transparent
+      );
+  transform: translateY(-1px) scale(1.1);
+}
+.player-chip__edit:focus-visible {
+  outline: 3px solid var(--clr-primary);
+  outline-offset: 2px;
+}
+
+/* Remove (x) button — override the old minimal styles with glass hover */
 .player-chip__remove {
   padding: var(--sp-1);
   border-radius: var(--r-sm);
   color: var(--clr-text-muted);
   transition:
     color var(--dur-fast),
-    background var(--dur-fast);
+    background var(--dur-fast),
+    box-shadow var(--dur-fast),
+    transform var(--dur-fast);
 }
 .player-chip__remove:hover {
   color: var(--clr-danger);
-  background: var(--clr-danger-lt);
+  background: color-mix(in srgb, var(--clr-danger) 10%, transparent);
+  backdrop-filter: blur(6px) saturate(1.3);
+  -webkit-backdrop-filter: blur(6px) saturate(1.3);
+  box-shadow:
+    inset 1.5px 2.5px 0 0
+      color-mix(
+        in srgb,
+        var(--glass-c-light) calc(var(--glass-reflex-light) * 55%),
+        transparent
+      ),
+    inset 0 0 0 0.8px
+      color-mix(
+        in srgb,
+        var(--glass-c-light) calc(var(--glass-reflex-light) * 22%),
+        transparent
+      );
+  transform: translateY(-1px) scale(1.1);
 }
 .player-chip__remove:focus-visible {
   outline: 3px solid var(--clr-primary);
   outline-offset: 2px;
+}
+
+/* Edit modal — save/cancel buttons */
+.edit-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding-top: var(--sp-4);
+  padding-bottom: var(--sp-2);
+  flex-shrink: 0;
 }
 
 /* Couple connector — rendered between two partnered player chips */
@@ -1542,6 +1615,61 @@ a {
   margin: var(--sp-3) 0;
 }
 
+/* Stepper row: − [qty] + */
+.penalty-box__stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-5);
+  margin: var(--sp-3) 0 var(--sp-1);
+}
+.penalty-box__qty {
+  font-size: clamp(2.5rem, 10vw, 4rem);
+  font-weight: 900;
+  background: var(--gradient-dare);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  min-width: 3ch;
+  text-align: center;
+  line-height: 1;
+}
+.penalty-box__step-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--r-full);
+  border: 2px solid var(--clr-border);
+  background: var(--clr-surface);
+  color: var(--clr-text);
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition:
+    border-color var(--dur-fast),
+    opacity var(--dur-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+.penalty-box__step-btn:hover:not(:disabled) {
+  border-color: var(--clr-primary);
+}
+.penalty-box__step-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Action buttons wrapper in penalty overlay */
+.penalty-box__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  width: 100%;
+  margin-top: var(--sp-4);
+}
+
 /* ── Player turn banner ───────────────────────────────────── */
 .turn-banner {
   background: var(--gradient-tier3);
@@ -1563,6 +1691,21 @@ a {
   font-weight: 800;
   letter-spacing: -0.02em;
   margin-top: var(--sp-1);
+}
+
+/* Shot debt chip shown inside turn banner when player has accumulated shots */
+.turn-banner__shot-debt {
+  display: inline-block;
+  margin-top: var(--sp-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--r-full);
+  padding: 3px 12px;
 }
 
 /* ── Progress dots ────────────────────────────────────────── */

@@ -724,7 +724,10 @@ function buildWikiContent(): DocumentFragment {
         },
         {
             title: 'Penalizações (Shots)',
-            html: `<p>Nos níveis 2–4, cada carta indica quantos <em>shots</em> o jogador deve beber se recusar responder ou completar o desafio. Um ecrã de penalização aparece automaticamente ao recusar.</p>
+            html: `<p>Nos níveis 2–4, cada carta indica quantos <em>shots</em> o jogador deve beber se recusar responder ou completar o desafio. Ao carregar em <strong>❌ Recusar</strong>, aparece um ecrã de penalização com um seletor de quantidade.</p>
+      <p>No ecrã de penalização podes ajustar quantos shots bebeste de facto (menos do que o indicado, ou mesmo nenhum) e confirmar. Ninguém é obrigado a beber — o jogo regista apenas o que confirmares.</p>
+      <p>O botão <strong>❌ Recusar</strong> está sempre disponível — se a carta não tiver shots associados, a recusa avança diretamente para o próximo jogador.</p>
+      <p>Enquanto o jogo decorre, é exibida uma <strong>conta de shots</strong> no cabeçalho de cada turno, mostrando o total acumulado pelo jogador nessa sessão. A conta é reiniciada sempre que começa um novo jogo.</p>
       <p>Este sistema pode ser <strong>desativado</strong> no ecrã de configuração antes de iniciar o jogo.</p>
       <p><em>Joga sempre com responsabilidade. Podes substituir álcool por água, sumo ou qualquer outra bebida à tua escolha.</em></p>`,
         },

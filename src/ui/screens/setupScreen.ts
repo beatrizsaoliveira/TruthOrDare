@@ -341,6 +341,24 @@ function populatePartnerSelect(
     if (current) select.value = current;
 }
 
+function populatePartnerSelectExcluding(
+    select: HTMLSelectElement,
+    store: GameStore,
+    excludeId: string
+): void {
+    const current = select.value;
+    select.innerHTML =
+        '<option value="">— Nenhum / seleciona depois —</option>';
+    for (const p of store.state.players) {
+        if (p.id === excludeId) continue;
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.name;
+        select.appendChild(opt);
+    }
+    if (current) select.value = current;
+}
+
 // ─── Player List ──────────────────────────────────────────────────────────────
 
 function buildPlayerList(store: GameStore): HTMLElement {
@@ -470,6 +488,11 @@ function buildPlayerChip(
 
     info.append(name, meta);
 
+    const editBtn = el<HTMLButtonElement>('button', 'player-chip__edit');
+    editBtn.setAttribute('aria-label', `Editar ${player.name}`);
+    editBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+    editBtn.addEventListener('click', () => openEditModal(player, tier, store));
+
     const removeBtn = el<HTMLButtonElement>('button', 'player-chip__remove');
     removeBtn.setAttribute('aria-label', `Remover ${player.name}`);
     removeBtn.innerHTML = '✕';
@@ -477,8 +500,333 @@ function buildPlayerChip(
         store.update(Actions.removePlayer(player.id))
     );
 
-    li.append(avatar, info, removeBtn);
+    const chipActions = el('div', 'player-chip__actions');
+    chipActions.append(editBtn, removeBtn);
+
+    li.append(avatar, info, chipActions);
     return li;
+}
+
+// ─── Edit Player Modal ────────────────────────────────────────────────────────
+
+function openEditModal(player: Player, tier: Tier, store: GameStore): void {
+    const modal = el('div', 'help-modal');
+    modal.id = 'edit-player-modal';
+    modal.setAttribute('inert', '');
+
+    const backdrop = el('div', 'help-modal-backdrop');
+    const panel = el('div', 'help-modal-panel');
+
+    // All three are function declarations so they hoist within openEditModal and
+    // can safely reference the let-variables below (which are initialised before
+    // any close event can fire).
+    function isDirty(): boolean {
+        if (nameInput.value.trim() !== player.name) return true;
+        if (tier >= 2) {
+            const sexVal = sexInputs?.m.checked
+                ? 'male'
+                : sexInputs?.f.checked
+                  ? 'female'
+                  : null;
+            if (sexVal !== (player.sex ?? null)) return true;
+        }
+        if (tier >= 3) {
+            const ori = getCheckedValue<Orientation>(
+                orientationInputs ?? emptyNodeList<HTMLInputElement>()
+            );
+            if (ori !== (player.orientation ?? 'hetero')) return true;
+            if (
+                (statusSelect?.value ?? 'single') !==
+                (player.relationshipStatus ?? 'single')
+            )
+                return true;
+            if ((partnerSelect?.value || null) !== (player.partnerId ?? null))
+                return true;
+            if (openChecked !== (player.openToOutside ?? false)) return true;
+            const tSex = getCheckedValue<TargetSex>(
+                targetSexGroup?.querySelectorAll<HTMLInputElement>('input') ??
+                    emptyNodeList<HTMLInputElement>()
+            );
+            if (tSex !== (player.targetSex ?? 'both')) return true;
+        }
+        return false;
+    }
+
+    function closeModal(): void {
+        if (!modal.classList.contains('visible')) return;
+        if (
+            isDirty() &&
+            !confirm(
+                'Tens alterações não guardadas. Queres mesmo fechar sem guardar?'
+            )
+        )
+            return;
+        modal.classList.remove('visible');
+        modal.setAttribute('inert', '');
+        document.removeEventListener('keydown', handleKeyDown);
+        setTimeout(() => modal.remove(), 300);
+    }
+
+    function handleKeyDown(e: KeyboardEvent): void {
+        if (e.key === 'Escape') closeModal();
+    }
+
+    // ── Header ────────────────────────────────────────────────
+    const content = el('div', 'help-modal-content');
+    const header = el('div', 'help-modal-header');
+    const titleEl = el('span', 'help-modal-title');
+    titleEl.textContent = `✏️  Editar ${player.name}`;
+    const closeBtn = el<HTMLButtonElement>('button', 'modal-close-btn');
+    closeBtn.setAttribute('aria-label', 'Fechar edição');
+    closeBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+    closeBtn.addEventListener('click', closeModal);
+    header.append(titleEl, closeBtn);
+
+    // ── Scrollable body ───────────────────────────────────────
+    const body = el('div', 'help-body');
+    const form = el<HTMLFormElement>('form', 'stack stack--4');
+    form.setAttribute('novalidate', '');
+
+    // Name
+    const nameGroup = el('div', 'form-group');
+    const nameLabel = el<HTMLLabelElement>('label', 'form-label');
+    nameLabel.htmlFor = 'edit-player-name';
+    nameLabel.textContent = 'Nome';
+    const nameInput = el<HTMLInputElement>('input', 'form-input');
+    nameInput.id = 'edit-player-name';
+    nameInput.type = 'text';
+    nameInput.autocomplete = 'off';
+    nameInput.maxLength = 32;
+    nameInput.value = player.name;
+    nameGroup.append(nameLabel, nameInput);
+    form.appendChild(nameGroup);
+
+    // Sex (Tier 2+)
+    let sexInputs: { m: HTMLInputElement; f: HTMLInputElement } | null = null;
+    if (tier >= 2) {
+        const sexGroup = buildRadioGroup<Sex>('edit-sex', 'Sexo biológico', [
+            { value: 'male', label: '♂ Masculino' },
+            { value: 'female', label: '♀ Feminino' },
+        ]);
+        const mInput = sexGroup.querySelector<HTMLInputElement>(
+            'input[value="male"]'
+        ) as HTMLInputElement;
+        const fInput = sexGroup.querySelector<HTMLInputElement>(
+            'input[value="female"]'
+        ) as HTMLInputElement;
+        mInput.defaultChecked = false;
+        fInput.defaultChecked = false;
+        if (player.sex === 'male') {
+            mInput.checked = true;
+            mInput.defaultChecked = true;
+        } else if (player.sex === 'female') {
+            fInput.checked = true;
+            fInput.defaultChecked = true;
+        }
+        sexInputs = { m: mInput, f: fInput };
+        form.appendChild(sexGroup);
+    }
+
+    // Tier 3+ fields
+    let orientationInputs: NodeListOf<HTMLInputElement> | null = null;
+    let statusSelect: HTMLSelectElement | null = null;
+    let partnerGroup: HTMLElement | null = null;
+    let partnerSelect: HTMLSelectElement | null = null;
+    let openWrap: HTMLElement | null = null;
+    let openLiquidToggle: HTMLButtonElement | null = null;
+    let openChecked = player.openToOutside ?? false;
+    let targetSexGroup: HTMLElement | null = null;
+
+    if (tier >= 3) {
+        function updateConditionalFields(): void {
+            const status = (statusSelect?.value ??
+                'single') as RelationshipStatus;
+            const showPartner = status === 'open' || status === 'closed';
+            const showOpen = status !== 'closed';
+            if (partnerGroup)
+                partnerGroup.style.display = showPartner ? '' : 'none';
+            if (openWrap) openWrap.style.display = showOpen ? '' : 'none';
+            if (targetSexGroup)
+                targetSexGroup.style.display = openChecked ? '' : 'none';
+            if (partnerSelect)
+                populatePartnerSelectExcluding(partnerSelect, store, player.id);
+        }
+
+        // Orientation
+        const oriGroup = buildRadioGroup<Orientation>(
+            'edit-ori',
+            'Orientação sexual',
+            [
+                { value: 'hetero', label: '⚤ Hetero' },
+                { value: 'homo', label: '⚥ Homo' },
+                { value: 'bi', label: '⚧ Bi' },
+            ]
+        );
+        orientationInputs = oriGroup.querySelectorAll('input');
+        for (const inp of Array.from(orientationInputs)) {
+            inp.defaultChecked = false;
+            inp.checked = inp.value === (player.orientation ?? 'hetero');
+            if (inp.checked) inp.defaultChecked = true;
+        }
+        form.appendChild(oriGroup);
+
+        // Relationship status
+        const relGroup = el('div', 'form-group');
+        const relLabel = el<HTMLLabelElement>('label', 'form-label');
+        relLabel.htmlFor = 'edit-status';
+        relLabel.textContent = 'Estado de relação';
+        statusSelect = el<HTMLSelectElement>('select', 'form-select');
+        statusSelect.id = 'edit-status';
+        statusSelect.innerHTML = `
+          <option value="single">Solteiro/a</option>
+          <option value="open">Relação Aberta</option>
+          <option value="closed">Relação Exclusiva</option>
+        `;
+        if (player.relationshipStatus)
+            statusSelect.value = player.relationshipStatus;
+        relGroup.append(relLabel, statusSelect);
+        form.appendChild(relGroup);
+
+        // Partner select (conditional)
+        partnerGroup = el('div', 'form-group');
+        partnerGroup.style.display = 'none';
+        const partnerLabel = el<HTMLLabelElement>('label', 'form-label');
+        partnerLabel.htmlFor = 'edit-partner';
+        partnerLabel.textContent = 'Parceiro/a no jogo';
+        partnerSelect = el<HTMLSelectElement>('select', 'form-select');
+        partnerSelect.id = 'edit-partner';
+        partnerGroup.append(partnerLabel, partnerSelect);
+        form.appendChild(partnerGroup);
+
+        // Open to outside
+        openWrap = el('div', 'toggle-wrap');
+        openWrap.style.display = 'none';
+        const openLabelDiv = el('div', 'toggle-label');
+        openLabelDiv.innerHTML =
+            '<div class="toggle-label__title">Aberto/a a interações externas</div>' +
+            '<div class="toggle-label__desc">Pode participar em desafios com qualquer outro jogador</div>';
+        openLiquidToggle = buildLiquidToggle('edit-player-open', openChecked);
+        openLiquidToggle.addEventListener('click', () => {
+            openChecked = !openChecked;
+            openLiquidToggle!.setAttribute('aria-checked', String(openChecked));
+            animateLiquidToggle(openLiquidToggle!, openChecked);
+            updateConditionalFields();
+        });
+        openWrap.append(openLabelDiv, openLiquidToggle);
+        form.appendChild(openWrap);
+
+        // Target sex
+        targetSexGroup = buildRadioGroup<TargetSex>(
+            'edit-targetsex',
+            'Sexo alvo para interações',
+            [
+                { value: 'male', label: '♂ Masculino' },
+                { value: 'female', label: '♀ Feminino' },
+                { value: 'both', label: '⚥ Ambos' },
+            ]
+        );
+        for (const inp of Array.from(
+            targetSexGroup.querySelectorAll<HTMLInputElement>('input')
+        )) {
+            inp.defaultChecked = false;
+            inp.checked = inp.value === (player.targetSex ?? 'both');
+            if (inp.checked) inp.defaultChecked = true;
+        }
+        targetSexGroup.style.display = 'none';
+        form.appendChild(targetSexGroup);
+
+        statusSelect.addEventListener('change', updateConditionalFields);
+        updateConditionalFields();
+
+        // Restore pre-selected partner after populate
+        if (partnerSelect && player.partnerId) {
+            partnerSelect.value = player.partnerId;
+        }
+    }
+
+    body.appendChild(form);
+
+    // ── Action buttons ────────────────────────────────────────
+    const editActions = el('div', 'edit-modal-actions');
+    const saveBtn = el<HTMLButtonElement>(
+        'button',
+        'btn btn--primary btn--full'
+    );
+    saveBtn.type = 'button';
+    saveBtn.textContent = '✓  Guardar alterações';
+    const cancelBtn = el<HTMLButtonElement>(
+        'button',
+        'btn btn--ghost btn--full'
+    );
+    cancelBtn.type = 'button';
+    cancelBtn.textContent = 'Cancelar';
+    cancelBtn.addEventListener('click', closeModal);
+    editActions.append(saveBtn, cancelBtn);
+    body.appendChild(editActions);
+
+    saveBtn.addEventListener('click', () => {
+        const name = nameInput.value.trim();
+        if (!name) {
+            nameInput.focus();
+            return;
+        }
+
+        let sexChecked: Sex | null = null;
+        if (sexInputs?.m.checked) sexChecked = 'male';
+        else if (sexInputs?.f.checked) sexChecked = 'female';
+
+        type ExtraFields = {
+            sex?: Sex;
+            orientation?: Orientation;
+            relationshipStatus?: RelationshipStatus;
+            partnerId?: string | null;
+            openToOutside?: boolean;
+            targetSex?: TargetSex;
+        };
+        const extras: ExtraFields = {};
+
+        if (sexChecked !== null) extras.sex = sexChecked;
+
+        if (tier >= 3) {
+            const orientation = getCheckedValue<Orientation>(
+                orientationInputs ?? emptyNodeList<HTMLInputElement>()
+            );
+            if (orientation !== undefined) extras.orientation = orientation;
+            extras.relationshipStatus =
+                (statusSelect?.value as RelationshipStatus) ?? 'single';
+            extras.partnerId = partnerSelect?.value || null;
+            extras.openToOutside = openChecked;
+            extras.targetSex =
+                getCheckedValue<TargetSex>(
+                    targetSexGroup?.querySelectorAll('input') ??
+                        emptyNodeList<HTMLInputElement>()
+                ) ?? 'both';
+        }
+
+        const updated: Player = { ...player, name, ...extras };
+        store.update(Actions.updatePlayer(updated));
+        closeModal();
+    });
+
+    content.append(header, body);
+
+    panel.innerHTML = `
+        <div class="glass-effect" aria-hidden="true"></div>
+        <div class="glass-tint" aria-hidden="true"></div>
+        <div class="glass-shine" aria-hidden="true"></div>
+    `;
+    panel.appendChild(content);
+    modal.append(backdrop, panel);
+    document.body.appendChild(modal);
+
+    requestAnimationFrame(() => {
+        modal.removeAttribute('inert');
+        modal.classList.add('visible');
+        requestAnimationFrame(() => nameInput.focus());
+    });
+
+    backdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', handleKeyDown);
 }
 
 // ─── Penalties toggle ─────────────────────────────────────────────────────────

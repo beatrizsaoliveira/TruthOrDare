@@ -36,7 +36,8 @@ export function createGameScreen(store: GameStore): HTMLElement {
 // ─── "Selecting" phase ────────────────────────────────────────────────────────
 
 function buildSelectingScreen(store: GameStore): HTMLElement {
-    const { players, currentPlayerIndex } = store.state;
+    const { players, currentPlayerIndex, penaltiesEnabled, shotCounts } =
+        store.state;
     const currentPlayer = players[currentPlayerIndex] as Player;
 
     const screen = el('div', 'screen');
@@ -48,6 +49,16 @@ function buildSelectingScreen(store: GameStore): HTMLElement {
     const bannerName = el('h1', 'turn-banner__name');
     bannerName.textContent = currentPlayer.name;
     banner.append(bannerLabel, bannerName);
+
+    // Shot debt chip — only visible when penalties are on and shots > 0
+    if (penaltiesEnabled) {
+        const debt = shotCounts[currentPlayer.id] ?? 0;
+        if (debt > 0) {
+            const debtEl = el('div', 'turn-banner__shot-debt');
+            debtEl.innerHTML = `🍺 Conta: <strong>${debt}</strong> shot${debt === 1 ? '' : 's'}`;
+            banner.appendChild(debtEl);
+        }
+    }
 
     // ── Player dots ───────────────────────────────────────────
     const dotsRow = el('div', 'container');
@@ -183,7 +194,7 @@ function buildShowingScreen(store: GameStore): HTMLElement {
 
     footer.appendChild(acceptBtn);
 
-    if (currentCard && (currentCard.shots !== null || !penaltiesEnabled)) {
+    if (currentCard) {
         const refuseBtn = el<HTMLButtonElement>(
             'button',
             'btn btn--ghost btn--full'
@@ -250,6 +261,8 @@ function buildPenaltyOverlayInScreen(
     card: Card,
     store: GameStore
 ): HTMLElement {
+    const maxShots = card.shots ?? 0;
+
     const overlay = el('div', 'penalty-overlay');
     overlay.setAttribute('role', 'alertdialog');
     overlay.setAttribute('aria-modal', 'true');
@@ -265,35 +278,95 @@ function buildPenaltyOverlayInScreen(
     title.id = 'penalty-title';
     title.textContent = 'Recusaste!';
 
-    const desc = el('p', 'body-lg text-muted');
-    desc.textContent = 'Penalização:';
+    box.append(icon, title);
 
-    const shotsEl = el('div', 'penalty-box__shots');
-    shotsEl.textContent = `${card.shots ?? 0}`;
-    shotsEl.setAttribute('aria-label', `${card.shots ?? 0} shots`);
+    if (maxShots > 0) {
+        // ── How-many prompt ───────────────────────────────────
+        const desc = el('p', 'body-md text-muted');
+        desc.style.cssText = 'margin-top:var(--sp-3);margin-bottom:0;';
+        desc.textContent = 'Quantos shots bebeste?';
+        box.appendChild(desc);
 
-    const unit = el('p', 'heading-md');
-    unit.textContent = `shot${(card.shots ?? 0) > 1 ? 's' : ''}`;
+        // ── Stepper ───────────────────────────────────────────
+        let qty = maxShots;
+        const stepperRow = el('div', 'penalty-box__stepper');
 
-    const doneBtn = el<HTMLButtonElement>(
-        'button',
-        'btn btn--primary btn--lg btn--full'
-    );
-    doneBtn.style.marginTop = '1.5rem';
-    doneBtn.textContent = '✅  Feito, bebi!';
-    doneBtn.addEventListener('click', () =>
-        store.update(Actions.dismissPenalty())
-    );
+        const minusBtn = el<HTMLButtonElement>(
+            'button',
+            'penalty-box__step-btn'
+        );
+        minusBtn.type = 'button';
+        minusBtn.textContent = '−';
+        minusBtn.setAttribute('aria-label', 'Diminuir');
 
-    box.append(icon, title, desc, shotsEl, unit, doneBtn);
+        const qtyDisplay = el('div', 'penalty-box__qty');
+
+        const plusBtn = el<HTMLButtonElement>(
+            'button',
+            'penalty-box__step-btn'
+        );
+        plusBtn.type = 'button';
+        plusBtn.textContent = '+';
+        plusBtn.setAttribute('aria-label', 'Aumentar');
+
+        function updateQty(n: number): void {
+            qty = Math.max(0, n);
+            qtyDisplay.textContent = String(qty);
+            minusBtn.disabled = qty === 0;
+        }
+        updateQty(maxShots);
+
+        minusBtn.addEventListener('click', () => updateQty(qty - 1));
+        plusBtn.addEventListener('click', () => updateQty(qty + 1));
+
+        stepperRow.append(minusBtn, qtyDisplay, plusBtn);
+        box.appendChild(stepperRow);
+
+        // ── Action buttons ────────────────────────────────────
+        const actions = el('div', 'penalty-box__actions');
+
+        const confirmBtn = el<HTMLButtonElement>(
+            'button',
+            'btn btn--primary btn--lg btn--full'
+        );
+        confirmBtn.textContent = '✅  Confirmar';
+        confirmBtn.addEventListener('click', () =>
+            store.update(Actions.confirmPenalty(qty))
+        );
+
+        const skipBtn = el<HTMLButtonElement>(
+            'button',
+            'btn btn--ghost btn--full'
+        );
+        skipBtn.textContent = '❌  Não bebi nada';
+        skipBtn.addEventListener('click', () =>
+            store.update(Actions.confirmPenalty(0))
+        );
+
+        actions.append(confirmBtn, skipBtn);
+        box.appendChild(actions);
+
+        setTimeout(() => confirmBtn.focus(), 50);
+    } else {
+        // No shots on this card — just advance
+        const doneBtn = el<HTMLButtonElement>(
+            'button',
+            'btn btn--primary btn--lg btn--full'
+        );
+        doneBtn.style.marginTop = 'var(--sp-4)';
+        doneBtn.textContent = '✅  Feito!';
+        doneBtn.addEventListener('click', () =>
+            store.update(Actions.confirmPenalty(0))
+        );
+        box.appendChild(doneBtn);
+        setTimeout(() => doneBtn.focus(), 50);
+    }
+
     overlay.appendChild(box);
 
     // Append overlay on top of existing screen content
     screen.style.position = 'relative';
     screen.appendChild(overlay);
-
-    // Focus management
-    setTimeout(() => doneBtn.focus(), 50);
 
     return screen;
 }

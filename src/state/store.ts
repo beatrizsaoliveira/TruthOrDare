@@ -52,6 +52,7 @@ export function buildInitialState(allCards: readonly Card[]): GameState {
         currentTargetPlayerId: null,
         showingPenalty: false,
         playerHistories: {},
+        shotCounts: {},
         theme: prefersDark() ? 'dark' : 'light',
         allCards,
     };
@@ -130,6 +131,7 @@ export const Actions = {
             ageConfirmed: false,
             players: [],
             playerHistories: {},
+            shotCounts: {},
             currentCard: null,
             currentTargetPlayerId: null,
             showingPenalty: false,
@@ -192,9 +194,24 @@ export const Actions = {
     updatePlayer:
         (updated: Player): Updater =>
         (state) => {
-            const players = state.players.map((p) =>
+            const prev = state.players.find((p) => p.id === updated.id);
+            let players = state.players.map((p) =>
                 p.id === updated.id ? updated : p
             );
+            // Clear old partner's back-link if partner changed
+            if (prev?.partnerId && prev.partnerId !== updated.partnerId) {
+                players = players.map((p) =>
+                    p.id === prev.partnerId ? { ...p, partnerId: null } : p
+                );
+            }
+            // Set new partner's back-link
+            if (updated.partnerId && updated.partnerId !== prev?.partnerId) {
+                players = players.map((p) =>
+                    p.id === updated.partnerId
+                        ? { ...p, partnerId: updated.id }
+                        : p
+                );
+            }
             return { ...state, players };
         },
 
@@ -207,6 +224,7 @@ export const Actions = {
         phase: 'game-selecting',
         currentPlayerIndex: 0,
         playerHistories: {},
+        shotCounts: {},
         currentCard: null,
         pendingCardType: null,
         currentTargetPlayerId: null,
@@ -276,11 +294,12 @@ export const Actions = {
         showingPenalty: false,
     }),
 
-    /** Player refused — show penalty overlay (if penalties are on). */
+    /** Player refused — show penalty overlay (if penalties are on). Shots are
+     *  recorded later via confirmPenalty once the player reports what they drank. */
     refuseCard: (): Updater => (state) => ({
         ...state,
         showingPenalty: state.penaltiesEnabled,
-        // If penalties are disabled, just advance
+        // If penalties are disabled, just advance immediately
         ...(state.penaltiesEnabled
             ? {}
             : {
@@ -293,7 +312,33 @@ export const Actions = {
               }),
     }),
 
-    /** Penalty acknowledged — advance to next player. */
+    /** Player confirmed how many shots they drank — record and advance. */
+    confirmPenalty:
+        (shots: number): Updater =>
+        (state) => {
+            const activePlayer = state.players[state.currentPlayerIndex];
+            const newShotCounts =
+                activePlayer && shots > 0
+                    ? {
+                          ...state.shotCounts,
+                          [activePlayer.id]:
+                              (state.shotCounts[activePlayer.id] ?? 0) + shots,
+                      }
+                    : state.shotCounts;
+            return {
+                ...state,
+                shotCounts: newShotCounts,
+                phase: 'game-selecting',
+                currentPlayerIndex:
+                    (state.currentPlayerIndex + 1) % state.players.length,
+                currentCard: null,
+                pendingCardType: null,
+                currentTargetPlayerId: null,
+                showingPenalty: false,
+            };
+        },
+
+    /** @deprecated Use confirmPenalty(0) instead. Kept for safety. */
     dismissPenalty: (): Updater => (state) => ({
         ...state,
         phase: 'game-selecting',
@@ -390,5 +435,9 @@ function deserialize(persisted: PersistedState): Omit<GameState, 'allCards'> {
         : prefersDark()
           ? 'dark'
           : 'light';
-    return { ...persisted, playerHistories, theme };
+    // shotCounts may be absent in data saved before this field was added
+    const shotCounts: Readonly<Record<string, number>> =
+        (persisted as unknown as { shotCounts?: Record<string, number> })
+            .shotCounts ?? {};
+    return { ...persisted, playerHistories, theme, shotCounts };
 }
