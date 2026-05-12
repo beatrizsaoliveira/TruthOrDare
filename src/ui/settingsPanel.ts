@@ -710,7 +710,7 @@ function buildWikiContent(): DocumentFragment {
       <ul>
         <li><strong>Nível 1:</strong> Apenas o nome.</li>
         <li><strong>Nível 2:</strong> Nome + género (para concordância gramatical nas cartas em português).</li>
-        <li><strong>Níveis 3 e 4:</strong> Nome, género, orientação sexual e estado relacional (solteiro/a, relação aberta ou fechada). Se tiveres parceiro/a no jogo, podes ligar os dois — o campo aparece automaticamente quando o estado é <em>relação aberta</em> ou <em>fechada</em>. O toggle “aberto/a a interações externas” só aparece em relação aberta. A preferência de alvo (homens, mulheres ou ambos) só é mostrada quando esse toggle está ativo.</li>
+        <li><strong>Níveis 3 e 4:</strong> Nome, género, orientação sexual e estado relacional (solteiro/a, relação aberta ou fechada). Se tiveres parceiro/a no jogo, podes ligar os dois — o campo aparece automaticamente quando o estado é <em>relação aberta</em> ou <em>fechada</em>. O toggle “aberto/a a interações externas” aparece para jogadores <em>solteiros</em> e em <em>relação aberta</em>: para solteiros, ativá-lo permite definir uma preferência de sexo alvo; para relações abertas, é também necessário para poder ser alvo de outros jogadores. A preferência de alvo (homens, mulheres ou ambos) só é mostrada quando esse toggle está ativo.</li>
       </ul>`,
         },
         {
@@ -719,8 +719,9 @@ function buildWikiContent(): DocumentFragment {
       <ul>
         <li><strong>Orientação sexual:</strong> apenas pares com atração mútua são elegíveis.</li>
         <li><strong>Relação fechada:</strong> jogadores nesta situação interagem exclusivamente com o/a seu/sua parceiro/a registado/a no jogo.</li>
-        <li><strong>Relação aberta:</strong> requer o campo "aberto/a a interações fora da relação" ativo para ser elegível como alvo por outros jogadores.</li>
-        <li><strong>Preferência de alvo:</strong> podes especificar se preferes interagir com homens, mulheres ou ambos.</li>
+        <li><strong>Relação aberta:</strong> requer o toggle “aberto/a a interações externas” ativo para ser elegível como alvo por outros jogadores.</li>
+        <li><strong>Solteiro/a:</strong> elegível por defeito para interagir com qualquer outro jogador compatível. Ativar o toggle “aberto/a a interações externas” apenas serve para definir uma preferência de sexo alvo.</li>
+        <li><strong>Preferência de alvo:</strong> podes especificar se preferes interagir com homens, mulheres ou ambos (só aplicação quando o toggle está ativo).</li>
       </ul>
       <p>Se não existir nenhum alvo elegível, o jogador ativo realiza o desafio sozinho.</p>`,
         },

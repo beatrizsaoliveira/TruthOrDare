@@ -25,14 +25,14 @@
 
 - **4 Tier system** — from family-friendly to mature adult content (18+)
 - **Age-gating** — mandatory 18+ confirmation for Tiers 2–4
-- **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status); at Tier 3–4, partner dropdown, _open-to-outside_ toggle and target-sex selector are conditionally shown only when relevant
+- **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status); at Tier 3–4, partner dropdown and _open-to-outside_ toggle are shown for single and open-relationship players (not closed); for open-relationship players the toggle also controls eligibility as an interaction target; the target-sex selector is shown once the toggle is active
 - **Saved-player roster** — registered players are persisted to `localStorage` (`tod_roster_v1`) and offered for reuse at the start of every new session via a dedicated Roster screen; couples are displayed grouped with a visual connector
 - **Orientation & relationship-aware matching engine** (Tiers 3–4) — ensures targets are mutually compatible
 - **Anti-repetition card engine** — weighted scoring prevents recently seen cards from reappearing; couples share history
 - **Drink/shot penalty system** — on card refusal a penalty overlay with a `−`/value/`+` stepper appears; the player confirms how many shots they actually drank (zero is valid — nobody is forced); the **Recusar** button is always visible; the card's penalty hint (`🍺 N shots se recusar`) is only displayed when the penalty mode is active; a running shot count chip (🍺 Conta) is shown in the turn banner, persisted per player, and reset on new game; can be disabled before starting
 - **End-of-game ranking** — when a game with penalties ends and at least one player drank, a ranking screen is shown before returning home: players with shots are listed descending with 🥇🥈🥉 medals, followed by zero-shot players sorted alphabetically (dimmed); shot counts remain in `localStorage` while the ranking is on screen (so a refresh still shows the ranking correctly) and are only cleared when the player navigates to the home screen
 - **pt-PT gender agreement parser** — resolves `word/a` patterns (e.g. `sozinho/a`) based on the active player's gender
-- **Player editing** — each registered player chip shows an edit (pencil) button that opens a pre-filled glass modal; the modal warns with a `confirm()` dialog before discarding unsaved changes (dirty check covers all close paths: X, ESC, backdrop, Cancel)
+- **Player editing** — each registered player chip shows an edit (pencil) button that opens a pre-filled glass modal; the modal warns with a `confirm()` dialog before discarding unsaved changes when closed via X, ESC, or backdrop click (Cancel and Save close immediately without prompting)
 - **Persistent game state** — full game state is saved to `localStorage` (`tod_state_v1`) on every update, including the active theme and per-player shot counts; player roster is persisted separately in `tod_roster_v1`; first visit uses OS dark/light preference
 - **Ambient background** — floating bokeh particles (tsParticles v2 via CDN) that smoothly re-colour to match the active palette when the theme changes
 - **Liquid Glass dock** — physics-based floating glass toolbar (always visible) with a **Temas** button (colour palette) and a **Definições** button (dark/light mode toggle, frosted glass toggle + in-game wiki)
@@ -205,7 +205,7 @@ When a card contains `[Target Player]`, the engine selects an eligible target by
 
 1. **Mutual orientation** — only pairs where both players are attracted to the other's gender are eligible.
 2. **Relationship exclusivity** — players in a _closed relationship_ interact exclusively with their registered partner.
-3. **Open relationship gate** — players in an _open relationship_ must have `openToOutside = true` to be eligible as targets for others.
+3. **Open relationship gate** — players in an _open relationship_ must have `openToOutside = true` to be eligible as targets for others. _Single_ players are eligible by default; their `openToOutside` toggle only serves as a gateway to set a target-sex preference.
 
 If no eligible target exists, the active player performs the challenge alone.
 

@@ -552,8 +552,15 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
         return false;
     }
 
-    function closeModal(): void {
+    function forceClose(): void {
         if (!modal.classList.contains('visible')) return;
+        modal.classList.remove('visible');
+        modal.setAttribute('inert', '');
+        document.removeEventListener('keydown', handleKeyDown);
+        setTimeout(() => modal.remove(), 300);
+    }
+
+    function closeModal(): void {
         if (
             isDirty() &&
             !confirm(
@@ -561,10 +568,7 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
             )
         )
             return;
-        modal.classList.remove('visible');
-        modal.setAttribute('inert', '');
-        document.removeEventListener('keydown', handleKeyDown);
-        setTimeout(() => modal.remove(), 300);
+        forceClose();
     }
 
     function handleKeyDown(e: KeyboardEvent): void {
@@ -760,7 +764,7 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
     );
     cancelBtn.type = 'button';
     cancelBtn.textContent = 'Cancelar';
-    cancelBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', forceClose);
     editActions.append(saveBtn, cancelBtn);
     body.appendChild(editActions);
 
@@ -805,7 +809,7 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
 
         const updated: Player = { ...player, name, ...extras };
         store.update(Actions.updatePlayer(updated));
-        closeModal();
+        forceClose();
     });
 
     content.append(header, body);
