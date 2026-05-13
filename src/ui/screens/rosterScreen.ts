@@ -1,4 +1,4 @@
-import { sexLabel } from '../../engine/genderParser.js';
+import { sexLabel } from '../../engine/cardFormatter.js';
 import type { GameStore } from '../../state/store.js';
 import { Actions, loadSavedPlayers } from '../../state/store.js';
 import type { Player } from '../../types/index.js';
@@ -64,9 +64,15 @@ export function createRosterScreen(store: GameStore): HTMLElement {
             'btn btn--ghost btn--full'
         );
         skipBtn.textContent = 'Começar do zero';
-        skipBtn.addEventListener('click', () =>
-            store.update(Actions.skipRoster())
-        );
+        skipBtn.addEventListener('click', () => {
+            if (
+                !confirm(
+                    'Tens a certeza? Os jogadores guardados serão ignorados e começarás do zero.'
+                )
+            )
+                return;
+            store.update(Actions.skipRoster());
+        });
 
         container.append(heading, desc, list, useBtn, skipBtn);
     } else {

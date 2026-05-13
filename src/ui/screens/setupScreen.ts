@@ -2,7 +2,7 @@ import {
     orientationLabel,
     relationshipLabel,
     sexLabel,
-} from '../../engine/genderParser.js';
+} from '../../engine/cardFormatter.js';
 import type { GameStore } from '../../state/store.js';
 import { Actions } from '../../state/store.js';
 import type {

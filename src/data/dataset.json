@@ -1,3202 +1,3202 @@
 [
-  {
-    "id": 1,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu hábito mais estranho quando estás sozinho/a em casa?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 2,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a mentira mais parva que contaste aos teus pais?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 3,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é a tua maior vergonha de quando eras criança?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 4,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Se fosses um animal, qual serias e porquê?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 5,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é a comida que odeias mas finges que gostas?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 6,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi o presente mais estranho que recebeste?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 7,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu guilty pleasure musical (música que cantas às escondidas)?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 8,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi o momento mais embaraçoso numa festa de família?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 9,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu superpoder inútil favorito?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 10,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a coisa mais ridícula que fizeste por causa de um desafio?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 11,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu filme ou série preferido que vês repetidamente?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 12,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a tua maior trapalhada na escola?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 13,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Se pudesses trocar de vida com alguém da família por um dia, quem seria?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 14,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu medo mais parvo?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 15,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi o disfarce mais ridículo que usaste no Carnaval?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 16,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é a tua dança secreta quando ninguém está a ver?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 17,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a coisa mais engraçada que o teu animal de estimação fez?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 18,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu apelido carinhoso mais embaraçoso da família?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 19,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a tua maior trapalhada a cozinhar?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 20,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Se fosses invisível por um dia, o que farias primeiro?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 21,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é a tua imitação mais fixe de uma celebridade?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 22,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi o momento mais engraçado com os teus amigos de infância?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 23,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o brinquedo da infância de que ainda tens saudades?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 24,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a tua maior birra em público?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 25,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é a tua posição de dormir mais estranha?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 26,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi o fato mais ridículo que vestiste numa festa à fantasia?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 27,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu talento escondido mais silly?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 28,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a mensagem de voz mais embaraçosa que enviaste por engano?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 29,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu sonho mais estranho que já tiveste?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 30,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a tua maior confusão com nomes de pessoas?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 31,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é a tua comida de conforto preferida?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 32,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi o momento mais hilariante numa viagem de família?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 33,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu sotaque mais engraçado que tentas imitar?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 34,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a tua primeira memória embaraçosa?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 35,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o objeto da casa que usas de forma mais criativa?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 36,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi o teu maior \"quase apanhado\" pelos pais?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 37,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é a tua expressão facial mais engraçada?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 38,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a brincadeira de infância que correu mal?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 39,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu herói de desenho animado preferido e porquê?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 40,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi o dia mais estranho da tua vida até agora?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 41,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu ritual matinal mais estranho?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 42,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a tua maior confusão com palavras?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 43,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu emoji mais usado e o que significa para ti?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 44,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi o momento mais fofo com um familiar?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 45,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é a tua imitação de animal favorita?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 46,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi a tua maior trapalhada desportiva?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 47,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é o teu segredo mais leve sobre uma mania?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 48,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi o presente que compraste e depois quiseste para ti?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 49,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual é a tua forma preferida de fazer caretas?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 50,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "Qual foi o momento mais engraçado que partilhaste com toda a família?",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 1,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz a tua melhor imitação de um animal durante 20 segundos.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 2,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Canta uma música infantil com voz de robô.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 3,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Dança como um robô durante 30 segundos.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 4,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Fala com sotaque estrangeiro durante as próximas 3 rondas.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 5,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz 10 flexões enquanto imitas um galo a cantar.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 6,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Deixa alguém da roda desenhar-te um bigode com marcador lavável.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 7,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz a tua melhor dança da vitória.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 8,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Imita o teu ator ou atriz favorito a dizer uma frase normal.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 9,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Fica em posição de galinha durante 1 minuto.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 10,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Canta a tua música preferida mas só com sons de animais.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 11,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz uma careta engraçada e mantém-na por 15 segundos.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 12,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Conta uma piada infantil para toda a gente rir.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 13,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Caminha como um caranguejo pela sala.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 14,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Fala como um bebé durante as próximas 2 rondas.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 15,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz uma escultura com o que tens à mão em 30 segundos.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 16,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Imita o som de 5 animais diferentes.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 17,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Dança com uma música que os outros escolherem.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 18,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz uma pose de super-herói durante 20 segundos.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 19,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Diz o alfabeto ao contrário o mais rápido possível.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 20,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz uma massagem nos ombros de [Target Player] durante 30 segundos.",
-    "shots": null,
-    "hasTarget": true
-  },
-  {
-    "id": 21,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Imita um apresentador de televisão a dar as notícias.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 22,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Fica de pé numa perna só durante 1 minuto.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 23,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Canta \"Parabéns\" como ópera.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 24,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz uma mímica de uma profissão para os outros adivinharem.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 25,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Caminha como um modelo numa passarela.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 26,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Diz 3 elogios sinceros a [Target Player].",
-    "shots": null,
-    "hasTarget": true
-  },
-  {
-    "id": 27,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz a tua melhor gargalhada de vilão.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 28,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Imita um robô a dançar.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 29,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Conta uma história inventada em menos de 30 segundos.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 30,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz flexões com uma mão (ou tenta).",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 31,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Dança o \"Macarena\" completo.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 32,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Fala só em rimas durante 1 minuto.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 33,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz uma cara de peixe durante 15 segundos.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 34,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Imita o teu professor ou chefe mais engraçado.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 35,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Dá um abraço de urso em toda a gente da roda.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 36,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz uma pirueta ou roda.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 37,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Canta uma canção com a boca fechada.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 38,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Fica em posição de prancha durante 30 segundos.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 39,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Imita um locutor de rádio.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 40,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz uma dança livre com os olhos vendados (com ajuda).",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 41,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Diz o teu nome ao contrário 5 vezes rápido.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 42,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz sons de instrumentos com a boca.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 43,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Caminha para trás pela sala.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 44,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Imita um dinossauro.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 45,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz uma pose de ioga engraçada.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 46,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Canta o hino nacional (ou uma música conhecida) com voz aguda.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 47,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Conta uma história usando só gestos.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 48,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Faz a tua melhor imitação de uma máquina de lavar.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 49,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Dança com uma música infantil.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 50,
-    "type": "dare",
-    "tier": 1,
-    "rawText": "Dá high-fives a toda a gente da roda.",
-    "shots": null,
-    "hasTarget": false
-  },
-  {
-    "id": 1,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi a pior mensagem que enviaste a alguém por engano?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 2,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu crush secreto atual ou do passado?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 3,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi a tua maior trapalhada numa date?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 4,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já foste apanhado/a a mentir a um amigo? Conta.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 5,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é a coisa mais embaraçosa que guardas no telemóvel?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 6,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi o teu pior beijo até hoje?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 7,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu hábito secreto mais estranho?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 8,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já namoraste alguém do grupo ou quiseste?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 9,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi a tua maior bebedeira e o que fizeste?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 10,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu kink mais leve que nunca admitiste?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 11,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já falaste mal de alguém do grupo pelas costas?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 12,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi o hookup mais estranho que tiveste?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 13,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu maior arrependimento romântico?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 14,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Quantas pessoas já beijaste?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 15,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi a tua maior vergonha numa festa?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 16,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já enviaste nudes a quem não devias?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 17,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu segredo mais dark sobre amizade?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 18,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi o teu pior momento de ciúmes?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 19,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é a fantasia mais simples que tens?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 20,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já foste ghosted? Como foi?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 21,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu ex que ainda pensas às vezes?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 22,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi a mentira mais grave que contaste a um amigo?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 23,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é a tua opinião secreta sobre alguém do grupo?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 24,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já fizeste algo ilegal leve?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 25,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi o teu momento mais cringe no sexo?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 26,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu maior medo atual na vida?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 27,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já apanhaste os teus pais a fazer algo embaraçoso?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 28,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é a tua maior insegurança física?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 29,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi o teu hookup mais rápido?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 30,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já mentiste numa entrevista de emprego?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 31,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu guilty pleasure mais vergonhoso?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 32,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi a discussão mais estúpida que tiveste com um amigo?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 33,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já foste bloqueado/a por alguém? Porquê?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 34,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu segredo financeiro mais embaraçoso?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 35,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi o teu pior \"walk of shame\"?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 36,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é a tua opinião honesta sobre o corpo de [Target Player]?",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 37,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já copiaste num exame?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 38,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi o teu maior erro com álcool?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 39,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu crush de celebridade secreto?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 40,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já traíste alguém emocionalmente?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 41,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu maior arrependimento da vida adulta?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 42,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi a tua maior trapalhada com preservativos?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 43,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu segredo sobre redes sociais?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 44,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já foste apanhado/a a stalkear alguém online?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 45,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é a tua fantasia mais repetida?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 46,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi o teu pior encontro de uma noite?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 47,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu maior defeito como amigo/a?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 48,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Já mentiste sobre a tua experiência sexual?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 49,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual é o teu maior \"e se\" da vida?",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 50,
-    "type": "truth",
-    "tier": 2,
-    "rawText": "Qual foi o momento mais embaraçoso com um ex?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 1,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Envia uma mensagem embaraçosa a um contacto antigo do telemóvel.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 2,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz um shot de algo que escolheres e imita um galo.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 3,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Dança de forma ridícula durante 1 minuto inteiro.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 4,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Deixa [Target Player] escolher uma foto tua para postar (sem publicar).",
-    "shots": 3,
-    "hasTarget": true
-  },
-  {
-    "id": 5,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Fala com sotaque durante 5 minutos.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 6,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz 20 flexões enquanto dizes o alfabeto.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 7,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Liga a um amigo e canta \"Parabéns\" fora de tempo.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 8,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Deixa o grupo escolher o teu próximo story no Instagram.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 9,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Come algo estranho da cozinha sem cheirar.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 10,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz uma confissão pública no grupo de WhatsApp do grupo.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 11,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Imita o teu ex ou ex numa date.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 12,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Fica sem telemóvel durante 3 rondas.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 13,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz um lap dance engraçado (sem contacto) a [Target Player].",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 14,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Diz a verdade sobre o que pensas de [Target Player] agora.",
-    "shots": 3,
-    "hasTarget": true
-  },
-  {
-    "id": 15,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Bebe um copo de água de uma só vez sem respirar.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 16,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz uma mímica de uma cena de sexo famosa.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 17,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Posta uma selfie feia no teu story.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 18,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Deixa [Target Player] pintar-te as unhas.",
-    "shots": 2,
-    "hasTarget": true
-  },
-  {
-    "id": 19,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Canta uma música romântica a olhar para [Target Player].",
-    "shots": 3,
-    "hasTarget": true
-  },
-  {
-    "id": 20,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz flexões com alguém sentado nas tuas costas.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 21,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Envia uma voz a chorar por algo parvo a um contacto.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 22,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Dança twerk durante 30 segundos.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 23,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Deixa o grupo escolher o teu próximo corte de cabelo (foto).",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 24,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz um shot e conta o teu pior segredo leve.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 25,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Imita um pornstar famoso durante 20 segundos.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 26,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Liga aos teus pais e diz que os amas de forma dramática.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 27,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Fica de cuecas ou boxers durante 2 rondas.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 28,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz uma declaração de amor falsa a [Target Player].",
-    "shots": 3,
-    "hasTarget": true
-  },
-  {
-    "id": 29,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Bebe dois shots seguidos.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 30,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz uma dança sensual com uma vassoura.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 31,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Deixa [Target Player] dar-te um tapa na cara (leve).",
-    "shots": 3,
-    "hasTarget": true
-  },
-  {
-    "id": 32,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Canta a música mais embaraçosa que sabes.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 33,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz uma proposta de casamento falsa.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 34,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Fica em silêncio total durante 3 rondas.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 35,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Imita um stripper.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 36,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Envia uma foto feia tua a um crush.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 37,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz 10 burpees.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 38,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Deixa o grupo escolher o teu próximo outfit.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 39,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz um rap sobre [Target Player].",
-    "shots": 3,
-    "hasTarget": true
-  },
-  {
-    "id": 40,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Bebe um shot de vinagre ou algo azedo.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 41,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Fala só em inglês (ou outra língua) durante 5 minutos.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 42,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz um body shot imaginário em [Target Player].",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 43,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Posta algo cringe no teu Facebook antigo.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 44,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Dança como se ninguém estivesse a ver durante 1 minuto.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 45,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Deixa alguém do grupo dar-te um corte de cabelo simbólico.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 46,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Faz uma confissão de amor ao ar.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 47,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Fica numa perna só enquanto contas até 100.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 48,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Imita o teu chefe a mandar vir.",
-    "shots": 2,
-    "hasTarget": false
-  },
-  {
-    "id": 49,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Bebe um shot e faz uma prancha de 1 minuto.",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 50,
-    "type": "dare",
-    "tier": 2,
-    "rawText": "Deixa [Target Player] escolher qualquer desafio extra.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 1,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é a tua fantasia sexual mais recorrente?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 2,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o melhor sexo da tua vida e porquê?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 3,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual parte do corpo de [Target Player] achas mais atraente?",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 4,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já fizeste um threesome ou gostarias?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 5,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é o teu kink favorito?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 6,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu momento mais molhado/a?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 7,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é o teu lugar público favorito para fantasiares?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 8,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Quantas pessoas já viste nuas ao vivo?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 9,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu melhor oral (dar ou receber)?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 10,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já usaste brinquedos sexuais? Qual?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 11,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é a tua posição sexual preferida?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 12,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu maior tempo de sexo seguido?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 13,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já foste apanhado/a a fazer sexo?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 14,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é o teu fetiche com roupa ou acessórios?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 15,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu hookup mais arriscado?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 16,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual parte do teu corpo gostas que toquem mais?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 17,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já fizeste sexo no carro? Como foi?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 18,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é a tua fantasia com alguém do grupo?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 19,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu melhor beijo com língua?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 20,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já experimentaste BDSM leve?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 21,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é o teu maior turn-on?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 22,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu momento mais alto de prazer sozinho/a?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 23,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é a tua opinião sobre o tamanho?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 24,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já fizeste striptease para alguém?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 25,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu sexo mais rápido e mais longo?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 26,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é o teu segredo de cama mais sujo?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 27,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já usaste comida durante o sexo?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 28,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual parte do corpo gostas de beijar/lamber?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 29,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi a tua maior decepção sexual?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 30,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já gravaste ou tiraste fotos íntimas?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 31,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é o teu roleplay favorito?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 32,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu melhor orgasmo múltiplo?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 33,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já fizeste sexo anal ou pensaste nisso?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 34,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é o teu maior turn-off?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 35,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu hookup mais famoso ou inesperado?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 36,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é a tua fantasia de poder?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 37,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já foste dominante ou submisso/a?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 38,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é o teu segredo sobre masturbação?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 39,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o sexo mais romântico que tiveste?",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 40,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já experimentaste spanking?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 41,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é o teu lugar mais estranho onde te masturbaste?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 42,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu melhor dirty talk?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 43,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já fizeste sexo com mais de uma pessoa no mesmo dia?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 44,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é o teu fetiche com cheiros ou sons?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 45,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu momento mais voyeur?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 46,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é a tua opinião honesta sobre o desempenho sexual de um ex?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 47,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Já usaste algemas ou algo parecido?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 48,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é a tua fantasia de exibicionismo?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 49,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual foi o teu melhor sexo ao ar livre?",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 50,
-    "type": "truth",
-    "tier": 3,
-    "rawText": "Qual é o teu maior desejo sexual atual?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 1,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Dá um beijo com língua em [Target Player] durante 20 segundos.",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 2,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz um lap dance sensual em [Target Player] durante 1 minuto.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 3,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Tira uma peça de roupa (não íntima).",
-    "shots": 3,
-    "hasTarget": false
-  },
-  {
-    "id": 4,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz um body shot em [Target Player].",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 5,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Massaja os pés de [Target Player] durante 2 minutos.",
-    "shots": 3,
-    "hasTarget": true
-  },
-  {
-    "id": 6,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Beija o pescoço de [Target Player] lentamente.",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 7,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Deixa [Target Player] dar-te um chupão leve.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 8,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Dança sensual só de roupa interior durante 1 minuto.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 9,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Senta-te no colo de [Target Player] e mexe-te devagar.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 10,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Beija a barriga ou coxa de [Target Player].",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 11,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz uma massagem sensual nos ombros de [Target Player].",
-    "shots": 3,
-    "hasTarget": true
-  },
-  {
-    "id": 12,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Deixa alguém do grupo escolher uma peça de roupa para tirares.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 13,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz dirty talk para [Target Player] durante 30 segundos.",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 14,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Beija os lábios de [Target Player] e morde levemente.",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 15,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Fica só de roupa interior durante 3 rondas.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 16,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz um striptease lento para o grupo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 17,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Deixa [Target Player] lamber algo doce no teu corpo.",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 18,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Sussurra uma fantasia ao ouvido de [Target Player].",
-    "shots": 3,
-    "hasTarget": true
-  },
-  {
-    "id": 19,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz uma dança erótica com contacto leve.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 20,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Beija os mamilos de [Target Player] (por cima da roupa).",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 21,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Deixa [Target Player] sentar no teu colo por 2 minutos.",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 22,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz uma massagem nas coxas de [Target Player].",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 23,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Tira as meias e os sapatos de [Target Player] com a boca.",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 24,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Beija o corpo de [Target Player] do pescoço até à barriga.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 25,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Fica vendado/a durante 2 rondas.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 26,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz um french kiss com [Target Player] enquanto estás no colo dele/a.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 27,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Deixa o grupo escolher onde te beijam.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 28,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Dança colado/a com [Target Player] de forma sensual.",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 29,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Tira uma peça de roupa de [Target Player].",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 30,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz um hickey leve em [Target Player].",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 31,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Senta-te em cima de [Target Player] de frente e mexe as ancas.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 32,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Deixa [Target Player] cheirar o teu pescoço e peito.",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 33,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz um lap dance completo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 34,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Beija os dedos dos pés de [Target Player].",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 35,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Fica só com uma peça de roupa durante 3 rondas.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 36,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Massaja o peito de [Target Player] (por cima da roupa).",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 37,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz um beijo triangular com dois jogadores.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 38,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Deixa [Target Player] dar-te palmadas leves.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 39,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Dança erótica com uma peça de roupa a menos.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 40,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Sussurra algo sujo ao ouvido de toda a gente.",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 41,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz uma pose sensual para o grupo tirar foto (sem publicar).",
-    "shots": 4,
-    "hasTarget": false
-  },
-  {
-    "id": 42,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Beija a parte de trás do pescoço de [Target Player].",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 43,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Deixa [Target Player] sentar no teu rosto (roupa).",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 44,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz uma massagem completa nas costas nuas.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 45,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Tira a roupa interior por cima da roupa e mostra.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 46,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Beija o umbigo de [Target Player] com língua.",
-    "shots": 4,
-    "hasTarget": true
-  },
-  {
-    "id": 47,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Fica de quatro e faz uma pose.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 48,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Deixa o grupo escolher o próximo beijo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 49,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Faz um body shot completo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 50,
-    "type": "dare",
-    "tier": 3,
-    "rawText": "Dá um beijo francês longo em [Target Player].",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 1,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu kink mais extremo que já experimentaste?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 2,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o sexo mais selvagem e onde?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 3,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é a tua fantasia mais dark ou proibida?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 4,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já participaste numa orgia ou gangbang? Conta tudo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 5,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu fetiche mais sujo?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 6,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu maior squirt ou creampie experience?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 7,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já fizeste sexo por dinheiro ou favores?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 8,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu maior número de orgasmos num dia?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 9,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu sexo mais doloroso ou intenso?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 10,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já usaste plug anal ou brinquedos extremos?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 11,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é a tua fantasia de CNC ou non-consent?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 12,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu hookup mais degradante?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 13,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu segredo sobre pornografia?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 14,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já traíste o teu parceiro/a fisicamente?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 15,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu melhor BDSM session?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 16,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu limite hard que nunca ultrapassarias?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 17,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já fizeste double penetration?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 18,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é a tua fantasia com estranhos?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 19,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu momento mais submisso ou dominante?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 20,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já gravaste sexo real? Onde está?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 21,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu fetiche com fluidos corporais?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 22,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o sexo mais público que fizeste?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 23,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já experimentaste electro ou breath play?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 24,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu maior arrependimento sexual?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 25,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu gangbang ou threesome mais louco?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 26,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é a tua fantasia de humilhação?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 27,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já usaste cockring, ball gag ou coleira?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 28,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu melhor creampie ou facial?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 29,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu segredo sobre swingers ou clubes?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 30,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já fizeste sexo com mais de 3 pessoas ao mesmo tempo?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 31,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é a tua fantasia de pet play ou age play?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 32,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu momento mais intenso de edging?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 33,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já foste pago/a por sexo ou nudes?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 34,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu kink com dor extrema?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 35,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu sexo mais longo e quantos rounds?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 36,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já experimentaste watersports?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 37,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é a tua fantasia de cuckold ou hotwife?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 38,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu melhor deepthroat ou fisting experience?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 39,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu segredo mais sujo sobre família ou amigos?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 40,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já fizeste sexo em grupo com desconhecidos?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 41,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu maior desejo atual de BDSM?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 42,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu momento mais degradante que gostaste?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 43,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já usaste brinquedos em público?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 44,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é a tua fantasia de breeding ou impregnation?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 45,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu sexo mais violento consensual?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 46,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Já participaste em gangbang real?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 47,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é o teu kink com cheiros corporais?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 48,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu maior número de parceiros num mês?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 49,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual é a tua fantasia mais taboo?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 50,
-    "type": "truth",
-    "tier": 4,
-    "rawText": "Qual foi o teu momento sexual mais libertador?",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 1,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz sexo oral completo em [Target Player] durante 2 minutos.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 2,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa [Target Player] foder-te durante 3 minutos (ou o equivalente).",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 3,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fica completamente nu/a durante o resto do jogo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 4,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz um creampie ou recebe um.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 5,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa [Target Player] dar-te palmadas fortes enquanto contas.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 6,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz deepthroat ou recebe durante 1 minuto.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 7,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fica amarrado/a e deixa o grupo brincar contigo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 8,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz sexo anal (com proteção).",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 9,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa [Target Player] ejacular na tua cara ou corpo.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 10,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz um 69 completo com [Target Player].",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 11,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Usa um brinquedo sexual no/a [Target Player].",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 12,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fica de quatro e deixa [Target Player] foder-te.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 13,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz um facial completo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 14,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa [Target Player] lamber o teu cu.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 15,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fica vendado/a e amarrado/a durante 5 minutos.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 16,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz sexo com duas pessoas ao mesmo tempo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 17,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa o grupo ver-te a masturbar-te até ao fim.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 18,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz spanking forte em [Target Player].",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 19,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Recebe fisting ou faz.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 20,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fica nu/a e dança erótica para toda a gente.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 21,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa [Target Player] usar um plug em ti.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 22,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz sexo oral em [Target Player] enquanto outra pessoa vê.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 23,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Recebe ou dá golden shower.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 24,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fode [Target Player] na frente do grupo.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 25,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa [Target Player] sufocar-te levemente durante o sexo.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 26,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz double penetration com brinquedos.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 27,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fica amarrado/a e recebe orgasmos forçados.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 28,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa o grupo escolher o próximo ato sexual.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 29,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz sexo anal com [Target Player].",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 30,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Recebe um bukkake ou equivalente do grupo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 31,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fica de coleira e anda de gatas.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 32,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa [Target Player] usar cera quente no teu corpo.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 33,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz sexo completo com penetração agora.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 34,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Masturba [Target Player] até ao fim com a boca.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 35,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Recebe electro stimulation ou algo intenso.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 36,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fica nu/a e deixa toda a gente tocar.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 37,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz roleplay CNC com [Target Player].",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 38,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa [Target Player] gravar um vídeo curto teu.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 39,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz breath play durante o sexo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 40,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Recebe spanking até ficares vermelho/a.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 41,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fode [Target Player] em todas as posições que o grupo pedir.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 42,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa o grupo usar gelo ou cera em ti.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 43,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz um train ou roda sexual.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 44,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fica amarrado/a e usado/a como brinquedo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 45,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Recebe ou dá um creampie interno.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 46,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz sexo com [Target Player] enquanto o grupo assiste.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 47,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Deixa [Target Player] usar um strap-on em ti.",
-    "shots": 5,
-    "hasTarget": true
-  },
-  {
-    "id": 48,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Fica nu/a e faz poses para fotos íntimas.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 49,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Recebe fisting completo.",
-    "shots": 5,
-    "hasTarget": false
-  },
-  {
-    "id": 50,
-    "type": "dare",
-    "tier": 4,
-    "rawText": "Faz o que [Target Player] quiser durante 10 minutos.",
-    "shots": 5,
-    "hasTarget": true
-  }
+    {
+        "id": 1,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu hábito mais estranho quando estás sozinho(a) em casa?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 2,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a mentira mais parva que contaste aos teus pais?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 3,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é a tua maior vergonha de quando eras criança?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 4,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Se fosses um animal, qual serias e porquê?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 5,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é a comida que odeias mas finges que gostas?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 6,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi o presente mais estranho que recebeste?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 7,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu prazer culposo musical (música que cantas às escondidas)?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 8,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi o momento mais embaraçoso numa festa de família?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 9,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu superpoder inútil favorito?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 10,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a coisa mais ridícula que fizeste por causa de um desafio?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 11,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu filme ou série preferido que vês repetidamente?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 12,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a tua maior trapalhada na escola?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 13,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Se pudesses trocar de vida com alguém da família por um dia, quem seria?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 14,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu medo mais parvo?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 15,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi o disfarce mais ridículo que usaste no Carnaval?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 16,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é a tua dança secreta quando ninguém está a ver?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 17,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a coisa mais engraçada que o teu animal de estimação fez?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 18,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu apelido carinhoso mais embaraçoso da família?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 19,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a tua maior trapalhada a cozinhar?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 20,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Se fosses invisível por um dia, o que farias primeiro?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 21,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é a tua imitação mais fixe de uma celebridade?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 22,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi o momento mais engraçado com os teus amigos de infância?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 23,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o brinquedo da infância de que ainda tens saudades?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 24,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a tua maior birra em público?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 25,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é a tua posição de dormir mais estranha?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 26,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi o fato mais ridículo que vestiste numa festa à fantasia?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 27,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu talento escondido mais parvo?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 28,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a mensagem de voz mais embaraçosa que enviaste por engano?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 29,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu sonho mais estranho que já tiveste?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 30,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a tua maior confusão com nomes de pessoas?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 31,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é a tua comida de conforto preferida?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 32,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi o momento mais hilariante numa viagem de família?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 33,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu sotaque mais engraçado que tentas imitar?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 34,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a tua primeira memória embaraçosa?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 35,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o objeto da casa que usas de forma mais criativa?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 36,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi o teu maior \"quase apanhado\" pelos pais?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 37,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é a tua expressão facial mais engraçada?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 38,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a brincadeira de infância que correu mal?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 39,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu herói de desenho animado preferido e porquê?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 40,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi o dia mais estranho da tua vida até agora?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 41,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu ritual matinal mais estranho?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 42,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a tua maior confusão com palavras?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 43,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu emoji mais usado e o que significa para ti?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 44,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi o momento mais fofo com um familiar?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 45,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é a tua imitação de animal favorita?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 46,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi a tua maior trapalhada desportiva?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 47,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é o teu segredo mais leve sobre uma mania?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 48,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi o presente que compraste e depois quiseste para ti?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 49,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual é a tua forma preferida de fazer caretas?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 50,
+        "type": "truth",
+        "tier": 1,
+        "rawText": "Qual foi o momento mais engraçado que partilhaste com toda a família?",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 1,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz a tua melhor imitação de um animal durante 20 segundos.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 2,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Canta uma música infantil com voz de robô.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 3,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Dança como um robô durante 30 segundos.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 4,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Fala com sotaque estrangeiro durante as próximas 3 rondas.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 5,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz 10 flexões enquanto imitas um galo a cantar.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 6,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Deixa alguém da roda desenhar-te um bigode com marcador lavável.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 7,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz a tua melhor dança da vitória.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 8,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Imita o teu ator ou atriz favorito a dizer uma frase normal.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 9,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Fica em posição de galinha durante 1 minuto.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 10,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Canta a tua música preferida mas só com sons de animais.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 11,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz uma careta engraçada e mantém-na por 15 segundos.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 12,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Conta uma piada infantil para toda a gente rir.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 13,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Caminha como um caranguejo pela sala.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 14,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Fala como um bebé durante as próximas 2 rondas.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 15,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz uma escultura com o que tens à mão em 30 segundos.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 16,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Imita o som de 5 animais diferentes.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 17,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Dança com uma música que os outros escolherem.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 18,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz uma pose de super-herói durante 20 segundos.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 19,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Diz o alfabeto ao contrário o mais rápido possível.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 20,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz uma massagem nos ombros de [Target Player] durante 30 segundos.",
+        "shots": null,
+        "hasTarget": true
+    },
+    {
+        "id": 21,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Imita um apresentador de televisão a dar as notícias.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 22,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Fica de pé numa perna só durante 1 minuto.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 23,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Canta \"Parabéns\" como ópera.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 24,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz uma mímica de uma profissão para os outros adivinharem.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 25,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Caminha como um modelo numa passarela.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 26,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Diz 3 elogios sinceros a [Target Player].",
+        "shots": null,
+        "hasTarget": true
+    },
+    {
+        "id": 27,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz a tua melhor gargalhada de vilão.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 28,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Imita um robô a dançar.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 29,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Conta uma história inventada em menos de 30 segundos.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 30,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz flexões com uma mão (ou tenta).",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 31,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Dança o \"Macarena\" completo.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 32,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Fala só em rimas durante 1 minuto.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 33,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz uma cara de peixe durante 15 segundos.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 34,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Imita o teu professor ou chefe mais engraçado.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 35,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Dá um abraço de urso em toda a gente da roda.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 36,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz uma pirueta ou roda.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 37,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Canta uma canção com a boca fechada.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 38,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Fica em posição de prancha durante 30 segundos.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 39,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Imita um locutor de rádio.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 40,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz uma dança livre com os olhos vendados (com ajuda).",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 41,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Diz o teu nome ao contrário 5 vezes rápido.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 42,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz sons de instrumentos com a boca.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 43,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Caminha para trás pela sala.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 44,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Imita um dinossauro.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 45,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz uma pose de ioga engraçada.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 46,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Canta o hino nacional (ou uma música conhecida) com voz aguda.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 47,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Conta uma história usando só gestos.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 48,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Faz a tua melhor imitação de uma máquina de lavar.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 49,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Dança com uma música infantil.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 50,
+        "type": "dare",
+        "tier": 1,
+        "rawText": "Bate a palma da mão com toda a gente da roda.",
+        "shots": null,
+        "hasTarget": false
+    },
+    {
+        "id": 1,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi a pior mensagem que enviaste a alguém por engano?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 2,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é a tua paixoneta secreta atual ou do passado?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 3,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi a tua maior trapalhada num encontro?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 4,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já foste apanhado(a) a mentir a um(a) amigo(a)? Conta.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 5,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é a coisa mais embaraçosa que guardas no telemóvel?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 6,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi o teu pior beijo até hoje?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 7,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o teu hábito secreto mais estranho?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 8,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já namoraste alguém do grupo ou quiseste?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 9,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi a tua maior bebedeira e o que fizeste?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 10,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o teu fetiche mais leve que nunca admitiste?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 11,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já falaste mal de alguém do grupo pelas costas?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 12,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi a aventura mais estranha que tiveste?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 13,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o teu maior arrependimento romântico?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 14,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Quantas pessoas já beijaste?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 15,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi a tua maior vergonha numa festa?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 16,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já enviaste fotos íntimas a quem não devias?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 17,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o teu segredo mais sombrio sobre amizade?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 18,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi o teu pior momento de ciúmes?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 19,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é a fantasia mais simples que tens?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 20,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já ficaste sem resposta de alguém? Como foi?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 21,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o(a) ex em quem ainda pensas às vezes?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 22,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi a mentira mais grave que contaste a um(a) amigo(a)?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 23,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é a tua opinião secreta sobre alguém do grupo?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 24,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já fizeste algo ilegal leve?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 25,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi o teu momento mais constrangedor no sexo?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 26,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o teu maior medo atual na vida?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 27,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já apanhaste os teus pais a fazer algo embaraçoso?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 28,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é a tua maior insegurança física?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 29,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi a tua aventura mais rápida?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 30,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já mentiste numa entrevista de emprego?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 31,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o teu prazer culposo mais vergonhoso?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 32,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi a discussão mais estúpida que tiveste com um(a) amigo(a)?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 33,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já foste bloqueado(a) por alguém? Porquê?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 34,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o teu segredo financeiro mais embaraçoso?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 35,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi o teu regresso mais vergonhoso de casa alheia de manhã?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 36,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é a tua opinião honesta sobre o corpo de [Target Player]?",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 37,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já copiaste num exame?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 38,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi o teu maior erro com álcool?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 39,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é a tua paixoneta por uma celebridade?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 40,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já traíste alguém emocionalmente?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 41,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o teu maior arrependimento da vida adulta?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 42,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi a tua maior trapalhada com preservativos?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 43,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o teu segredo sobre redes sociais?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 44,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já foste apanhado(a) a stalkear alguém online?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 45,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é a tua fantasia mais repetida?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 46,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi o teu pior encontro de uma noite?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 47,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o teu maior defeito como amigo(a)?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 48,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Já mentiste sobre a tua experiência sexual?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 49,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual é o teu maior \"e se\" da vida?",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 50,
+        "type": "truth",
+        "tier": 2,
+        "rawText": "Qual foi o momento mais embaraçoso com um(a) ex?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 1,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Envia uma mensagem embaraçosa a um contacto antigo do telemóvel.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 2,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz um shot de algo que escolheres e imita um galo.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 3,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Dança de forma ridícula durante 1 minuto inteiro.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 4,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Deixa [Target Player] escolher uma foto tua para postar (sem publicar).",
+        "shots": 3,
+        "hasTarget": true
+    },
+    {
+        "id": 5,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Fala com sotaque durante 5 minutos.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 6,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz 20 flexões enquanto dizes o alfabeto.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 7,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Liga a um(a) amigo(a) e canta \"Parabéns\" fora de tempo.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 8,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Deixa o grupo escolher o teu próximo story no Instagram.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 9,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Come algo estranho da cozinha sem cheirar.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 10,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz uma confissão pública no grupo de WhatsApp do grupo.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 11,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Imita um(a) ex durante um encontro.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 12,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Fica sem telemóvel durante 3 rondas.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 13,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Dança de forma engraçada no colo de [Target Player] (sem contacto).",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 14,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Diz a verdade sobre o que pensas de [Target Player] agora.",
+        "shots": 3,
+        "hasTarget": true
+    },
+    {
+        "id": 15,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Bebe um copo de água de uma só vez sem respirar.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 16,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz uma mímica de uma cena de sexo famosa.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 17,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Publica uma foto feia de ti no teu story.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 18,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Deixa [Target Player] pintar-te as unhas.",
+        "shots": 2,
+        "hasTarget": true
+    },
+    {
+        "id": 19,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Canta uma música romântica a olhar para [Target Player].",
+        "shots": 3,
+        "hasTarget": true
+    },
+    {
+        "id": 20,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz flexões com alguém sentado nas tuas costas.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 21,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Envia uma voz a chorar por algo parvo a um contacto.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 22,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Rebola durante 30 segundos.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 23,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Deixa o grupo escolher o teu próximo corte de cabelo (foto).",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 24,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz um shot e conta o teu pior segredo leve.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 25,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Imita uma estrela do porno durante 20 segundos.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 26,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Liga aos teus pais e diz que os amas de forma dramática.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 27,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Fica de cuecas ou boxers durante 2 rondas.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 28,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz uma declaração de amor falsa a [Target Player].",
+        "shots": 3,
+        "hasTarget": true
+    },
+    {
+        "id": 29,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Bebe dois shots seguidos.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 30,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz uma dança sensual com uma vassoura.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 31,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Deixa [Target Player] dar-te um tapa na cara (leve).",
+        "shots": 3,
+        "hasTarget": true
+    },
+    {
+        "id": 32,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Canta a música mais embaraçosa que sabes.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 33,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz uma proposta de casamento falsa.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 34,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Fica em silêncio total durante 3 rondas.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 35,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Imita um(a) dançarino(a) de strip.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 36,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Envia uma foto feia tua a uma paixoneta.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 37,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz 10 burpees.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 38,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Deixa o grupo escolher o teu próximo conjunto de roupa.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 39,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz um rap sobre [Target Player].",
+        "shots": 3,
+        "hasTarget": true
+    },
+    {
+        "id": 40,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Bebe um shot de vinagre ou algo azedo.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 41,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Fala só em inglês (ou outra língua) durante 5 minutos.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 42,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Simula um shot pelo corpo de [Target Player].",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 43,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Publica algo constrangedor no teu Facebook antigo.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 44,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Dança como se ninguém estivesse a ver durante 1 minuto.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 45,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Deixa alguém do grupo dar-te um corte de cabelo simbólico.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 46,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Faz uma confissão de amor ao ar.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 47,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Fica numa perna só enquanto contas até 100.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 48,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Imita o teu chefe a mandar vir.",
+        "shots": 2,
+        "hasTarget": false
+    },
+    {
+        "id": 49,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Bebe um shot e faz uma prancha de 1 minuto.",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 50,
+        "type": "dare",
+        "tier": 2,
+        "rawText": "Deixa [Target Player] escolher qualquer desafio extra.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 1,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é a tua fantasia sexual mais recorrente?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 2,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o melhor sexo da tua vida e porquê?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 3,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual parte do corpo de [Target Player] achas mais atraente?",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 4,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já fizeste um trio ou gostarias?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 5,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é o teu fetiche favorito?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 6,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o teu momento de maior excitação sexual? Descreve como foi.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 7,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é o teu lugar público favorito para fantasiares?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 8,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Quantas pessoas já viste nuas ao vivo?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 9,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o teu melhor oral (dar ou receber)?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 10,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já usaste brinquedos sexuais? Qual?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 11,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é a tua posição sexual preferida?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 12,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o teu maior tempo de sexo seguido?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 13,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já foste apanhado(a) a fazer sexo?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 14,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é o teu fetiche com roupa ou acessórios?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 15,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi a tua aventura mais arriscada?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 16,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é a parte do teu corpo que mais gostas que toquem?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 17,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já fizeste sexo no carro? Como foi?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 18,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é a tua fantasia com alguém do grupo?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 19,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o teu melhor beijo com língua?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 20,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já experimentaste BDSM leve?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 21,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "O que mais te excita sexualmente?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 22,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o teu momento mais alto de prazer sozinho(a)?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 23,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é a tua opinião sobre o tamanho?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 24,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já fizeste strip para alguém?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 25,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o teu sexo mais rápido e mais longo?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 26,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é o teu segredo de cama mais sujo?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 27,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já usaste comida durante o sexo?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 28,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Que parte do corpo gostas de beijar ou lamber?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 29,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi a tua maior decepção sexual?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 30,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já gravaste ou tiraste fotos íntimas?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 31,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é o teu jogo de papéis favorito?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 32,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o teu melhor orgasmo múltiplo?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 33,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já fizeste sexo anal ou pensaste nisso?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 34,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "O que mais te tira a disposição no sexo?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 35,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi a tua aventura mais famosa ou inesperada?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 36,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é a tua fantasia de poder?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 37,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já foste dominante ou submisso(a)?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 38,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é o teu segredo sobre masturbação?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 39,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o sexo mais romântico que tiveste?",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 40,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já experimentaste palmadas durante o sexo?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 41,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é o lugar mais estranho onde já te masturbaste?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 42,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o teu melhor momento de conversa suja?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 43,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já fizeste sexo com mais de uma pessoa no mesmo dia?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 44,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é o teu fetiche com cheiros ou sons?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 45,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o teu momento mais voyeur?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 46,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é a tua opinião honesta sobre o desempenho sexual de um(a) ex?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 47,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Já usaste algemas ou algo parecido?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 48,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é a tua fantasia de exibicionismo?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 49,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual foi o teu melhor sexo ao ar livre?",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 50,
+        "type": "truth",
+        "tier": 3,
+        "rawText": "Qual é o teu maior desejo sexual atual?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 1,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Dá um beijo com língua em [Target Player] durante 20 segundos.",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 2,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Dança de forma sensual no colo de [Target Player] durante 1 minuto.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 3,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Tira uma peça de roupa (não íntima).",
+        "shots": 3,
+        "hasTarget": false
+    },
+    {
+        "id": 4,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Bebe um shot do corpo de [Target Player].",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 5,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Massageia os pés de [Target Player] durante 2 minutos.",
+        "shots": 3,
+        "hasTarget": true
+    },
+    {
+        "id": 6,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Beija o pescoço de [Target Player] lentamente.",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 7,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Deixa [Target Player] dar-te um chupão leve.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 8,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Dança de forma sensual só de roupa interior durante 1 minuto.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 9,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Senta-te no colo de [Target Player] e mexe-te devagar.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 10,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Beija a barriga ou coxa de [Target Player].",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 11,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Faz uma massagem sensual nos ombros de [Target Player].",
+        "shots": 3,
+        "hasTarget": true
+    },
+    {
+        "id": 12,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Deixa alguém do grupo escolher uma peça de roupa para tirares.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 13,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Faz conversa suja para [Target Player] durante 30 segundos.",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 14,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Beija os lábios de [Target Player] e morde levemente.",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 15,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Fica só de roupa interior durante 3 rondas.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 16,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Faz um strip lento para o grupo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 17,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Deixa [Target Player] lamber algo doce no teu corpo.",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 18,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Sussurra uma fantasia ao ouvido de [Target Player].",
+        "shots": 3,
+        "hasTarget": true
+    },
+    {
+        "id": 19,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Faz uma dança erótica com contacto leve.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 20,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Beija os mamilos de [Target Player] (por cima da roupa).",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 21,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Deixa [Target Player] sentar no teu colo por 2 minutos.",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 22,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Faz uma massagem nas coxas de [Target Player].",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 23,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Tira as meias e os sapatos de [Target Player] com a boca.",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 24,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Beija o corpo de [Target Player] do pescoço até à barriga.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 25,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Fica vendado(a) durante 2 rondas.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 26,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Dá um beijo com língua a [Target Player] enquanto estás no colo dele(a).",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 27,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Deixa o grupo escolher onde te beijam.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 28,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Dança colado(a) com [Target Player] de forma sensual.",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 29,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Tira uma peça de roupa de [Target Player].",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 30,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Dá um chupão leve em [Target Player].",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 31,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Senta-te em cima de [Target Player] de frente e mexe as ancas.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 32,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Deixa [Target Player] cheirar o teu pescoço e peito.",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 33,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Faz uma dança completa no colo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 34,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Beija os dedos dos pés de [Target Player].",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 35,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Fica só com uma peça de roupa durante 3 rondas.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 36,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Massageia o peito de [Target Player] (por cima da roupa).",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 37,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Faz um beijo a três com dois jogadores.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 38,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Deixa [Target Player] dar-te palmadas leves.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 39,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Dança de forma erótica com uma peça de roupa a menos.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 40,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Sussurra algo sujo ao ouvido de toda a gente.",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 41,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Faz uma pose sensual para o grupo tirar foto (sem publicar).",
+        "shots": 4,
+        "hasTarget": false
+    },
+    {
+        "id": 42,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Beija a parte de trás do pescoço de [Target Player].",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 43,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Deixa [Target Player] sentar no teu rosto (roupa).",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 44,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Faz uma massagem completa nas costas nuas.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 45,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Tira a roupa interior por cima da roupa e mostra.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 46,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Beija o umbigo de [Target Player] com língua.",
+        "shots": 4,
+        "hasTarget": true
+    },
+    {
+        "id": 47,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Fica de quatro e faz uma pose.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 48,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Deixa o grupo escolher o próximo beijo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 49,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Bebe um shot completo pelo corpo de alguém.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 50,
+        "type": "dare",
+        "tier": 3,
+        "rawText": "Dá um beijo francês longo em [Target Player].",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 1,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu fetiche mais extremo que já experimentaste?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 2,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o sexo mais selvagem e onde?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 3,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é a tua fantasia mais sombria ou proibida?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 4,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já participaste numa orgia ou sexo em grupo? Conta tudo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 5,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu fetiche mais sujo?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 6,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o teu orgasmo mais intenso? Descreve o que aconteceu.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 7,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já fizeste sexo por dinheiro ou favores?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 8,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu maior número de orgasmos num dia?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 9,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o teu sexo mais doloroso ou intenso?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 10,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já usaste plug anal ou brinquedos extremos?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 11,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é a tua fantasia de resistência forçada?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 12,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi a tua aventura mais degradante?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 13,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu segredo sobre pornografia?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 14,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já traíste o teu parceiro(a) fisicamente?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 15,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi a tua melhor sessão de BDSM?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 16,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu limite hard que nunca ultrapassarias?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 17,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já fizeste double penetration?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 18,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é a tua fantasia com estranhos?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 19,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o teu momento mais submisso ou dominante?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 20,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já gravaste sexo real? Onde está?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 21,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu fetiche com fluidos corporais?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 22,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o sexo mais público que fizeste?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 23,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já experimentaste electroestimulação ou asfixia erótica?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 24,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu maior arrependimento sexual?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 25,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o teu sexo em grupo ou trio mais louco?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 26,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é a tua fantasia de humilhação?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 27,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já usaste mordaça, coleira ou outros acessórios BDSM?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 28,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o teu momento mais intenso a acabar ou a receber?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 29,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu segredo sobre swingers ou clubes?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 30,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já fizeste sexo com mais de 3 pessoas ao mesmo tempo?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 31,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é a tua fantasia de pet play ou age play?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 32,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o teu momento mais intenso a manter-te à beira do clímax?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 33,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já foste pago(a) por sexo ou fotos íntimas?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 34,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu fetiche com dor extrema?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 35,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o teu sexo mais longo e quantos rounds?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 36,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já experimentaste urofilia?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 37,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é a tua fantasia de cornudo(a) ou parceiro(a) liberal?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 38,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi a tua melhor experiência de garganta funda ou fisting?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 39,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu segredo mais sujo sobre família ou amigos?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 40,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já fizeste sexo em grupo com desconhecidos?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 41,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu maior desejo atual de BDSM?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 42,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o teu momento mais degradante que gostaste?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 43,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já usaste brinquedos em público?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 44,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é a tua fantasia de acabar dentro ou receber?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 45,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o teu sexo mais violento consensual?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 46,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Já participaste em sexo em grupo real?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 47,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é o teu fetiche com cheiros corporais?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 48,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o teu maior número de parceiros num mês?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 49,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual é a tua fantasia mais taboo?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 50,
+        "type": "truth",
+        "tier": 4,
+        "rawText": "Qual foi o teu momento sexual mais libertador?",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 1,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz sexo oral completo em [Target Player] durante 2 minutos.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 2,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa [Target Player] foder-te durante 3 minutos (ou o equivalente).",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 3,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fica completamente nu(a) durante o resto do jogo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 4,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Goza dentro ou recebe.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 5,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa [Target Player] dar-te palmadas fortes enquanto contas.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 6,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz garganta funda ou recebe durante 1 minuto.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 7,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fica amarrado(a) e deixa o grupo brincar contigo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 8,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz sexo anal (com proteção).",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 9,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa [Target Player] acabar na tua cara ou corpo.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 10,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz um 69 completo com [Target Player].",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 11,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Usa um brinquedo sexual em [Target Player].",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 12,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fica de quatro e deixa [Target Player] foder-te.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 13,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Dá ou recebe um facial completo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 14,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa [Target Player] lamber o teu cu.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 15,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fica vendado(a) e amarrado(a) durante 5 minutos.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 16,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz sexo com duas pessoas ao mesmo tempo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 17,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa o grupo ver-te a masturbar-te até ao fim.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 18,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Dá palmadas fortes em [Target Player].",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 19,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Recebe fisting ou faz.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 20,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fica nu(a) e dança de forma erótica para toda a gente.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 21,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa [Target Player] usar um plug em ti.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 22,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz sexo oral em [Target Player] enquanto outra pessoa vê.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 23,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Recebe ou dá golden shower.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 24,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fode [Target Player] na frente do grupo.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 25,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa [Target Player] sufocar-te levemente durante o sexo.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 26,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz double penetration com brinquedos.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 27,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fica amarrado(a) e recebe orgasmos forçados.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 28,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa o grupo escolher o próximo ato sexual.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 29,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz sexo anal com [Target Player].",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 30,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Recebe um acabamento em grupo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 31,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fica de coleira e anda de gatas.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 32,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa [Target Player] usar cera quente no teu corpo.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 33,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz sexo completo com penetração agora.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 34,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Masturba [Target Player] até ao fim com a boca.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 35,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Recebe electroestimulação ou algo intenso.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 36,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fica nu(a) e deixa toda a gente tocar.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 37,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz jogo de papéis de resistência forçada com [Target Player].",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 38,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa [Target Player] gravar um vídeo curto teu.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 39,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Pratica asfixia erótica durante o sexo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 40,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Recebe palmadas até ficares vermelho(a).",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 41,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fode [Target Player] em todas as posições que o grupo pedir.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 42,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa o grupo usar gelo ou cera em ti.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 43,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz um train ou roda sexual.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 44,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fica amarrado(a) e usado(a) como brinquedo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 45,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Recebe ou goza internamente.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 46,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz sexo com [Target Player] enquanto o grupo assiste.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 47,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Deixa [Target Player] usar um arnês com dildo em ti.",
+        "shots": 5,
+        "hasTarget": true
+    },
+    {
+        "id": 48,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Fica nu(a) e faz poses para fotos íntimas.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 49,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Recebe fisting completo.",
+        "shots": 5,
+        "hasTarget": false
+    },
+    {
+        "id": 50,
+        "type": "dare",
+        "tier": 4,
+        "rawText": "Faz o que [Target Player] quiser durante 10 minutos.",
+        "shots": 5,
+        "hasTarget": true
+    }
 ]

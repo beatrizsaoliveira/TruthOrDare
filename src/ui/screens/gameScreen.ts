@@ -1,4 +1,4 @@
-import { formatCardText } from '../../engine/genderParser.js';
+import { formatCardText } from '../../engine/cardFormatter.js';
 import type { GameStore } from '../../state/store.js';
 import { Actions } from '../../state/store.js';
 import type { Card, Player } from '../../types/index.js';

@@ -674,7 +674,7 @@ function buildWikiContent(): DocumentFragment {
             html: `<ol>
         <li>Escolhe o nível na ecrã inicial.</li>
         <li>Confirma a idade, se necessário (18+ para os níveis 2, 3 e 4).</li>
-        <li>Se já tiveres jogadores guardados, podes reutilizá-los diretamente ou começar do zero.</li>
+        <li>Se já tiveres jogadores guardados, podes reutilizá-los diretamente ou começar do zero (será pedida confirmação antes de descartar os jogadores guardados).</li>
         <li>Adiciona (ou ajusta) os jogadores com as respetivas informações.</li>
         <li>Ativa ou desativa o sistema de penalizações em <em>shots</em>.</li>
         <li>Carrega em <strong>Iniciar Jogo</strong>.</li>
@@ -709,7 +709,7 @@ function buildWikiContent(): DocumentFragment {
             html: `<p>Consoante o nível escolhido, é pedida diferente informação ao registar cada jogador:</p>
       <ul>
         <li><strong>Nível 1:</strong> Apenas o nome.</li>
-        <li><strong>Nível 2:</strong> Nome + género (para concordância gramatical nas cartas em português).</li>
+        <li><strong>Nível 2:</strong> Nome + género (utilizado no perfil do jogador e para contextualizar as cartas, que usam a notação <em>palavra(a)</em>, ex: <em>nu(a)</em>, para linguagem inclusiva).</li>
         <li><strong>Níveis 3 e 4:</strong> Nome, género, orientação sexual e estado relacional (solteiro/a, relação aberta ou fechada). Se tiveres parceiro/a no jogo, podes ligar os dois — o campo aparece automaticamente quando o estado é <em>relação aberta</em> ou <em>fechada</em>. O toggle “aberto/a a interações externas” aparece para jogadores <em>solteiros</em> e em <em>relação aberta</em>: para solteiros, ativá-lo permite definir uma preferência de sexo alvo; para relações abertas, é também necessário para poder ser alvo de outros jogadores. A preferência de alvo (homens, mulheres ou ambos) só é mostrada quando esse toggle está ativo.</li>
       </ul>`,
         },

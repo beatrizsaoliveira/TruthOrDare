@@ -26,12 +26,12 @@
 - **4 Tier system** — from family-friendly to mature adult content (18+)
 - **Age-gating** — mandatory 18+ confirmation for Tiers 2–4
 - **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status); at Tier 3–4, partner dropdown and _open-to-outside_ toggle are shown for single and open-relationship players (not closed); for open-relationship players the toggle also controls eligibility as an interaction target; the target-sex selector is shown once the toggle is active
-- **Saved-player roster** — registered players are persisted to `localStorage` (`tod_roster_v1`) and offered for reuse at the start of every new session via a dedicated Roster screen; couples are displayed grouped with a visual connector
+- **Saved-player roster** — registered players are persisted to `localStorage` (`tod_roster_v1`) and offered for reuse at the start of every new session via a dedicated Roster screen; couples are displayed grouped with a visual connector; choosing **Começar do zero** triggers a confirmation dialog before discarding the saved roster
 - **Orientation & relationship-aware matching engine** (Tiers 3–4) — ensures targets are mutually compatible
 - **Anti-repetition card engine** — weighted scoring prevents recently seen cards from reappearing; couples share history
 - **Drink/shot penalty system** — on card refusal a penalty overlay with a `−`/value/`+` stepper appears; the player confirms how many shots they actually drank (zero is valid — nobody is forced); the **Recusar** button is always visible; the card's penalty hint (`🍺 N shots se recusar`) is only displayed when the penalty mode is active; a running shot count chip (🍺 Conta) is shown in the turn banner, persisted per player, and reset on new game; can be disabled before starting
 - **End-of-game ranking** — when a game with penalties ends and at least one player drank, a ranking screen is shown before returning home: players with shots are listed descending with 🥇🥈🥉 medals, followed by zero-shot players sorted alphabetically (dimmed); shot counts remain in `localStorage` while the ranking is on screen (so a refresh still shows the ranking correctly) and are only cleared when the player navigates to the home screen
-- **pt-PT gender agreement parser** — resolves `word/a` patterns (e.g. `sozinho/a`) based on the active player's gender
+- **pt-PT inclusive notation** — card text encodes gender variants directly using the `(a)` pattern (e.g. `nu(a)`, `sozinho(a)`); no dynamic gender resolution is performed at runtime
 - **Player editing** — each registered player chip shows an edit (pencil) button that opens a pre-filled glass modal; the modal warns with a `confirm()` dialog before discarding unsaved changes when closed via X, ESC, or backdrop click (Cancel and Save close immediately without prompting)
 - **Persistent game state** — full game state is saved to `localStorage` (`tod_state_v1`) on every update, including the active theme and per-player shot counts; player roster is persisted separately in `tod_roster_v1`; first visit uses OS dark/light preference
 - **Ambient background** — floating bokeh particles (tsParticles v2 via CDN) that smoothly re-colour to match the active palette when the theme changes
@@ -115,15 +115,13 @@ Opens at `http://localhost:4173`.
 
 ```
 .
-├── scripts/
-│   └── convert-dataset.mjs   # Converts dataset.md → src/data/dataset.json
 ├── src/
 │   ├── data/
 │   │   └── dataset.json       # 400 cards (bundled at build time)
 │   ├── engine/
 │   │   ├── glassDistortion.ts # Physics-based SVG displacement map (Liquid Glass)
 │   │   ├── markdownParser.ts  # JSON loader + filterCards utility
-│   │   ├── genderParser.ts    # pt-PT gender agreement & HTML formatter
+│   │   ├── cardFormatter.ts   # Card text formatter: [Target Player] substitution + HTML escaping
 │   │   ├── matchingEngine.ts  # Eligible target selection (levels 3–4)
 │   │   └── repetitionEngine.ts# Anti-repetition weighted card selection
 │   ├── state/
@@ -222,12 +220,9 @@ Before each card draw, every candidate card receives a penalty score:
 
 The card with the lowest total score is selected (from the top-5 lowest, with randomness).
 
-### pt-PT Gender Agreement
+### pt-PT Inclusive Notation
 
-Card text uses the pattern `word/a` (e.g. `sozinho/a`, `nu/a`) to encode gender variants. The parser resolves these at render time based on the active player's registered gender:
-
-- **Masculine** → `sozinho`, `nu`
-- **Feminine** → `sozinha`, `nua`
+Card text encodes gender variants directly using the `(a)` pattern (e.g. `nu(a)`, `sozinho(a)`, `amigo(a)`). No runtime resolution is performed — the text is shown as-is, keeping the notation neutral.
 
 The `[Target Player]` placeholder is replaced with the target's `<strong>name</strong>` and all output is HTML-escaped to prevent XSS.
 
@@ -294,16 +289,6 @@ Game content (questions and dares) lives in `src/data/dataset.json` — a flat a
   "hasTarget": false       // true when rawText contains "[Target Player]"
 }
 ```
-
-### Regenerating from Markdown
-
-If you edit the raw source (`dataset.md`), regenerate the JSON with:
-
-```bash
-node scripts/convert-dataset.mjs
-```
-
-> `dataset.md` is listed in `.gitignore` and is not committed to the repository.
 
 ---
 
