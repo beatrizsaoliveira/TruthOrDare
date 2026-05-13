@@ -2614,6 +2614,73 @@ a {
     var(--shadow-sm);
 }
 
+.toggle-wrap--penalty {
+  background: color-mix(in srgb, #f97316 20%, transparent);
+  box-shadow:
+    inset 0 0 0 1.5px color-mix(in srgb, #f97316 52%, transparent),
+    inset 1.5px 2.5px 0 -1px
+      color-mix(
+        in srgb,
+        var(--glass-c-light) calc(var(--glass-reflex-light) * 40%),
+        transparent
+      ),
+    var(--shadow-sm);
+}
+
+.toggle-wrap--open {
+  flex-direction: column;
+  align-items: stretch;
+  background: color-mix(in srgb, #06b6d4 18%, transparent);
+  box-shadow:
+    inset 0 0 0 1.5px color-mix(in srgb, #06b6d4 48%, transparent),
+    inset 1.5px 2.5px 0 -1px
+      color-mix(
+        in srgb,
+        var(--glass-c-light) calc(var(--glass-reflex-light) * 40%),
+        transparent
+      ),
+    var(--shadow-sm);
+}
+
+.toggle-wrap__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.field-group-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  background: var(--glass-surface-bg);
+  backdrop-filter: blur(8px) saturate(130%);
+  -webkit-backdrop-filter: blur(8px) saturate(130%);
+  box-shadow:
+    inset 0 0 0 1px var(--glass-sep),
+    inset 1.5px 2.5px 0 -1px
+      color-mix(
+        in srgb,
+        var(--glass-c-light) calc(var(--glass-reflex-light) * 50%),
+        transparent
+      ),
+    var(--shadow-sm);
+}
+
+@media (min-width: 480px) {
+  .field-group-wrap--inline {
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .field-group-wrap--inline > .form-group {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
 .toggle-label {
   flex: 1;
   min-width: 0;

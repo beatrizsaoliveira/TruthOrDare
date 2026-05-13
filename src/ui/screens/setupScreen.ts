@@ -110,6 +110,7 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
 
     // ── Sex (Tier 2+) ─────────────────────────────────────────
     let sexInputs: { m: HTMLInputElement; f: HTMLInputElement } | null = null;
+    let bioWrap: HTMLElement | null = null;
     if (tier >= 2) {
         const sexGroup = buildRadioGroup<Sex>('player-sex', 'Sexo biológico', [
             { value: 'male', label: '♂ Masculino' },
@@ -123,7 +124,9 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
                 'input[value="female"]'
             ) as HTMLInputElement,
         };
-        form.appendChild(sexGroup);
+        bioWrap = el('div', 'field-group-wrap field-group-wrap--inline');
+        bioWrap.appendChild(sexGroup);
+        form.appendChild(bioWrap);
     }
 
     // ── Tier 3+ fields ────────────────────────────────────────
@@ -171,7 +174,7 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
             ]
         );
         orientationInputs = oriGroup.querySelectorAll('input');
-        form.appendChild(oriGroup);
+        (bioWrap ?? form).appendChild(oriGroup);
 
         // Relationship status
         const relGroup = el('div', 'form-group');
@@ -186,9 +189,10 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
       <option value="closed">Relação Exclusiva</option>
     `;
         relGroup.append(relLabel, statusSelect);
-        form.appendChild(relGroup);
+        const relWrap = el('div', 'field-group-wrap');
+        relWrap.appendChild(relGroup);
 
-        // Partner select (shown conditionally)
+        // Partner select (shown conditionally — grouped with status)
         partnerGroup = el('div', 'form-group');
         partnerGroup.style.display = 'none';
         const partnerLabel = el<HTMLLabelElement>('label', 'form-label');
@@ -197,11 +201,13 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
         partnerSelect = el<HTMLSelectElement>('select', 'form-select');
         partnerSelect.id = 'player-partner';
         partnerGroup.append(partnerLabel, partnerSelect);
-        form.appendChild(partnerGroup);
+        relWrap.appendChild(partnerGroup);
+        form.appendChild(relWrap);
 
-        // Open to outside
-        openWrap = el('div', 'toggle-wrap');
+        // Open to outside (highlighted container — includes target sex when toggled)
+        openWrap = el('div', 'toggle-wrap toggle-wrap--open');
         openWrap.style.display = 'none';
+        const openRow = el('div', 'toggle-wrap__row');
         const openLabelDiv = el('div', 'toggle-label');
         openLabelDiv.innerHTML =
             '<div class="toggle-label__title">Aberto/a a interações externas</div>' +
@@ -214,10 +220,9 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
             animateLiquidToggle(openLiquidToggle!, openChecked);
             updateConditionalFields();
         });
-        openWrap.append(openLabelDiv, openLiquidToggle);
-        form.appendChild(openWrap);
+        openRow.append(openLabelDiv, openLiquidToggle);
 
-        // Target sex
+        // Target sex (inside openWrap, shown only when toggle is on)
         targetSexGroup = buildRadioGroup<TargetSex>(
             'player-targetsex',
             'Sexo alvo para interações',
@@ -228,7 +233,8 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
             ]
         );
         targetSexGroup.style.display = 'none';
-        form.appendChild(targetSexGroup);
+        openWrap.append(openRow, targetSexGroup);
+        form.appendChild(openWrap);
 
         statusSelect.addEventListener('change', updateConditionalFields);
         updateConditionalFields();
@@ -607,6 +613,7 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
 
     // Sex (Tier 2+)
     let sexInputs: { m: HTMLInputElement; f: HTMLInputElement } | null = null;
+    let bioWrap: HTMLElement | null = null;
     if (tier >= 2) {
         const sexGroup = buildRadioGroup<Sex>('edit-sex', 'Sexo biológico', [
             { value: 'male', label: '♂ Masculino' },
@@ -628,7 +635,9 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
             fInput.defaultChecked = true;
         }
         sexInputs = { m: mInput, f: fInput };
-        form.appendChild(sexGroup);
+        bioWrap = el('div', 'field-group-wrap field-group-wrap--inline');
+        bioWrap.appendChild(sexGroup);
+        form.appendChild(bioWrap);
     }
 
     // Tier 3+ fields
@@ -672,7 +681,7 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
             inp.checked = inp.value === (player.orientation ?? 'hetero');
             if (inp.checked) inp.defaultChecked = true;
         }
-        form.appendChild(oriGroup);
+        (bioWrap ?? form).appendChild(oriGroup);
 
         // Relationship status
         const relGroup = el('div', 'form-group');
@@ -689,9 +698,10 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
         if (player.relationshipStatus)
             statusSelect.value = player.relationshipStatus;
         relGroup.append(relLabel, statusSelect);
-        form.appendChild(relGroup);
+        const relWrap = el('div', 'field-group-wrap');
+        relWrap.appendChild(relGroup);
 
-        // Partner select (conditional)
+        // Partner select (conditional — grouped with status)
         partnerGroup = el('div', 'form-group');
         partnerGroup.style.display = 'none';
         const partnerLabel = el<HTMLLabelElement>('label', 'form-label');
@@ -700,11 +710,13 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
         partnerSelect = el<HTMLSelectElement>('select', 'form-select');
         partnerSelect.id = 'edit-partner';
         partnerGroup.append(partnerLabel, partnerSelect);
-        form.appendChild(partnerGroup);
+        relWrap.appendChild(partnerGroup);
+        form.appendChild(relWrap);
 
-        // Open to outside
-        openWrap = el('div', 'toggle-wrap');
+        // Open to outside (highlighted container — includes target sex when toggled)
+        openWrap = el('div', 'toggle-wrap toggle-wrap--open');
         openWrap.style.display = 'none';
+        const openRow = el('div', 'toggle-wrap__row');
         const openLabelDiv = el('div', 'toggle-label');
         openLabelDiv.innerHTML =
             '<div class="toggle-label__title">Aberto/a a interações externas</div>' +
@@ -716,10 +728,9 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
             animateLiquidToggle(openLiquidToggle!, openChecked);
             updateConditionalFields();
         });
-        openWrap.append(openLabelDiv, openLiquidToggle);
-        form.appendChild(openWrap);
+        openRow.append(openLabelDiv, openLiquidToggle);
 
-        // Target sex
+        // Target sex (inside openWrap, shown only when toggle is on)
         targetSexGroup = buildRadioGroup<TargetSex>(
             'edit-targetsex',
             'Sexo alvo para interações',
@@ -737,7 +748,8 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
             if (inp.checked) inp.defaultChecked = true;
         }
         targetSexGroup.style.display = 'none';
-        form.appendChild(targetSexGroup);
+        openWrap.append(openRow, targetSexGroup);
+        form.appendChild(openWrap);
 
         statusSelect.addEventListener('change', updateConditionalFields);
         updateConditionalFields();
@@ -836,7 +848,7 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
 // ─── Penalties toggle ─────────────────────────────────────────────────────────
 
 function buildPenaltyToggle(store: GameStore): HTMLElement {
-    const wrap = el('div', 'toggle-wrap');
+    const wrap = el('div', 'toggle-wrap toggle-wrap--penalty');
 
     const labelDiv = el('div', 'toggle-label');
     labelDiv.innerHTML =
