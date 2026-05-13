@@ -295,12 +295,15 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
             extras.relationshipStatus =
                 (statusSelect?.value as RelationshipStatus) ?? 'single';
             extras.partnerId = partnerSelect?.value || null;
-            extras.openToOutside = openChecked;
-            extras.targetSex =
-                getCheckedValue<TargetSex>(
-                    targetSexGroup?.querySelectorAll('input') ??
-                        emptyNodeList<HTMLInputElement>()
-                ) ?? 'both';
+            extras.openToOutside =
+                openChecked && extras.relationshipStatus !== 'closed';
+            if (extras.openToOutside) {
+                extras.targetSex =
+                    getCheckedValue<TargetSex>(
+                        targetSexGroup?.querySelectorAll('input') ??
+                            emptyNodeList<HTMLInputElement>()
+                    ) ?? 'both';
+            }
         }
 
         const player: Player = {
@@ -811,12 +814,15 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
             extras.relationshipStatus =
                 (statusSelect?.value as RelationshipStatus) ?? 'single';
             extras.partnerId = partnerSelect?.value || null;
-            extras.openToOutside = openChecked;
-            extras.targetSex =
-                getCheckedValue<TargetSex>(
-                    targetSexGroup?.querySelectorAll('input') ??
-                        emptyNodeList<HTMLInputElement>()
-                ) ?? 'both';
+            extras.openToOutside =
+                openChecked && extras.relationshipStatus !== 'closed';
+            if (extras.openToOutside) {
+                extras.targetSex =
+                    getCheckedValue<TargetSex>(
+                        targetSexGroup?.querySelectorAll('input') ??
+                            emptyNodeList<HTMLInputElement>()
+                    ) ?? 'both';
+            }
         }
 
         const updated: Player = { ...player, name, ...extras };
