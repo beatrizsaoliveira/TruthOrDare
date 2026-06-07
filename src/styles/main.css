@@ -1762,6 +1762,21 @@ a {
   padding: 3px 12px;
 }
 
+.turn-banner__round-badge {
+  display: inline-block;
+  margin-top: var(--sp-1);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--r-full);
+  padding: 0.2rem 0.65rem;
+  letter-spacing: 0.04em;
+}
+
 /* ── Progress dots ────────────────────────────────────────── */
 .player-dots {
   display: flex;
@@ -2461,6 +2476,7 @@ a {
   background: transparent;
   color: inherit;
   cursor: pointer;
+  text-align: left;
   transition: background 0.18s;
   -webkit-tap-highlight-color: transparent;
 }
@@ -3328,8 +3344,18 @@ a {
 .wiki-content {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-4);
+  gap: 6px;
   margin-top: var(--sp-3);
+}
+
+/* Section group separator label */
+.wiki-group-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--clr-text-muted);
+  padding: 14px 2px 4px;
 }
 
 .wiki-block {
@@ -3337,59 +3363,128 @@ a {
   border-radius: var(--r-md);
   padding: var(--sp-4);
   border: 1px solid var(--clr-border);
-}
-.wiki-block + .wiki-block {
-  margin-top: var(--sp-3);
-}
-
-.wiki-block h4 {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--clr-primary);
   margin-bottom: var(--sp-2);
 }
 
-.wiki-block__body p {
+/* ── Collapsible header button ────────────────────────── */
+.wiki-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  border-radius: var(--r-sm);
+  -webkit-tap-highlight-color: transparent;
+}
+.wiki-block__header:focus-visible {
+  outline: 2px solid var(--clr-primary);
+  outline-offset: 2px;
+}
+.wiki-block__header--static {
+  cursor: default;
+  pointer-events: none;
+}
+
+.wiki-block__header-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--clr-primary);
+  line-height: 1.2;
+}
+
+.wiki-block__icon {
+  font-size: 1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.wiki-block__chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--clr-text-muted);
+  flex-shrink: 0;
+  opacity: 0.55;
+  transition: transform 0.22s ease;
+}
+.wiki-block--collapsed .wiki-block__chevron {
+  transform: rotate(-90deg);
+}
+
+/* ── Accordion body (grid-template-rows trick) ─────────── */
+.wiki-block__body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.22s ease;
+}
+.wiki-block--collapsed .wiki-block__body {
+  grid-template-rows: 0fr;
+}
+.wiki-block__body-inner {
+  overflow: hidden;
+  min-height: 0;
+  padding-top: var(--sp-3);
+}
+
+/* ── Body content ────────────────────────── */
+.wiki-block__body p,
+.wiki-block__body-inner p {
   font-size: 0.875rem;
   line-height: 1.7;
   color: var(--clr-text);
   margin-bottom: var(--sp-2);
 }
-.wiki-block__body p:last-child {
+.wiki-block__body p:last-child,
+.wiki-block__body-inner p:last-child {
   margin-bottom: 0;
 }
 
 .wiki-block__body ul,
-.wiki-block__body ol {
+.wiki-block__body ol,
+.wiki-block__body-inner ul,
+.wiki-block__body-inner ol {
   display: flex;
   flex-direction: column;
   gap: var(--sp-2);
-  padding-left: var(--sp-3);
+  padding-left: 1.5rem;
 }
-.wiki-block__body ol {
+.wiki-block__body ol,
+.wiki-block__body-inner ol {
   list-style: decimal;
 }
 
-.wiki-block__body li {
+.wiki-block__body li,
+.wiki-block__body-inner li {
   font-size: 0.875rem;
   line-height: 1.55;
   color: var(--clr-text);
   padding-left: var(--sp-2);
   border-left: 2px solid var(--clr-border);
 }
-.wiki-block__body ol li {
+.wiki-block__body ol li,
+.wiki-block__body-inner ol li {
   border-left: none;
   padding-left: 0;
 }
 
+/* ── Warning variant ──────────────────────── */
 .wiki-block--warn {
   background: var(--clr-warn-lt);
   border-color: var(--clr-warn);
 }
-.wiki-block--warn h4 {
+.wiki-block--warn .wiki-block__header-label {
   color: var(--clr-warn);
 }
-.wiki-block--warn .wiki-block__body p {
+.wiki-block--warn p,
+.wiki-block--warn .wiki-block__body-inner p {
   color: var(--clr-warn);
 }
 

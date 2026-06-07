@@ -40,6 +40,10 @@ export interface Card {
     readonly shots: number | null;
     /** Whether the text contains a [Target Player] placeholder */
     readonly hasTarget: boolean;
+    /** Number of rounds this effect lasts (null when not a round-based card) */
+    readonly roundsCount: number | null;
+    /** Whether this card has a round-based duration */
+    readonly hasRounds: boolean;
 }
 
 // ─── Player ──────────────────────────────────────────────────────────────────
@@ -73,6 +77,22 @@ export interface PlayerHistory {
 
 export type PlayerHistories = Readonly<Record<string, PlayerHistory>>;
 
+// ─── Round Effect ─────────────────────────────────────────────────────────────
+
+/** Tracks an active round-based card effect for a player. */
+export interface RoundEffect {
+    /** The card's id */
+    readonly cardId: number;
+    /** Raw text of the card (used for the expiry popup message) */
+    readonly cardText: string;
+    /** The player who must fulfill this effect */
+    readonly playerId: string;
+    /** The round number when this effect was assigned */
+    readonly triggerRound: number;
+    /** The round number when this effect expires (triggerRound + roundsCount) */
+    readonly targetRound: number;
+}
+
 // ─── Game State ───────────────────────────────────────────────────────────────
 
 export interface GameState {
@@ -92,6 +112,12 @@ export interface GameState {
     readonly theme: Theme;
     /** Accumulated shots per player id (reset when a new game starts). Persisted. */
     readonly shotCounts: Readonly<Record<string, number>>;
+    /** Current round number — increments each time the turn wraps back to player 0. Starts at 1. */
+    readonly currentRound: number;
+    /** Active round-based effects that are still running */
+    readonly activeEffects: readonly RoundEffect[];
+    /** Effects that just expired for the current player — cleared after acknowledgement */
+    readonly pendingRoundExpiry: readonly RoundEffect[];
     /**
      * All parsed cards for the active tier. NOT persisted to localStorage —
      * re-derived from the markdown at startup.

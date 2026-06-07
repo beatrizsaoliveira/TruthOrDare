@@ -646,128 +646,211 @@ export function animateLiquidToggle(
 
 // ─── Wiki content ─────────────────────────────────────────────────────────────
 
+// ─── Wiki content factory ─────────────────────────────────────────────────────
+
 interface WikiBlock {
+    icon?: string;
     title: string;
     html: string;
     warn?: boolean;
 }
 
+interface WikiSection {
+    label?: string;
+    blocks: WikiBlock[];
+}
+
+const WIKI_CHEVRON = `<svg class="wiki-block__chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+  fill="none" stroke="currentColor" stroke-width="2.2"
+  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <polyline points="6 9 12 15 18 9"/>
+</svg>`;
+
 function buildWikiContent(): DocumentFragment {
     const frag = document.createDocumentFragment();
 
-    const blocks: WikiBlock[] = [
+    const sections: WikiSection[] = [
         {
-            title: 'O que é o Verdade ou Desafio?',
-            html: `<p>Um jogo social em que cada jogador escolhe, na sua vez, entre <strong>Verdade</strong> (responder honestamente a uma pergunta) ou <strong>Desafio</strong> (completar uma tarefa divertida ou ousada). Há 4 níveis de intensidade crescente — do familiar ao extremo. Escolhe o que melhor se adapta ao teu grupo.</p>`,
-        },
-        {
-            title: 'Os 4 Níveis',
-            html: `<ul>
-        <li><strong>🌟 Diversão Familiar:</strong> Perguntas e desafios leves para qualquer grupo e idade. Sem conteúdo adulto nem penalizações. Ideal para reuniões de família ou grupos mistos.</li>
-        <li><strong>🎉 Noite entre Amigos:</strong> Conteúdo mais picante sobre experiências, segredos e situações embaraçosas. Inclui o sistema de <em>shots</em> como penalização por recusar. Requer confirmação de 18+.</li>
-        <li><strong>🔥 Onde a Ousadia Começa:</strong> Conteúdo adulto com envolvimento físico e sensual entre jogadores. O motor de alvos entra em ação, respeitando orientações sexuais e o estado relacional de cada pessoa. Requer 18+.</li>
-        <li><strong>💀 Extremo:</strong> O nível mais intenso, sem limites dentro do consenso. Apenas para grupos completamente à vontade entre si. Conteúdo explícito. Requer 18+.</li>
+            blocks: [
+                {
+                    icon: '🎲',
+                    title: 'O que é o Verdade ou Desafio?',
+                    html: `<p>Um jogo social em que cada jogador escolhe, na sua vez, entre <strong>Verdade</strong> (responder honestamente a uma pergunta) ou <strong>Desafio</strong> (completar uma tarefa divertida ou ousada). Há 4 níveis de intensidade crescente — do familiar ao extremo. Escolhe o que melhor se adapta ao teu grupo.</p>`,
+                },
+                {
+                    icon: '🏆',
+                    title: 'Os 4 Níveis',
+                    html: `<ul>
+        <li><strong>🌟 Diversão Familiar</strong> — Perguntas e desafios leves para qualquer grupo e idade. Sem conteúdo adulto nem penalizações.</li>
+        <li><strong>🎉 Noite entre Amigos</strong> — Conteúdo picante sobre experiências e segredos. Inclui estado de casal e o sistema de <em>shots</em> como penalização. Requer 18+.</li>
+        <li><strong>🔥 Onde a Ousadia Começa</strong> — Conteúdo adulto com envolvimento físico entre jogadores. Motor de alvos com base na orientação sexual e estado relacional. Requer 18+.</li>
+        <li><strong>💀 Extremo</strong> — O nível mais intenso. Apenas para grupos completamente à vontade entre si. Conteúdo explícito. Requer 18+.</li>
       </ul>`,
+                },
+            ],
         },
         {
-            title: 'Como Jogar — Passo a Passo',
-            html: `<ol>
+            label: 'Como Jogar',
+            blocks: [
+                {
+                    icon: '📋',
+                    title: 'Passo a Passo',
+                    html: `<ol>
         <li>Escolhe o nível na ecrã inicial.</li>
         <li>Confirma a idade, se necessário (18+ para os níveis 2, 3 e 4).</li>
-        <li>Se já tiveres jogadores guardados, podes reutilizá-los diretamente ou começar do zero (será pedida confirmação antes de descartar os jogadores guardados).</li>
+        <li>Se já tiveres jogadores guardados, podes reutilizá-los diretamente ou começar do zero.</li>
         <li>Adiciona (ou ajusta) os jogadores com as respetivas informações.</li>
         <li>Ativa ou desativa o sistema de penalizações em <em>shots</em>.</li>
         <li>Carrega em <strong>Iniciar Jogo</strong>.</li>
         <li>Na tua vez, escolhe <strong>Verdade</strong> ou <strong>Desafio</strong>.</li>
-        <li>Responde ou completa o desafio. Carrega em ✅ Feito! para passar a vez.</li>
-        <li>Se recusares, carrega em ❌ Recusar e aceita a penalização indicada.</li>
-        <li>Quando o jogo terminar com penalizações ativas e algum jogador tiver bebido, é apresentado um <strong>ranking dos mais bêbados</strong> antes de voltar ao início.</li>
+        <li>Responde ou completa o desafio e carrega em ✅ Feito! para passar a vez.</li>
+        <li>Se recusares, carrega em ❌ Recusar e ajusta os shots bebidos de facto (pode ser zero).</li>
+        <li>Quando o jogo terminar com penalizações ativas e algum jogador tiver bebido, é mostrado um <strong>ranking</strong> antes de voltar ao início.</li>
       </ol>`,
-        },
-        {
-            title: 'Aparência e Temas',
-            html: `<p>A dock flutuante no fundo do ecrã tem dois botões de personalização:</p>
-      <ul>
-        <li><strong>Temas</strong> — abre a seleção de paleta de cor (Violeta, Oceano, Âmbar, Rosa, Floresta).</li>
-        <li><strong>Definições</strong> — abre as opções de interface: toggle de modo escuro / claro, vidro fosco e acesso ao guia <em>Como Jogar</em>.</li>
-      </ul>
-      <p>Na primeira visita, o modo claro/escuro segue a preferência do sistema. A partir da primeira alteração, o tema escolhido fica guardado automaticamente.</p>`,
-        },
-        {
-            title: 'Instalar como App (PWA)',
-            html: `<p>Este jogo pode ser instalado no teu dispositivo como uma aplicação nativa — sem App Store, sem Play Store.</p>
-      <ul>
-        <li><strong>Android (Chrome):</strong> aparece automaticamente um banner ou um botão <em>Instalar</em> na barra de endereço. Também podes ir ao menu ⋮ → <em>Adicionar ao ecrã principal</em>.</li>
-        <li><strong>iOS (Safari):</strong> toca no botão de partilha <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> e escolhe <em>Adicionar ao ecrã de início</em>.</li>
-        <li><strong>macOS / Windows (Chrome ou Edge):</strong> clica no ícone de instalação <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> na barra de endereço.</li>
-      </ul>
-      <p>Depois de instalado, o jogo abre em ecrã inteiro, sem barra do browser, e funciona <strong>sem ligação à internet</strong>.</p>
-      <p>Quando uma nova versão for publicada, a app <strong>atualiza-se automaticamente</strong> assim que a abrires — não precisas de fazer nada.</p>`,
-        },
-        {
-            title: 'Configuração de Jogadores',
-            html: `<p>Consoante o nível escolhido, é pedida diferente informação ao registar cada jogador:</p>
+                },
+                {
+                    icon: '👥',
+                    title: 'Configuração de Jogadores',
+                    html: `<p>Consoante o nível escolhido, é pedida diferente informação:</p>
       <ul>
         <li><strong>Nível 1:</strong> Apenas o nome.</li>
-        <li><strong>Nível 2:</strong> Nome + género (utilizado no perfil do jogador e para contextualizar as cartas, que usam a notação <em>palavra(a)</em>, ex: <em>nu(a)</em>, para linguagem inclusiva).</li>
-        <li><strong>Níveis 3 e 4:</strong> Nome, género, orientação sexual e estado relacional (solteiro/a, relação aberta ou fechada). Se tiveres parceiro/a no jogo, podes ligar os dois — o campo aparece automaticamente quando o estado é <em>relação aberta</em> ou <em>fechada</em>. O toggle “aberto/a a interações externas” aparece para jogadores <em>solteiros</em> e em <em>relação aberta</em>: para solteiros, ativá-lo permite definir uma preferência de sexo alvo; para relações abertas, é também necessário para poder ser alvo de outros jogadores. A preferência de alvo (homens, mulheres ou ambos) só é mostrada quando esse toggle está ativo.</li>
+        <li><strong>Nível 2:</strong> Nome + género + estado de casal (<em>Solteiro/a</em> ou <em>Em casal</em>). Jogadores em casal interagem exclusivamente entre si nas cartas com alvo.</li>
+        <li><strong>Níveis 3 e 4:</strong> Nome, género, orientação sexual e estado relacional. O toggle <em>"aberto/a a interações externas"</em> é necessário para poder ser alvo de outros (relações abertas) ou definir preferência de sexo alvo (solteiros).</li>
       </ul>`,
-        },
-        {
-            title: 'Sistema de Alvos (Níveis 3 e 4)',
-            html: `<p>Algumas cartas envolvem um <strong>jogador alvo</strong>, selecionado automaticamente pelo motor de afinidades. O motor respeita:</p>
+                },
+                {
+                    icon: '🎯',
+                    title: 'Sistema de Alvos (Níveis 2–4)',
+                    html: `<p><strong>Nível 2:</strong> Jogadores <em>Em casal</em> interagem exclusivamente com o/a seu/sua parceiro/a. Solteiros/as podem ser alvo de qualquer outro jogador.</p>
+      <p><strong>Níveis 3 e 4:</strong> O motor respeita orientação sexual mútua, exclusividade relacional e o toggle de interação externa. Se não existir alvo elegível, o jogador realiza o desafio sozinho.</p>`,
+                },
+                {
+                    icon: '🔁',
+                    title: 'Desafios com Duração (Rondas)',
+                    html: `<p>Alguns desafios têm uma duração definida em <strong>rondas</strong> — por exemplo, <em>"Fala com sotaque estrangeiro durante as próximas 3 rondas."</em></p>
+      <p>Quando aceitas um desafio com duração, o jogo fica a contar as rondas automaticamente. A <strong>Ronda atual</strong> é visível no topo do ecrã durante o jogo — incrementa sempre que a vez volta ao primeiro jogador.</p>
+      <p>Quando chegares à ronda alvo e for <strong>a tua vez</strong>, aparece um aviso a informar que o efeito terminou — antes de escolheres Verdade ou Desafio.</p>`,
+                },
+                {
+                    icon: '🍺',
+                    title: 'Penalizações (Shots)',
+                    html: `<p>Nos níveis 2–4, cada carta indica quantos <em>shots</em> o jogador deve beber se recusar. A indicação <em>🍺 N shots se recusar</em> só aparece quando o modo de penalizações está ativo.</p>
+      <p>Ao recusar, aparece um seletor para ajustar os shots bebidos de facto — podes colocar zero. O jogo regista apenas o que confirmares. O botão ❌ Recusar está sempre disponível.</p>
+      <p>A conta acumulada por jogador é visível durante o jogo. No fim, se alguém bebeu, é mostrado um <strong>ranking 🏆</strong> antes de voltar ao início. Este sistema pode ser desativado antes de iniciar o jogo.</p>`,
+                },
+                {
+                    icon: '🔄',
+                    title: 'Motor Anti-Repetição',
+                    html: `<p>Antes de cada carta, o jogo calcula uma pontuação para cada candidata e favorece sempre as menos vistas recentemente:</p>
       <ul>
-        <li><strong>Orientação sexual:</strong> apenas pares com atração mútua são elegíveis.</li>
-        <li><strong>Relação fechada:</strong> jogadores nesta situação interagem exclusivamente com o/a seu/sua parceiro/a registado/a no jogo.</li>
-        <li><strong>Relação aberta:</strong> requer o toggle “aberto/a a interações externas” ativo para ser elegível como alvo por outros jogadores.</li>
-        <li><strong>Solteiro/a:</strong> elegível por defeito para interagir com qualquer outro jogador compatível. Ativar o toggle “aberto/a a interações externas” apenas serve para definir uma preferência de sexo alvo.</li>
-        <li><strong>Preferência de alvo:</strong> podes especificar se preferes interagir com homens, mulheres ou ambos (só aplicação quando o toggle está ativo).</li>
-      </ul>
-      <p>Se não existir nenhum alvo elegível, o jogador ativo realiza o desafio sozinho.</p>`,
+        <li>Cartas nos últimos <strong>12 turnos</strong> do jogador → penalização elevada (+200).</li>
+        <li>Cartas vistas pelo/a <strong>parceiro/a nos últimos 6 turnos</strong> → penalização média (+80).</li>
+        <li>Cartas já vistas mas não recentemente → penalização leve (+30).</li>
+        <li>Cartas nunca vistas → prioridade máxima.</li>
+      </ul>`,
+                },
+            ],
         },
         {
-            title: 'Penalizações (Shots)',
-            html: `<p>Nos níveis 2–4, cada carta indica quantos <em>shots</em> o jogador deve beber se recusar responder ou completar o desafio. Esta indicação (<em>🍺 N shots se recusar</em>) só é visível na carta quando o modo de penalizações está ativo.</p>
-      <p>Ao carregar em <strong>❌ Recusar</strong>, aparece um ecrã de penalização com um seletor de quantidade.</p>
-      <p>No ecrã de penalização podes ajustar quantos shots bebeste de facto (menos do que o indicado, ou mesmo nenhum) e confirmar. Ninguém é obrigado a beber — o jogo regista apenas o que confirmares.</p>
-      <p>O botão <strong>❌ Recusar</strong> está sempre disponível — se a carta não tiver shots associados, a recusa avança diretamente para o próximo jogador.</p>
-      <p>Enquanto o jogo decorre, é exibida uma <strong>conta de shots</strong> no cabeçalho de cada turno, mostrando o total acumulado pelo jogador nessa sessão. A conta é reiniciada sempre que começa um novo jogo.</p>
-      <p>Quando o jogo termina, se algum jogador tiver bebido, é apresentado um <strong>ranking dos mais bêbados 🍺</strong> com todos os jogadores ordenados pelos shots consumidos, antes de voltar ao início.</p>
-      <p>Este sistema pode ser <strong>desativado</strong> no ecrã de configuração antes de iniciar o jogo.</p>
-      <p><em>Joga sempre com responsabilidade. Podes substituir álcool por água, sumo ou qualquer outra bebida à tua escolha.</em></p>`,
-        },
-        {
-            title: 'Motor Anti-Repetição',
-            html: `<p>O jogo pontua cada carta antes de a selecionar, favorecendo sempre as menos vistas recentemente:</p>
+            label: 'App & Personalização',
+            blocks: [
+                {
+                    icon: '🎨',
+                    title: 'Aparência e Temas',
+                    html: `<p>A dock no fundo do ecrã tem dois botões de personalização:</p>
       <ul>
-        <li>Cartas nos últimos <strong>12 turnos</strong> do jogador têm penalização elevada.</li>
-        <li>Cartas vistas pelo/a <strong>parceiro/a nos últimos 6 turnos</strong> também são penalizadas.</li>
-        <li>Cartas nunca vistas têm prioridade máxima.</li>
+        <li><strong>Temas</strong> — seleciona a paleta de cor (Violeta, Oceano, Âmbar, Rosa, Floresta).</li>
+        <li><strong>Definições</strong> — toggle de modo escuro/claro, vidro fosco e acesso a este guia.</li>
       </ul>
-      <p>Isto garante variedade ao longo de toda a sessão, mesmo em grupos pequenos.</p>`,
-        },
-        {
-            title: '⚠️ Consentimento e Segurança',
-            html: `<p>A participação em qualquer desafio deve ser <strong>sempre voluntária e consensual</strong>. Ninguém deve sentir pressão para fazer algo com que não se sinta confortável.</p>
-      <p>Qualquer pessoa pode <strong>passar a vez a qualquer momento</strong>, sem julgamentos. O bem-estar e os limites de cada pessoa vêm sempre em primeiro lugar.</p>`,
-            warn: true,
+      <p>Na primeira visita, o modo claro/escuro segue a preferência do sistema. A partir da primeira alteração, o tema fica guardado automaticamente.</p>`,
+                },
+                {
+                    icon: '📱',
+                    title: 'Instalar como App (PWA)',
+                    html: `<ul>
+        <li><strong>Android (Chrome):</strong> banner automático ou menu ⋮ → <em>Adicionar ao ecrã principal</em>.</li>
+        <li><strong>iOS (Safari):</strong> botão de partilha → <em>Adicionar ao ecrã de início</em>.</li>
+        <li><strong>macOS / Windows:</strong> ícone de instalação na barra de endereço.</li>
+      </ul>
+      <p>Depois de instalado, o jogo abre em ecrã inteiro, funciona <strong>sem ligação à internet</strong> e <strong>atualiza-se automaticamente</strong> quando uma nova versão é publicada.</p>`,
+                },
+            ],
         },
     ];
 
-    for (const block of blocks) {
-        const el = document.createElement('div');
-        el.className = block.warn
-            ? 'wiki-block wiki-block--warn'
-            : 'wiki-block';
+    // Warning block — always visible, no collapse toggle
+    const warnBlock: WikiBlock = {
+        title: '⚠️ Consentimento e Segurança',
+        html: `<p>A participação em qualquer desafio deve ser <strong>sempre voluntária e consensual</strong>. Ninguém deve sentir pressão para fazer algo com que não se sinta confortável.</p>
+      <p>Qualquer pessoa pode <strong>passar a vez a qualquer momento</strong>, sem julgamentos. O bem-estar e os limites de cada pessoa vêm sempre em primeiro lugar.</p>`,
+        warn: true,
+    };
 
-        const heading = document.createElement('h4');
-        heading.textContent = block.title;
+    let isFirst = true;
+
+    for (const section of sections) {
+        if (section.label) {
+            const labelEl = document.createElement('div');
+            labelEl.className = 'wiki-group-label';
+            labelEl.textContent = section.label;
+            frag.appendChild(labelEl);
+        }
+
+        for (const block of section.blocks) {
+            const el = document.createElement('div');
+            el.className = 'wiki-block';
+            if (!isFirst) el.classList.add('wiki-block--collapsed');
+
+            const headerBtn = document.createElement('button');
+            headerBtn.className = 'wiki-block__header';
+            headerBtn.setAttribute('aria-expanded', isFirst ? 'true' : 'false');
+            headerBtn.innerHTML = `<span class="wiki-block__header-label">${
+                block.icon
+                    ? `<span class="wiki-block__icon" aria-hidden="true">${block.icon}</span>`
+                    : ''
+            }<span>${block.title}</span></span>${WIKI_CHEVRON}`;
+
+            headerBtn.addEventListener('click', () => {
+                const nowCollapsed = el.classList.toggle(
+                    'wiki-block--collapsed'
+                );
+                headerBtn.setAttribute(
+                    'aria-expanded',
+                    nowCollapsed ? 'false' : 'true'
+                );
+            });
+
+            const body = document.createElement('div');
+            body.className = 'wiki-block__body';
+            const bodyInner = document.createElement('div');
+            bodyInner.className = 'wiki-block__body-inner';
+            bodyInner.innerHTML = block.html;
+            body.appendChild(bodyInner);
+
+            el.append(headerBtn, body);
+            frag.appendChild(el);
+
+            isFirst = false;
+        }
+    }
+
+    // Warning block: no collapse toggle, always visible
+    {
+        const el = document.createElement('div');
+        el.className = 'wiki-block wiki-block--warn';
+
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'wiki-block__header wiki-block__header--static';
+        headerDiv.innerHTML = `<span class="wiki-block__header-label"><span>${warnBlock.title}</span></span>`;
 
         const body = document.createElement('div');
         body.className = 'wiki-block__body';
-        body.innerHTML = block.html;
+        const bodyInner = document.createElement('div');
+        bodyInner.className = 'wiki-block__body-inner';
+        bodyInner.innerHTML = warnBlock.html;
+        body.appendChild(bodyInner);
 
-        el.append(heading, body);
+        el.append(headerDiv, body);
         frag.appendChild(el);
     }
 

@@ -139,7 +139,7 @@
         "id": 18,
         "type": "truth",
         "tier": 1,
-        "rawText": "Qual é o teu apelido carinhoso mais embaraçoso da família?",
+        "rawText": "Qual é o teu nickname mais embaraçoso da família?",
         "shots": null,
         "hasTarget": false
     },
@@ -427,15 +427,17 @@
         "id": 4,
         "type": "dare",
         "tier": 1,
-        "rawText": "Fala com sotaque estrangeiro durante as próximas 3 rondas.",
+        "rawText": "Fala com sotaque estrangeiro durante as próximas 3 rounds.",
         "shots": null,
-        "hasTarget": false
+        "hasTarget": false,
+        "roundsCount": 3,
+        "hasRounds": true
     },
     {
         "id": 5,
         "type": "dare",
         "tier": 1,
-        "rawText": "Faz 10 flexões enquanto imitas um galo a cantar.",
+        "rawText": "Faz 10 push-ups enquanto imitas um galo a cantar.",
         "shots": null,
         "hasTarget": false
     },
@@ -507,9 +509,11 @@
         "id": 14,
         "type": "dare",
         "tier": 1,
-        "rawText": "Fala como um bebé durante as próximas 2 rondas.",
+        "rawText": "Fala como um bebé durante as próximas 2 rounds.",
         "shots": null,
-        "hasTarget": false
+        "hasTarget": false,
+        "roundsCount": 2,
+        "hasRounds": true
     },
     {
         "id": 15,
@@ -595,7 +599,7 @@
         "id": 25,
         "type": "dare",
         "tier": 1,
-        "rawText": "Caminha como um modelo numa passarela.",
+        "rawText": "Caminha como um modelo numa catwalk.",
         "shots": null,
         "hasTarget": false
     },
@@ -635,7 +639,7 @@
         "id": 30,
         "type": "dare",
         "tier": 1,
-        "rawText": "Faz flexões com uma mão (ou tenta).",
+        "rawText": "Faz push-ups com uma mão (ou tenta).",
         "shots": null,
         "hasTarget": false
     },
@@ -699,7 +703,7 @@
         "id": 38,
         "type": "dare",
         "tier": 1,
-        "rawText": "Fica em posição de prancha durante 30 segundos.",
+        "rawText": "Fica em posição de plank durante 30 segundos.",
         "shots": null,
         "hasTarget": false
     },
@@ -811,7 +815,7 @@
         "id": 2,
         "type": "truth",
         "tier": 2,
-        "rawText": "Qual é a tua paixoneta secreta atual ou do passado?",
+        "rawText": "Qual é a tua crush secreta atual ou do passado?",
         "shots": 2,
         "hasTarget": false
     },
@@ -955,7 +959,7 @@
         "id": 20,
         "type": "truth",
         "tier": 2,
-        "rawText": "Já ficaste sem resposta de alguém? Como foi?",
+        "rawText": "Já foste ghosted por alguém? Como foi?",
         "shots": 2,
         "hasTarget": false
     },
@@ -1075,7 +1079,7 @@
         "id": 35,
         "type": "truth",
         "tier": 2,
-        "rawText": "Qual foi o teu regresso mais vergonhoso de casa alheia de manhã?",
+        "rawText": "Qual foi o teu walk of shame mais vergonhoso?",
         "shots": 3,
         "hasTarget": false
     },
@@ -1107,7 +1111,7 @@
         "id": 39,
         "type": "truth",
         "tier": 2,
-        "rawText": "Qual é a tua paixoneta por uma celebridade?",
+        "rawText": "Qual é a tua crush por uma celebridade?",
         "shots": 2,
         "hasTarget": false
     },
@@ -1163,7 +1167,7 @@
         "id": 46,
         "type": "truth",
         "tier": 2,
-        "rawText": "Qual foi o teu pior encontro de uma noite?",
+        "rawText": "Qual foi o teu pior one-night stand?",
         "shots": 3,
         "hasTarget": false
     },
@@ -1243,7 +1247,7 @@
         "id": 6,
         "type": "dare",
         "tier": 2,
-        "rawText": "Faz 20 flexões enquanto dizes o alfabeto.",
+        "rawText": "Faz 20 push-ups enquanto dizes o alfabeto.",
         "shots": 2,
         "hasTarget": false
     },
@@ -1275,7 +1279,7 @@
         "id": 10,
         "type": "dare",
         "tier": 2,
-        "rawText": "Faz uma confissão pública no grupo de WhatsApp do grupo.",
+        "rawText": "Faz uma confissão pública no grupo de WhatsApp.",
         "shots": 4,
         "hasTarget": false
     },
@@ -1291,9 +1295,11 @@
         "id": 12,
         "type": "dare",
         "tier": 2,
-        "rawText": "Fica sem telemóvel durante 3 rondas.",
+        "rawText": "Fica sem telemóvel durante 3 rounds.",
         "shots": 2,
-        "hasTarget": false
+        "hasTarget": false,
+        "roundsCount": 3,
+        "hasRounds": true
     },
     {
         "id": 13,
@@ -1355,7 +1361,7 @@
         "id": 20,
         "type": "dare",
         "tier": 2,
-        "rawText": "Faz flexões com alguém sentado nas tuas costas.",
+        "rawText": "Faz push-ups com alguém sentado nas tuas costas.",
         "shots": 3,
         "hasTarget": false
     },
@@ -1371,7 +1377,7 @@
         "id": 22,
         "type": "dare",
         "tier": 2,
-        "rawText": "Rebola durante 30 segundos.",
+        "rawText": "Twerk durante 30 segundos.",
         "shots": 4,
         "hasTarget": false
     },
@@ -1411,9 +1417,11 @@
         "id": 27,
         "type": "dare",
         "tier": 2,
-        "rawText": "Fica de cuecas ou boxers durante 2 rondas.",
+        "rawText": "Fica de cuecas ou boxers durante 2 rounds.",
         "shots": 4,
-        "hasTarget": false
+        "hasTarget": false,
+        "roundsCount": 2,
+        "hasRounds": true
     },
     {
         "id": 28,
@@ -1467,9 +1475,11 @@
         "id": 34,
         "type": "dare",
         "tier": 2,
-        "rawText": "Fica em silêncio total durante 3 rondas.",
+        "rawText": "Fica em silêncio total durante 3 rounds.",
         "shots": 2,
-        "hasTarget": false
+        "hasTarget": false,
+        "roundsCount": 3,
+        "hasRounds": true
     },
     {
         "id": 35,
@@ -1483,7 +1493,7 @@
         "id": 36,
         "type": "dare",
         "tier": 2,
-        "rawText": "Envia uma foto feia tua a uma paixoneta.",
+        "rawText": "Envia uma foto feia tua a uma crush.",
         "shots": 4,
         "hasTarget": false
     },
@@ -1587,7 +1597,7 @@
         "id": 49,
         "type": "dare",
         "tier": 2,
-        "rawText": "Bebe um shot e faz uma prancha de 1 minuto.",
+        "rawText": "Bebe um shot e faz um plank de 1 minuto.",
         "shots": 3,
         "hasTarget": false
     },
@@ -1843,7 +1853,7 @@
         "id": 31,
         "type": "truth",
         "tier": 3,
-        "rawText": "Qual é o teu jogo de papéis favorito?",
+        "rawText": "Qual é o teu roleplay favorito?",
         "shots": 4,
         "hasTarget": false
     },
@@ -1931,7 +1941,7 @@
         "id": 42,
         "type": "truth",
         "tier": 3,
-        "rawText": "Qual foi o teu melhor momento de conversa suja?",
+        "rawText": "Qual foi o teu melhor momento de dirty talk?",
         "shots": 4,
         "hasTarget": false
     },
@@ -2051,7 +2061,7 @@
         "id": 7,
         "type": "dare",
         "tier": 3,
-        "rawText": "Deixa [Target Player] dar-te um chupão leve.",
+        "rawText": "Deixa [Target Player] dar-te um hickey leve.",
         "shots": 5,
         "hasTarget": true
     },
@@ -2099,7 +2109,7 @@
         "id": 13,
         "type": "dare",
         "tier": 3,
-        "rawText": "Faz conversa suja para [Target Player] durante 30 segundos.",
+        "rawText": "Faz dirty talk para [Target Player] durante 30 segundos.",
         "shots": 4,
         "hasTarget": true
     },
@@ -2115,9 +2125,11 @@
         "id": 15,
         "type": "dare",
         "tier": 3,
-        "rawText": "Fica só de roupa interior durante 3 rondas.",
+        "rawText": "Fica só de roupa interior durante 3 rounds.",
         "shots": 5,
-        "hasTarget": false
+        "hasTarget": false,
+        "roundsCount": 3,
+        "hasRounds": true
     },
     {
         "id": 16,
@@ -2195,9 +2207,11 @@
         "id": 25,
         "type": "dare",
         "tier": 3,
-        "rawText": "Fica vendado(a) durante 2 rondas.",
+        "rawText": "Fica vendado(a) durante 2 rounds.",
         "shots": 4,
-        "hasTarget": false
+        "hasTarget": false,
+        "roundsCount": 2,
+        "hasRounds": true
     },
     {
         "id": 26,
@@ -2235,7 +2249,7 @@
         "id": 30,
         "type": "dare",
         "tier": 3,
-        "rawText": "Dá um chupão leve em [Target Player].",
+        "rawText": "Dá um hickey leve em [Target Player].",
         "shots": 5,
         "hasTarget": true
     },
@@ -2275,9 +2289,11 @@
         "id": 35,
         "type": "dare",
         "tier": 3,
-        "rawText": "Fica só com uma peça de roupa durante 3 rondas.",
+        "rawText": "Fica só com uma peça de roupa durante 3 rounds.",
         "shots": 5,
-        "hasTarget": false
+        "hasTarget": false,
+        "roundsCount": 3,
+        "hasRounds": true
     },
     {
         "id": 36,
@@ -3091,7 +3107,7 @@
         "id": 37,
         "type": "dare",
         "tier": 4,
-        "rawText": "Faz jogo de papéis de resistência forçada com [Target Player].",
+        "rawText": "Faz roleplay de resistência forçada com [Target Player].",
         "shots": 5,
         "hasTarget": true
     },

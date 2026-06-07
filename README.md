@@ -1,16 +1,18 @@
 # Verdade ou Desafio 🎲
 
-> **Do familiar ao ousado — tu decides.**
+> **From family fun to the extreme — you choose the intensity.**
 >
-> Jogo social de festa em português europeu, construído como uma aplicação de página única estática em TypeScript + Vite. Quatro níveis de intensidade, desde o familiar ao adulto. Implementável no GitHub Pages sem qualquer requisito de servidor.
+> A social party game in European Portuguese, built as a zero-dependency static SPA in TypeScript + Vite. Four escalating tiers of intensity, from family-friendly to adult content. Deployable to GitHub Pages with no server required.
 
 ---
 
 ## Table of Contents
 
 - [Features](#features)
+- [Design](#design)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
+- [Testing](#testing)
 - [Project Structure](#project-structure)
 - [Game Rules](#game-rules)
 - [Architecture](#architecture)
@@ -25,12 +27,13 @@
 
 - **4 Tier system** — from family-friendly to mature adult content (18+)
 - **Age-gating** — mandatory 18+ confirmation for Tiers 2–4
-- **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status); at Tier 3–4, partner dropdown and _open-to-outside_ toggle are shown for single and open-relationship players (not closed); for open-relationship players the toggle also controls eligibility as an interaction target; the target-sex selector is shown once the toggle is active
+- **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status); at **Tier 2** a couple-status radio (**Solteiro/a** vs **Em casal**) and a partner selector are shown — coupled players interact exclusively with their registered partner; at **Tier 3–4** the full partner dropdown, orientation, relationship-status, _open-to-outside_ toggle and target-sex selector are shown; for open-relationship players the toggle also controls eligibility as an interaction target; the target-sex selector is shown once the toggle is active
 - **Saved-player roster** — registered players are persisted to `localStorage` (`tod_roster_v1`) and offered for reuse at the start of every new session via a dedicated Roster screen; couples are displayed grouped with a visual connector; choosing **Começar do zero** triggers a confirmation dialog before discarding the saved roster
-- **Orientation & relationship-aware matching engine** (Tiers 3–4) — ensures targets are mutually compatible
+- **Orientation & relationship-aware matching engine** (Tiers 2–4) — at Tier 2 coupled players can only target their registered partner; at Tiers 3–4 a full three-constraint algorithm (mutual orientation, relationship exclusivity, open-gate) ensures targets are mutually compatible
 - **Anti-repetition card engine** — weighted scoring prevents recently seen cards from reappearing; couples share history
 - **Drink/shot penalty system** — on card refusal a penalty overlay with a `−`/value/`+` stepper appears; the player confirms how many shots they actually drank (zero is valid — nobody is forced); the **Recusar** button is always visible; the card's penalty hint (`🍺 N shots se recusar`) is only displayed when the penalty mode is active; a running shot count chip (🍺 Conta) is shown in the turn banner, persisted per player, and reset on new game; can be disabled before starting
 - **End-of-game ranking** — when a game with penalties ends and at least one player drank, a ranking screen is shown before returning home: players with shots are listed descending with 🥇🥈🥉 medals, followed by zero-shot players sorted alphabetically (dimmed); shot counts remain in `localStorage` while the ranking is on screen (so a refresh still shows the ranking correctly) and are only cleared when the player navigates to the home screen
+- **Round tracker** — a round counter (🔁 Ronda N) is shown in the turn banner and increments every time the turn wraps back to the first player; round-based dare cards (e.g. _"Fala com sotaque estrangeiro durante as próximas 3 rondas"_) automatically register a timed effect, and when the target round is reached on the affected player's turn a dismissible popup announces the effect has ended, before they choose Truth or Dare
 - **pt-PT inclusive notation** — card text encodes gender variants directly using the `(a)` pattern (e.g. `nu(a)`, `sozinho(a)`); no dynamic gender resolution is performed at runtime
 - **Player editing** — each registered player chip shows an edit (pencil) button that opens a pre-filled glass modal; the modal warns with a `confirm()` dialog before discarding unsaved changes when closed via X, ESC, or backdrop click (Cancel and Save close immediately without prompting)
 - **Persistent game state** — full game state is saved to `localStorage` (`tod_state_v1`) on every update, including the active theme and per-player shot counts; player roster is persisted separately in `tod_roster_v1`; first visit uses OS dark/light preference
@@ -57,15 +60,16 @@ Design reference: [kube.io/blog/liquid-glass-css-svg](https://kube.io/blog/liqui
 
 ## Tech Stack
 
-| Layer | Choice | Notes |
-|---|---|---|
-| Language | TypeScript 5.7 | Strict mode, `noUncheckedIndexedAccess`, `noImplicitOverride` |
-| Bundler | Vite 6 + vite-plugin-pwa | JSON imports, HMR, esbuild minification, PWA / Service Worker (`registerType: 'autoUpdate'` + `controllerchange` reload) |
-| UI | Vanilla DOM | No framework — pure TypeScript DOM manipulation |
-| Styling | CSS Custom Properties | Mobile-first, tokenised design system, dark/light theming |
-| State | Hand-rolled reactive store | Observer pattern, `localStorage` persistence |
-| DX tooling | Husky + commitlint + Prettier | Pre-commit formatting, conventional commit enforcement |
-| CI/CD | GitHub Actions | Automated build & GitHub Pages deployment on push to `main` |
+| Layer      | Choice                        | Notes                                                                                                                    |
+| ---------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Language   | TypeScript 5.7                | Strict mode, `noUncheckedIndexedAccess`, `noImplicitOverride`                                                            |
+| Bundler    | Vite 6 + vite-plugin-pwa      | JSON imports, HMR, esbuild minification, PWA / Service Worker (`registerType: 'autoUpdate'` + `controllerchange` reload) |
+| UI         | Vanilla DOM                   | No framework — pure TypeScript DOM manipulation                                                                          |
+| Styling    | CSS Custom Properties         | Mobile-first, tokenised design system, dark/light theming                                                                |
+| State      | Hand-rolled reactive store    | Observer pattern, `localStorage` persistence                                                                             |
+| Testing    | Vitest 4 + jsdom              | Unit tests for engine and state layers (`src/__tests__/`); `npm test` / `npm run test:coverage`                          |
+| DX tooling | Husky + commitlint + Prettier | Pre-commit formatting, conventional commit enforcement                                                                   |
+| CI/CD      | GitHub Actions                | Three-job pipeline on push to `main`: **Test → Build → Deploy** to GitHub Pages                                          |
 
 ---
 
@@ -82,7 +86,8 @@ Design reference: [kube.io/blog/liquid-glass-css-svg](https://kube.io/blog/liqui
 git clone https://github.com/<your-username>/truth-or-dare.git
 cd truth-or-dare
 npm install
-./setup.sh   # initialises Husky git hooks — run once after cloning
+./setup.sh   # creates .husky/ hooks — run once after cloning
+             # without this step, commitlint and Prettier pre-commit checks are NOT active
 ```
 
 ### Development server
@@ -111,6 +116,41 @@ Opens at `http://localhost:4173`.
 
 ---
 
+## Testing
+
+The project uses **Vitest 4** for unit testing, running in a **jsdom** environment.
+
+### Running tests
+
+```bash
+npm test                # single run (used in CI — blocks deployment on failure)
+npm run test:watch      # interactive watch mode during development
+npm run test:coverage   # v8 coverage report (text + HTML + lcov)
+```
+
+### Test structure
+
+```
+src/__tests__/
+├── engine/
+│   ├── cardFormatter.test.ts    # formatCardText, sexLabel, orientationLabel, relationshipLabel
+│   ├── datasetLoader.test.ts    # loadCards (real dataset.json), filterCards
+│   ├── matchingEngine.test.ts   # getEligibleTargets + pickRandomTarget — all tiers, orientations,
+│   │                            #   closed/open couples, targetSex edge cases
+│   └── repetitionEngine.test.ts # cardKey, recordCardShown, selectCard (scoring + history)
+├── state/
+│   ├── actions.test.ts          # Every Action pure-updater function in isolation
+│   └── store.test.ts            # GameStore construction, subscribe/unsubscribe, update,
+│                                #   localStorage persistence, roster persistence
+└── fixtures/
+    ├── cards.ts                 # Hand-crafted Card objects covering all 4 tiers and both types
+    └── players.ts               # Player fixtures: Tier 1/2, hetero/homo/bi, open/closed couples
+```
+
+Coverage is configured to include `src/engine/**` and `src/state/**`.
+
+---
+
 ## Project Structure
 
 ```
@@ -119,11 +159,23 @@ Opens at `http://localhost:4173`.
 │   ├── data/
 │   │   └── dataset.json       # 400 cards (bundled at build time)
 │   ├── engine/
-│   │   ├── glassDistortion.ts # Physics-based SVG displacement map (Liquid Glass)
-│   │   ├── markdownParser.ts  # JSON loader + filterCards utility
-│   │   ├── cardFormatter.ts   # Card text formatter: [Target Player] substitution + HTML escaping
-│   │   ├── matchingEngine.ts  # Eligible target selection (levels 3–4)
-│   │   └── repetitionEngine.ts# Anti-repetition weighted card selection
+│   │   ├── glassDistortion.ts  # Physics-based SVG displacement map (Liquid Glass)
+│   │   ├── datasetLoader.ts    # Loads & flattens dataset.json; filterCards utility
+│   │   ├── cardFormatter.ts    # Card text formatter: [Target Player] substitution + HTML escaping
+│   │   ├── matchingEngine.ts   # Eligible target selection (Tiers 2–4)
+│   │   └── repetitionEngine.ts # Anti-repetition weighted card selection
+│   ├── __tests__/
+│   │   ├── engine/
+│   │   │   ├── cardFormatter.test.ts
+│   │   │   ├── datasetLoader.test.ts
+│   │   │   ├── matchingEngine.test.ts
+│   │   │   └── repetitionEngine.test.ts
+│   │   ├── state/
+│   │   │   ├── actions.test.ts
+│   │   │   └── store.test.ts
+│   │   └── fixtures/
+│   │       ├── cards.ts         # Card fixtures for all tiers
+│   │       └── players.ts       # Player fixtures (Tier 1–4, all orientations/statuses)
 │   ├── state/
 │   │   └── store.ts           # Reactive store, all Actions, localStorage persistence
 │   ├── types/
@@ -135,7 +187,7 @@ Opens at `http://localhost:4173`.
 │   │       ├── homeScreen.ts  # Tier selection grid
 │   │       ├── ageGateScreen.ts # 18+ confirmation (Tiers 2–4)
 │   │       ├── rosterScreen.ts  # Saved-player roster recovery screen
-│   │       ├── setupScreen.ts   # Adaptive player registration form (conditional fields at Tier 3–4)
+│   │       ├── setupScreen.ts   # Adaptive player registration (couple status at Tier 2; full fields at Tier 3–4)
 │   │       ├── gameScreen.ts    # Truth/Dare selection + card reveal + penalty overlay
 │   │       └── rankingScreen.ts # End-of-game shot ranking (shown when penalties > 0)
 │   ├── styles/
@@ -159,7 +211,7 @@ Opens at `http://localhost:4173`.
 ├── .prettierrc                # Prettier options
 └── .github/
     └── workflows/
-        └── deploy.yml         # GitHub Actions: build → deploy to GitHub Pages
+        └── deploy.yml         # GitHub Actions: test → build → deploy to GitHub Pages
 ```
 
 ---
@@ -168,12 +220,12 @@ Opens at `http://localhost:4173`.
 
 ### The 4 Tiers
 
-| Nível | Nome | Restrição de idade | Penalização shots | Descrição |
-|------|---------|:-:|:-:|---|
-| 1 | 🌟 Diversão Familiar | ✗ | ✗ | Perguntas leves e desafios divertidos — adequado a todas as idades |
-| 2 | 🎉 Noite entre Amigos | 18+ | ✓ | Conteúdo mais picante sobre vida pessoal, segredos e momentos embaraosos |
-| 3 | 🔥 Onde a Ousadia Começa | 18+ | ✓ | Conteúdo adulto com desafios físicos entre jogadores; motor de alvos com base na orientação sexual |
-| 4 | 💀 Extremo | 18+ | ✓ | Conteúdo adulto intenso para grupos completamente à vontade entre si |
+| Nível | Nome                     | Restrição de idade | Penalização shots | Descrição                                                                                                                                                |
+| ----- | ------------------------ | :----------------: | :---------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1     | 🌟 Diversão Familiar     |         ✗          |         ✗         | Perguntas leves e desafios divertidos — adequado a todas as idades                                                                                       |
+| 2     | 🎉 Noite entre Amigos    |        18+         |         ✓         | Conteúdo mais picante sobre vida pessoal, segredos e momentos embaraçosos; inclui estado de casal — jogadores em casal interagem exclusivamente entre si |
+| 3     | 🔥 Onde a Ousadia Começa |        18+         |         ✓         | Conteúdo adulto com desafios físicos entre jogadores; motor de alvos com base na orientação sexual                                                       |
+| 4     | 💀 Extremo               |        18+         |         ✓         | Conteúdo adulto intenso para grupos completamente à vontade entre si                                                                                     |
 
 ### Turn Flow
 
@@ -183,6 +235,9 @@ Opens at `http://localhost:4173`.
 4. The player either completes the challenge (✅ Feito!) or refuses (❌ Recusar).
 5. Refusing triggers a penalty overlay with a stepper. The player adjusts the quantity to what they actually drank (can be zero) and confirms. Nobody is forced to drink — the game records only what is confirmed.
 6. The turn passes to the next player in registration order.
+
+    Between steps 6 and 7, if the turn wraps back to player 0, the **round counter increments**. Before the next player can act, the game checks for any round-effect expirations for that player and shows a popup if any are found.
+
 7. When the game ends (via **Terminar Jogo**), if penalties were active and at least one player drank, a **ranking screen** is shown with all players sorted by shots consumed before returning to the home screen.
 
 ### Penalty System
@@ -197,26 +252,49 @@ At the end of a game where penalties were on and at least one player drank, a **
 
 The feature can be disabled in the setup screen before the game starts — useful for alcohol-free play.
 
-### Matching Engine (Tiers 3–4)
+### Round Tracker
 
-When a card contains `[Target Player]`, the engine selects an eligible target by applying three constraints in sequence:
+Each game starts at **Ronda 1**. The round counter increments every time the turn wraps back to the first registered player.
+
+A small **🔁 Ronda N** badge is visible in the turn banner at all times during the game (both in the selecting and card-revealing phases).
+
+Some dare cards carry a **round duration** — for example _"Fala com sotaque estrangeiro durante as próximas 3 rondas."_ When a player accepts such a card, the game registers a timed effect storing:
+
+- the player it applies to
+- the round it was accepted (`triggerRound`)
+- the round it expires (`targetRound = triggerRound + roundsCount`)
+
+When it is that player's turn and the current round equals or exceeds `targetRound`, a **dismissible popup** appears before they choose Truth or Dare, announcing the effect has ended. Multiple simultaneous expirations for the same player are shown together in one popup.
+
+Cards with round durations carry two additional dataset fields: `roundsCount` and `hasRounds`.
+
+### Matching Engine (Tiers 2–4)
+
+When a card contains `[Target Player]`, the engine selects an eligible target based on the active tier.
+
+**Tier 2** applies a single couple constraint:
+
+- Players registered as **Em casal** (with a `partnerId`) interact exclusively with their registered partner.
+- Players registered as **Solteiro/a** (no `partnerId`) can target any other player.
+
+**Tiers 3–4** apply three constraints in sequence:
 
 1. **Mutual orientation** — only pairs where both players are attracted to the other's gender are eligible.
 2. **Relationship exclusivity** — players in a _closed relationship_ interact exclusively with their registered partner.
 3. **Open relationship gate** — players in an _open relationship_ must have `openToOutside = true` to be eligible as targets for others. _Single_ players are eligible by default; their `openToOutside` toggle only serves as a gateway to set a target-sex preference.
 
-If no eligible target exists, the active player performs the challenge alone.
+If no eligible target exists at any tier, the active player performs the challenge alone.
 
 ### Anti-Repetition Engine
 
 Before each card draw, every candidate card receives a penalty score:
 
-| Factor | Score penalty |
-|---|---|
-| Appeared in active player's last 12 cards | +200 |
-| Active player has ever seen this card | +30 |
-| Partner saw it in their last 6 cards | +80 |
-| Random jitter (fairness) | ±15 |
+| Factor                                    | Score penalty |
+| ----------------------------------------- | ------------- |
+| Appeared in active player's last 12 cards | +200          |
+| Active player has ever seen this card     | +30           |
+| Partner saw it in their last 6 cards      | +80           |
+| Random jitter (fairness)                  | ±15           |
 
 The card with the lowest total score is selected (from the top-5 lowest, with randomness).
 
@@ -247,10 +325,33 @@ State is persisted to `localStorage` on every update. `allCards` (static bundle 
 
 The router maps `GamePhase` values to screen factory functions:
 
-```
-Tier 1:   home → player-roster → setup → game-selecting ↔ game-showing → home
-Tiers 2–4 (no penalties / no shots):  home → age-gate → player-roster → setup → game-selecting ↔ game-showing → home
-Tiers 2–4 (penalties + shots drank):  home → age-gate → player-roster → setup → game-selecting ↔ game-showing → ranking → home
+```mermaid
+flowchart TD
+    HOME["🏠 Home\n(Tier Selection)"]
+    AGEGATE["🔞 Age Gate\n(18+ Confirmation)"]
+    ROSTER["👥 Player Roster\n(Reuse or start fresh)"]
+    SETUP["⚙️ Setup\n(Register Players)"]
+    SEL["🎴 Game — Selecting\n(Truth or Dare?)"]
+    SHOW["📋 Game — Showing\n(Card Revealed)"]
+    PEN["🍺 Penalty Overlay\n(Shots stepper)"]
+    ROUNDEXP["🔁 Round Expiry\n(Effect ended popup)"]
+    RANK["🏆 Ranking\n(Shot Counts)"]
+
+    HOME -->|"Tier 1"| ROSTER
+    HOME -->|"Tiers 2–4"| AGEGATE
+    AGEGATE -->|"Confirmed 18+"| ROSTER
+    ROSTER --> SETUP
+    SETUP -->|"Start Game"| SEL
+    SEL -->|"pending round expiry"| ROUNDEXP
+    ROUNDEXP -->|"Acknowledged"| SEL
+    SEL -->|"Truth / Dare"| SHOW
+    SHOW -->|"✅ Accept"| SEL
+    SHOW -->|"❌ Refuse, no penalties"| SEL
+    SHOW -->|"❌ Refuse + penalties active"| PEN
+    PEN -->|"Confirm shots"| SEL
+    SEL -->|"End Game — no shots"| HOME
+    SEL -->|"End Game — shots drank"| RANK
+    RANK -->|"Voltar ao Início"| HOME
 ```
 
 The `player-roster` phase shows saved players from `tod_roster_v1` and lets the group reuse them or start fresh.
@@ -275,20 +376,32 @@ A `--dock-clearance` CSS custom property (`max(120px, env(safe-area-inset-bottom
 
 ## Dataset
 
-Game content (questions and dares) lives in `src/data/dataset.json` — a flat array of 400 `Card` objects generated from the raw Markdown source.
+Game content lives in `src/data/dataset.json` — a static JSON file with **400 cards** (50 truths + 50 dares per tier) organised by tier and card type. `datasetLoader.ts` flattens this structure into a single `Card[]` at startup; `type` and `tier` are derived from the group keys and are not stored in each entry.
 
-### Card shape
+### JSON structure
 
 ```jsonc
 {
-  "id": 1,
-  "type": "truth",         // "truth" | "dare"
-  "tier": 2,               // 1 | 2 | 3 | 4
-  "rawText": "Qual foi a pior mensagem...",
-  "shots": 2,              // null when no penalty
-  "hasTarget": false       // true when rawText contains "[Target Player]"
+  "tier1": {
+    "truths": [ { "id": 1, "rawText": "…", "shots": null, "hasTarget": false }, … ],
+    "dares":  [ … ]
+  },
+  "tier2": { "truths": [ … ], "dares": [ … ] },
+  "tier3": { "truths": [ … ], "dares": [ … ] },
+  "tier4": { "truths": [ … ], "dares": [ … ] }
 }
 ```
+
+### Entry shape
+
+| Field         | Type             | Description                                                                                        |
+| ------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
+| `id`          | `number`         | Unique within the same tier + type group                                                           |
+| `rawText`     | `string`         | Card text; may contain `[Target Player]` placeholder                                               |
+| `shots`       | `number \| null` | Penalty shots on refusal (`null` = no penalty; always `null` for Tier 1)                           |
+| `hasTarget`   | `boolean`        | `true` when `rawText` contains the `[Target Player]` placeholder                                   |
+| `roundsCount` | `number \| null` | Number of rounds the effect lasts (`null` when not applicable)                                     |
+| `hasRounds`   | `boolean`        | `true` when the card has a round-based duration (always `false` for truths and non-duration dares) |
 
 ---
 
@@ -296,12 +409,11 @@ Game content (questions and dares) lives in `src/data/dataset.json` — a flat a
 
 ### GitHub Pages (automated)
 
-Push to `main`. The GitHub Actions workflow in `.github/workflows/deploy.yml` will:
+Push to `main`. The GitHub Actions workflow in `.github/workflows/deploy.yml` runs three sequential jobs:
 
-1. Install dependencies (`npm ci`)
-2. Build the project (`npm run build`) with `BASE_URL=/TruthOrDare/`
-3. Upload `dist/` as a GitHub Pages artefact
-4. Deploy via the official `actions/deploy-pages` action
+1. **Test** — `npm test` (Vitest). The pipeline stops here if any test fails; build and deploy are blocked.
+2. **Build** — `npm run build` with `BASE_URL=/TruthOrDare/`; type-checks with `tsc --noEmit` before bundling, then uploads `dist/` as a Pages artefact.
+3. **Deploy** — `actions/deploy-pages` publishes the artefact.
 
 The live site will be available at: **<https://beatrizsaoliveira.github.io/TruthOrDare/>**
 

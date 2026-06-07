@@ -1,7 +1,7 @@
 import { formatCardText } from '../../engine/cardFormatter.js';
 import type { GameStore } from '../../state/store.js';
 import { Actions } from '../../state/store.js';
-import type { Card, Player } from '../../types/index.js';
+import type { Card, Player, RoundEffect } from '../../types/index.js';
 
 /** Colour palette for player dot indicators (reserved for future use) */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -36,8 +36,13 @@ export function createGameScreen(store: GameStore): HTMLElement {
 // ─── "Selecting" phase ────────────────────────────────────────────────────────
 
 function buildSelectingScreen(store: GameStore): HTMLElement {
-    const { players, currentPlayerIndex, penaltiesEnabled, shotCounts } =
-        store.state;
+    const {
+        players,
+        currentPlayerIndex,
+        penaltiesEnabled,
+        shotCounts,
+        currentRound,
+    } = store.state;
     const currentPlayer = players[currentPlayerIndex] as Player;
 
     const screen = el('div', 'screen');
@@ -58,6 +63,13 @@ function buildSelectingScreen(store: GameStore): HTMLElement {
             debtEl.innerHTML = `🍺 Conta: <strong>${debt}</strong> shot${debt === 1 ? '' : 's'}`;
             banner.appendChild(debtEl);
         }
+    }
+
+    // Round badge
+    {
+        const roundEl = el('div', 'turn-banner__shot-debt');
+        roundEl.textContent = `🔁 Ronda ${currentRound}`;
+        banner.appendChild(roundEl);
     }
 
     // ── Player dots ───────────────────────────────────────────
@@ -125,6 +137,14 @@ function buildSelectingScreen(store: GameStore): HTMLElement {
     });
     footer.appendChild(endBtn);
 
+    // ── Round expiry overlay ──────────────────────────────────
+    const { pendingRoundExpiry } = store.state;
+    if (pendingRoundExpiry.length > 0) {
+        const overlay = buildRoundExpiryOverlay(pendingRoundExpiry, store);
+        screen.style.position = 'relative';
+        screen.appendChild(overlay);
+    }
+
     screen.append(banner, dotsRow, main, footer);
     return screen;
 }
@@ -156,7 +176,8 @@ function buildShowingScreen(store: GameStore): HTMLElement {
     const banner = buildCompactBanner(
         currentPlayer,
         currentPlayerIndex,
-        players.length
+        players.length,
+        store.state.currentRound
     );
     screen.appendChild(banner);
 
@@ -382,7 +403,8 @@ function buildPenaltyOverlayInScreen(
 function buildCompactBanner(
     player: Player,
     idx: number,
-    total: number
+    total: number,
+    currentRound: number
 ): HTMLElement {
     const wrap = el('div', 'turn-banner');
     wrap.style.cssText =
@@ -397,12 +419,77 @@ function buildCompactBanner(
     name.textContent = player.name;
     nameWrap.append(label, name);
 
+    const counterWrap = el('div', '');
+    counterWrap.style.cssText = 'text-align:right;';
     const counter = el('div', 'label');
     counter.style.color = 'rgba(255,255,255,.7)';
     counter.textContent = `${idx + 1} / ${total}`;
+    const roundBadge = el('div', 'turn-banner__round-badge');
+    roundBadge.textContent = `🔁 Ronda ${currentRound}`;
+    counterWrap.append(counter, roundBadge);
 
-    wrap.append(nameWrap, counter);
+    wrap.append(nameWrap, counterWrap);
     return wrap;
+}
+
+// ─── Round expiry overlay ────────────────────────────────────────────────────
+
+function buildRoundExpiryOverlay(
+    effects: readonly RoundEffect[],
+    store: GameStore
+): HTMLElement {
+    const overlay = el('div', 'penalty-overlay');
+    overlay.setAttribute('role', 'alertdialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-labelledby', 'round-expiry-title');
+
+    const box = el('div', 'penalty-box');
+
+    const icon = el('span', 'penalty-box__icon');
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = '🎉';
+
+    const title = el('h2', 'heading-lg');
+    title.id = 'round-expiry-title';
+    title.textContent =
+        effects.length === 1 ? 'Efeito terminado!' : 'Efeitos terminados!';
+
+    box.append(icon, title);
+
+    const desc = el('p', 'body-md text-muted');
+    desc.style.cssText = 'margin-top:var(--sp-2);margin-bottom:0;';
+    desc.textContent =
+        effects.length === 1
+            ? 'O seguinte efeito chegou ao fim:'
+            : 'Os seguintes efeitos chegaram ao fim:';
+    box.appendChild(desc);
+
+    for (const effect of effects) {
+        const effectEl = el('div', 'round-expiry__effect');
+        effectEl.style.cssText =
+            'margin-top:var(--sp-3);padding:var(--sp-3) var(--sp-4);background:var(--clr-surface-2);border-radius:var(--r-lg);border:1px solid var(--clr-border);font-size:0.9rem;line-height:1.4;color:var(--clr-text);';
+        effectEl.textContent = effect.cardText;
+        box.appendChild(effectEl);
+    }
+
+    const actions = el('div', 'penalty-box__actions');
+    const okBtn = el<HTMLButtonElement>(
+        'button',
+        'btn btn--primary btn--lg btn--full'
+    );
+    okBtn.style.marginTop = 'var(--sp-2)';
+    okBtn.textContent = '✅  Entendido!';
+    okBtn.setAttribute('aria-label', 'Confirmar que os efeitos terminaram');
+    okBtn.addEventListener('click', () =>
+        store.update(Actions.acknowledgeRoundExpiry())
+    );
+    actions.appendChild(okBtn);
+    box.appendChild(actions);
+
+    overlay.appendChild(box);
+
+    setTimeout(() => okBtn.focus(), 50);
+    return overlay;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

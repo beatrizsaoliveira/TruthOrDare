@@ -1,5 +1,5 @@
+import { loadCards } from './engine/datasetLoader.js';
 import { initGlassDistortion } from './engine/glassDistortion.js';
-import { loadCards } from './engine/markdownParser.js';
 import { GameStore } from './state/store.js';
 import './styles/main.css';
 import { renderScreen } from './ui/router.js';

@@ -129,6 +129,56 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
         form.appendChild(bioWrap);
     }
 
+    // ── Couple status (Tier 2 only) ──────────────────────────────────────────
+    let tier2CoupleRadio: HTMLInputElement | null = null;
+    let tier2PartnerGroup: HTMLElement | null = null;
+    let tier2PartnerSelect: HTMLSelectElement | null = null;
+
+    if (tier === 2) {
+        const coupleStatusGroup = buildRadioGroup<'single' | 'couple'>(
+            'player-couple-status',
+            'Estado',
+            [
+                { value: 'single', label: '🙋 Solteiro/a' },
+                { value: 'couple', label: '💑 Em casal' },
+            ]
+        );
+        tier2CoupleRadio = coupleStatusGroup.querySelector<HTMLInputElement>(
+            'input[value="couple"]'
+        ) as HTMLInputElement;
+
+        tier2PartnerGroup = el('div', 'form-group');
+        tier2PartnerGroup.style.display = 'none';
+        const t2PartnerLabel = el<HTMLLabelElement>('label', 'form-label');
+        t2PartnerLabel.htmlFor = 'player-partner-t2';
+        t2PartnerLabel.textContent = 'Parceiro/a no jogo';
+        tier2PartnerSelect = el<HTMLSelectElement>('select', 'form-select');
+        tier2PartnerSelect.id = 'player-partner-t2';
+        tier2PartnerGroup.append(t2PartnerLabel, tier2PartnerSelect);
+
+        const t2CoupleWrap = el('div', 'field-group-wrap');
+        t2CoupleWrap.append(coupleStatusGroup, tier2PartnerGroup);
+        form.appendChild(t2CoupleWrap);
+
+        coupleStatusGroup.addEventListener('change', () => {
+            const isCoupled = tier2CoupleRadio?.checked ?? false;
+            if (tier2PartnerGroup)
+                tier2PartnerGroup.style.display = isCoupled ? '' : 'none';
+            if (isCoupled && tier2PartnerSelect)
+                populatePartnerSelect(tier2PartnerSelect, store);
+        });
+
+        store.subscribe((state) => {
+            if (
+                state.phase === 'setup' &&
+                tier2PartnerGroup?.style.display !== 'none' &&
+                tier2PartnerSelect
+            ) {
+                populatePartnerSelect(tier2PartnerSelect, store);
+            }
+        });
+    }
+
     // ── Tier 3+ fields ────────────────────────────────────────
     let orientationInputs: NodeListOf<HTMLInputElement> | null = null;
     let statusSelect: HTMLSelectElement | null = null;
@@ -286,6 +336,13 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
 
         if (sexChecked !== null) extras.sex = sexChecked;
 
+        if (tier === 2) {
+            const isCoupled = tier2CoupleRadio?.checked ?? false;
+            extras.partnerId = isCoupled
+                ? tier2PartnerSelect?.value || null
+                : null;
+        }
+
         if (tier >= 3) {
             const orientation = getCheckedValue<Orientation>(
                 orientationInputs ?? emptyNodeList<HTMLInputElement>()
@@ -314,6 +371,10 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
 
         store.update(Actions.addPlayer(player));
         form.reset();
+        // Hide Tier 2 partner picker after reset (form.reset reverts radio to Solteiro/a).
+        if (tier === 2 && tier2PartnerGroup) {
+            tier2PartnerGroup.style.display = 'none';
+        }
         // Reset open-to-outside toggle state and re-sync conditional fields.
         // We dispatch a 'change' event on the status select (which form.reset()
         // reverted to 'single') so the listener inside the if(tier>=3) block
@@ -394,7 +455,7 @@ function updatePlayerList(section: HTMLElement, store: GameStore): void {
     const list = el('ul', 'stack stack--3');
     list.setAttribute('aria-label', 'Lista de jogadores');
 
-    if (tier && tier >= 3) {
+    if (tier && tier >= 2) {
         type CoupleEntry = { a: Player; aIdx: number; b: Player; bIdx: number };
         const rendered = new Set<string>();
         const coupleGroups: CoupleEntry[] = [];
@@ -539,6 +600,13 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
                   : null;
             if (sexVal !== (player.sex ?? null)) return true;
         }
+        if (tier === 2) {
+            const isCoupled = tier2CoupleRadio?.checked ?? false;
+            const currentPartner = isCoupled
+                ? tier2PartnerSelect?.value || null
+                : null;
+            if (currentPartner !== (player.partnerId ?? null)) return true;
+        }
         if (tier >= 3) {
             const ori = getCheckedValue<Orientation>(
                 orientationInputs ?? emptyNodeList<HTMLInputElement>()
@@ -641,6 +709,67 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
         bioWrap = el('div', 'field-group-wrap field-group-wrap--inline');
         bioWrap.appendChild(sexGroup);
         form.appendChild(bioWrap);
+    }
+
+    // ── Couple status (Tier 2 only) ──────────────────────────────────────────
+    let tier2CoupleRadio: HTMLInputElement | null = null;
+    let tier2PartnerGroup: HTMLElement | null = null;
+    let tier2PartnerSelect: HTMLSelectElement | null = null;
+
+    if (tier === 2) {
+        const coupleStatusGroup = buildRadioGroup<'single' | 'couple'>(
+            'edit-couple-status',
+            'Estado',
+            [
+                { value: 'single', label: '🙋 Solteiro/a' },
+                { value: 'couple', label: '💑 Em casal' },
+            ]
+        );
+        const coupleInput = coupleStatusGroup.querySelector<HTMLInputElement>(
+            'input[value="couple"]'
+        ) as HTMLInputElement;
+        const singleInput = coupleStatusGroup.querySelector<HTMLInputElement>(
+            'input[value="single"]'
+        ) as HTMLInputElement;
+        if (player.partnerId) {
+            coupleInput.checked = true;
+            coupleInput.defaultChecked = true;
+            singleInput.checked = false;
+            singleInput.defaultChecked = false;
+        }
+        tier2CoupleRadio = coupleInput;
+
+        tier2PartnerGroup = el('div', 'form-group');
+        tier2PartnerGroup.style.display = 'none';
+        const t2PartnerLabel = el<HTMLLabelElement>('label', 'form-label');
+        t2PartnerLabel.htmlFor = 'edit-partner-t2';
+        t2PartnerLabel.textContent = 'Parceiro/a no jogo';
+        tier2PartnerSelect = el<HTMLSelectElement>('select', 'form-select');
+        tier2PartnerSelect.id = 'edit-partner-t2';
+        tier2PartnerGroup.append(t2PartnerLabel, tier2PartnerSelect);
+
+        const t2CoupleWrap = el('div', 'field-group-wrap');
+        t2CoupleWrap.append(coupleStatusGroup, tier2PartnerGroup);
+        form.appendChild(t2CoupleWrap);
+
+        function updateTier2EditFields(): void {
+            const isCoupled = tier2CoupleRadio?.checked ?? false;
+            if (tier2PartnerGroup)
+                tier2PartnerGroup.style.display = isCoupled ? '' : 'none';
+            if (isCoupled && tier2PartnerSelect)
+                populatePartnerSelectExcluding(
+                    tier2PartnerSelect,
+                    store,
+                    player.id
+                );
+        }
+
+        coupleStatusGroup.addEventListener('change', updateTier2EditFields);
+        updateTier2EditFields();
+
+        if (tier2PartnerSelect && player.partnerId) {
+            tier2PartnerSelect.value = player.partnerId;
+        }
     }
 
     // Tier 3+ fields
@@ -805,6 +934,13 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
         const extras: ExtraFields = {};
 
         if (sexChecked !== null) extras.sex = sexChecked;
+
+        if (tier === 2) {
+            const isCoupled = tier2CoupleRadio?.checked ?? false;
+            extras.partnerId = isCoupled
+                ? tier2PartnerSelect?.value || null
+                : null;
+        }
 
         if (tier >= 3) {
             const orientation = getCheckedValue<Orientation>(

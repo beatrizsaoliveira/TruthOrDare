@@ -9,6 +9,7 @@ import type {
     Player,
     PlayerHistories,
     PlayerHistory,
+    RoundEffect,
     SerializedHistory,
     Theme,
     Tier,
@@ -53,6 +54,9 @@ export function buildInitialState(allCards: readonly Card[]): GameState {
         showingPenalty: false,
         playerHistories: {},
         shotCounts: {},
+        currentRound: 1,
+        activeEffects: [],
+        pendingRoundExpiry: [],
         theme: prefersDark() ? 'dark' : 'light',
         allCards,
     };
@@ -132,6 +136,9 @@ export const Actions = {
             players: [],
             playerHistories: {},
             shotCounts: {},
+            currentRound: 1,
+            activeEffects: [],
+            pendingRoundExpiry: [],
             currentCard: null,
             currentTargetPlayerId: null,
             showingPenalty: false,
@@ -225,6 +232,9 @@ export const Actions = {
         currentPlayerIndex: 0,
         playerHistories: {},
         shotCounts: {},
+        currentRound: 1,
+        activeEffects: [],
+        pendingRoundExpiry: [],
         currentCard: null,
         pendingCardType: null,
         currentTargetPlayerId: null,
@@ -245,11 +255,13 @@ export const Actions = {
 
             const partner = getPartner(activePlayer, state.players);
 
-            // Determine whether we need a card with no target (fallback)
+            // Determine whether we need a card with no target (fallback).
+            // For all tiers we check pickRandomTarget directly — even Tier 2,
+            // where a coupled player in a couple whose partner left the game
+            // should fall back to no-target cards instead of targeting a wrong player.
             const hasEligibleTarget =
-                state.tier < 3 ||
                 pickRandomTarget(activePlayer, state.players, state.tier) !==
-                    undefined;
+                undefined;
 
             const card = selectCard(
                 state.allCards,
@@ -283,34 +295,61 @@ export const Actions = {
         },
 
     /** Player accepted the card — advance to the next player. */
-    acceptCard: (): Updater => (state) => ({
-        ...state,
-        phase: 'game-selecting',
-        currentPlayerIndex:
-            (state.currentPlayerIndex + 1) % state.players.length,
-        currentCard: null,
-        pendingCardType: null,
-        currentTargetPlayerId: null,
-        showingPenalty: false,
-    }),
+    acceptCard: (): Updater => (state) => {
+        // If the card has a round duration, register a round effect
+        const card = state.currentCard;
+        const activePlayer = state.players[state.currentPlayerIndex];
+        let activeEffects = state.activeEffects;
+        if (card?.hasRounds && card.roundsCount != null && activePlayer) {
+            const effect: RoundEffect = {
+                cardId: card.id,
+                cardText: card.rawText,
+                playerId: activePlayer.id,
+                triggerRound: state.currentRound,
+                targetRound: state.currentRound + card.roundsCount,
+            };
+            activeEffects = [...activeEffects, effect];
+        }
+
+        const { nextIndex, newRound, expiring } = computeAdvance({
+            ...state,
+            activeEffects,
+        });
+
+        return {
+            ...state,
+            phase: 'game-selecting',
+            currentPlayerIndex: nextIndex,
+            currentRound: newRound,
+            activeEffects,
+            pendingRoundExpiry: expiring,
+            currentCard: null,
+            pendingCardType: null,
+            currentTargetPlayerId: null,
+            showingPenalty: false,
+        };
+    },
 
     /** Player refused — show penalty overlay (if penalties are on). Shots are
      *  recorded later via confirmPenalty once the player reports what they drank. */
-    refuseCard: (): Updater => (state) => ({
-        ...state,
-        showingPenalty: state.penaltiesEnabled,
-        // If penalties are disabled, just advance immediately
-        ...(state.penaltiesEnabled
-            ? {}
-            : {
-                  phase: 'game-selecting' as GamePhase,
-                  currentPlayerIndex:
-                      (state.currentPlayerIndex + 1) % state.players.length,
-                  currentCard: null,
-                  pendingCardType: null,
-                  currentTargetPlayerId: null,
-              }),
-    }),
+    refuseCard: (): Updater => (state) => {
+        if (state.penaltiesEnabled) {
+            return { ...state, showingPenalty: true };
+        }
+        const { nextIndex, newRound, expiring } = computeAdvance(state);
+        return {
+            ...state,
+            showingPenalty: false,
+            phase: 'game-selecting' as GamePhase,
+            currentPlayerIndex: nextIndex,
+            currentRound: newRound,
+            activeEffects: state.activeEffects,
+            pendingRoundExpiry: expiring,
+            currentCard: null,
+            pendingCardType: null,
+            currentTargetPlayerId: null,
+        };
+    },
 
     /** Player confirmed how many shots they drank — record and advance. */
     confirmPenalty:
@@ -325,12 +364,17 @@ export const Actions = {
                               (state.shotCounts[activePlayer.id] ?? 0) + shots,
                       }
                     : state.shotCounts;
+
+            const { nextIndex, newRound, expiring } = computeAdvance(state);
+
             return {
                 ...state,
                 shotCounts: newShotCounts,
                 phase: 'game-selecting',
-                currentPlayerIndex:
-                    (state.currentPlayerIndex + 1) % state.players.length,
+                currentPlayerIndex: nextIndex,
+                currentRound: newRound,
+                activeEffects: state.activeEffects,
+                pendingRoundExpiry: expiring,
                 currentCard: null,
                 pendingCardType: null,
                 currentTargetPlayerId: null,
@@ -339,15 +383,35 @@ export const Actions = {
         },
 
     /** @deprecated Use confirmPenalty(0) instead. Kept for safety. */
-    dismissPenalty: (): Updater => (state) => ({
+    dismissPenalty: (): Updater => (state) => {
+        const { nextIndex, newRound, expiring } = computeAdvance(state);
+        return {
+            ...state,
+            phase: 'game-selecting',
+            currentPlayerIndex: nextIndex,
+            currentRound: newRound,
+            activeEffects: state.activeEffects,
+            pendingRoundExpiry: expiring,
+            currentCard: null,
+            pendingCardType: null,
+            currentTargetPlayerId: null,
+            showingPenalty: false,
+        };
+    },
+
+    /** Clears expired round effects after the player has acknowledged them. */
+    acknowledgeRoundExpiry: (): Updater => (state) => ({
         ...state,
-        phase: 'game-selecting',
-        currentPlayerIndex:
-            (state.currentPlayerIndex + 1) % state.players.length,
-        currentCard: null,
-        pendingCardType: null,
-        currentTargetPlayerId: null,
-        showingPenalty: false,
+        activeEffects: state.activeEffects.filter(
+            (e) =>
+                !state.pendingRoundExpiry.some(
+                    (p) =>
+                        p.cardId === e.cardId &&
+                        p.playerId === e.playerId &&
+                        p.triggerRound === e.triggerRound
+                )
+        ),
+        pendingRoundExpiry: [],
     }),
 
     endGame: (): Updater => (state) => {
@@ -378,6 +442,24 @@ function getPartner(player: Player, players: readonly Player[]): Player | null {
 function omitKey<T>(obj: Record<string, T>, key: string): Record<string, T> {
     const { [key]: _removed, ...rest } = obj;
     return rest;
+}
+
+/** Given the current state, compute the next player index, new round, and any expiring effects. */
+function computeAdvance(state: GameState): {
+    nextIndex: number;
+    newRound: number;
+    expiring: readonly RoundEffect[];
+} {
+    const nextIndex = (state.currentPlayerIndex + 1) % state.players.length;
+    const newRound =
+        nextIndex === 0 ? state.currentRound + 1 : state.currentRound;
+    const nextPlayer = state.players[nextIndex];
+    const expiring = nextPlayer
+        ? state.activeEffects.filter(
+              (e) => e.playerId === nextPlayer.id && e.targetRound <= newRound
+          )
+        : [];
+    return { nextIndex, newRound, expiring };
 }
 
 // ─── LocalStorage persistence ─────────────────────────────────────────────────
@@ -451,5 +533,21 @@ function deserialize(persisted: PersistedState): Omit<GameState, 'allCards'> {
     const shotCounts: Readonly<Record<string, number>> =
         (persisted as unknown as { shotCounts?: Record<string, number> })
             .shotCounts ?? {};
-    return { ...persisted, playerHistories, theme, shotCounts };
+    const currentRound: number =
+        (persisted as unknown as { currentRound?: number }).currentRound ?? 1;
+    const activeEffects: readonly RoundEffect[] =
+        (persisted as unknown as { activeEffects?: RoundEffect[] })
+            .activeEffects ?? [];
+    const pendingRoundExpiry: readonly RoundEffect[] =
+        (persisted as unknown as { pendingRoundExpiry?: RoundEffect[] })
+            .pendingRoundExpiry ?? [];
+    return {
+        ...persisted,
+        playerHistories,
+        theme,
+        shotCounts,
+        currentRound,
+        activeEffects,
+        pendingRoundExpiry,
+    };
 }
