@@ -451,8 +451,7 @@ function buildRoundExpiryOverlay(
 
     const title = el('h2', 'heading-lg');
     title.id = 'round-expiry-title';
-    title.textContent =
-        effects.length === 1 ? 'Efeito terminado!' : 'Efeitos terminados!';
+    title.textContent = 'Acabou!';
 
     box.append(icon, title);
 
@@ -460,15 +459,26 @@ function buildRoundExpiryOverlay(
     desc.style.cssText = 'margin-top:var(--sp-2);margin-bottom:0;';
     desc.textContent =
         effects.length === 1
-            ? 'O seguinte efeito chegou ao fim:'
-            : 'Os seguintes efeitos chegaram ao fim:';
+            ? 'O seguinte desafio chegou ao fim:'
+            : 'Os seguintes desafios chegaram ao fim:';
     box.appendChild(desc);
 
     for (const effect of effects) {
         const effectEl = el('div', 'round-expiry__effect');
         effectEl.style.cssText =
             'margin-top:var(--sp-3);padding:var(--sp-3) var(--sp-4);background:var(--clr-surface-2);border-radius:var(--r-lg);border:1px solid var(--clr-border);font-size:0.9rem;line-height:1.4;color:var(--clr-text);';
-        effectEl.textContent = effect.cardText;
+        const playerName = store.state.players.find(
+            (p) => p.id === effect.playerId
+        )?.name;
+        if (playerName) {
+            const nameTag = el('span', '');
+            nameTag.style.cssText =
+                'display:block;font-weight:600;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--clr-text-muted);margin-bottom:var(--sp-1);';
+            nameTag.textContent = playerName;
+            effectEl.appendChild(nameTag);
+        }
+        const textNode = document.createTextNode(effect.cardText);
+        effectEl.appendChild(textNode);
         box.appendChild(effectEl);
     }
 

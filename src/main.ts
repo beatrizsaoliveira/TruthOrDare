@@ -107,6 +107,7 @@ function main(): void {
     let lastTheme = store.state.theme;
     let lastPhase = store.state.phase;
     let lastShowingPenalty = store.state.showingPenalty;
+    let lastPendingRoundExpiry = store.state.pendingRoundExpiry.length;
     store.subscribe(() => {
         if (store.state.theme !== lastTheme) {
             lastTheme = store.state.theme;
@@ -115,9 +116,12 @@ function main(): void {
         const phaseChanged = store.state.phase !== lastPhase;
         const penaltyChanged =
             store.state.showingPenalty !== lastShowingPenalty;
-        if (phaseChanged || penaltyChanged) {
+        const expiryChanged =
+            store.state.pendingRoundExpiry.length !== lastPendingRoundExpiry;
+        if (phaseChanged || penaltyChanged || expiryChanged) {
             lastPhase = store.state.phase;
             lastShowingPenalty = store.state.showingPenalty;
+            lastPendingRoundExpiry = store.state.pendingRoundExpiry.length;
             renderScreen(appEl, store);
         }
     });
