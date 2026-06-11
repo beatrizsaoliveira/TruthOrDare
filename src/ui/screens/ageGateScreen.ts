@@ -8,7 +8,7 @@ import { TIER_META } from '../../types/index.js';
  */
 export function createAgeGateScreen(store: GameStore): HTMLElement {
   const { tier } = store.state;
-  const meta = TIER_META.find(m => m.tier === tier);
+  const meta = TIER_META.find((m) => m.tier === tier);
 
   const screen = el('div', 'age-gate screen');
   screen.setAttribute('role', 'dialog');

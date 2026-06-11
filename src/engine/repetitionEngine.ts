@@ -1,10 +1,10 @@
 import type {
-    Card,
-    CardType,
-    Player,
-    PlayerHistories,
-    PlayerHistory,
-    Tier,
+  Card,
+  CardType,
+  Player,
+  PlayerHistories,
+  PlayerHistory,
+  Tier,
 } from '../types/index.js';
 import { filterCards } from './datasetLoader.js';
 
@@ -50,61 +50,60 @@ const SCORE_JITTER_MAX = 15; // random jitter to avoid tie-breaking being determ
  * pre-filtered accordingly before scoring.
  */
 export function selectCard(
-    allCards: readonly Card[],
-    tier: Tier,
-    type: CardType,
-    activePlayer: Player,
-    partner: Player | null,
-    histories: PlayerHistories,
-    requireNoTarget?: boolean
+  allCards: readonly Card[],
+  tier: Tier,
+  type: CardType,
+  activePlayer: Player,
+  partner: Player | null,
+  histories: PlayerHistories,
+  requireNoTarget?: boolean,
 ): Card {
-    let pool = filterCards(allCards, tier, type);
+  let pool = filterCards(allCards, tier, type);
 
-    if (requireNoTarget) {
-        pool = pool.filter((c) => !c.hasTarget);
+  if (requireNoTarget) {
+    pool = pool.filter((c) => !c.hasTarget);
+  }
+
+  if (pool.length === 0) {
+    // Absolute fallback: if filtering left nothing, open it up
+    pool = filterCards(allCards, tier, type);
+  }
+
+  const playerHistory = histories[activePlayer.id];
+  const partnerHistory = partner ? histories[partner.id] : null;
+
+  const scored = pool.map((card) => {
+    const key = cardKey(card);
+    let score = 0;
+
+    if (playerHistory) {
+      if (playerHistory.recentCards.includes(key)) {
+        score += SCORE_IN_RECENT;
+      } else if (playerHistory.seenCards.has(key)) {
+        score += SCORE_SEEN_EVER;
+      }
     }
 
-    if (pool.length === 0) {
-        // Absolute fallback: if filtering left nothing, open it up
-        pool = filterCards(allCards, tier, type);
+    if (partnerHistory) {
+      const coupledWindow = partnerHistory.recentCards.slice(-COUPLE_WINDOW);
+      if (coupledWindow.includes(key)) {
+        score += SCORE_COUPLE_RECENT;
+      }
     }
 
-    const playerHistory = histories[activePlayer.id];
-    const partnerHistory = partner ? histories[partner.id] : null;
+    score += Math.random() * SCORE_JITTER_MAX;
 
-    const scored = pool.map((card) => {
-        const key = cardKey(card);
-        let score = 0;
+    return { card, score };
+  });
 
-        if (playerHistory) {
-            if (playerHistory.recentCards.includes(key)) {
-                score += SCORE_IN_RECENT;
-            } else if (playerHistory.seenCards.has(key)) {
-                score += SCORE_SEEN_EVER;
-            }
-        }
+  scored.sort((a, b) => a.score - b.score);
 
-        if (partnerHistory) {
-            const coupledWindow =
-                partnerHistory.recentCards.slice(-COUPLE_WINDOW);
-            if (coupledWindow.includes(key)) {
-                score += SCORE_COUPLE_RECENT;
-            }
-        }
+  // Pick from the top 5 to maintain variety
+  const topN = scored.slice(0, Math.min(5, scored.length));
+  const picked = topN[Math.floor(Math.random() * topN.length)];
 
-        score += Math.random() * SCORE_JITTER_MAX;
-
-        return { card, score };
-    });
-
-    scored.sort((a, b) => a.score - b.score);
-
-    // Pick from the top 5 to maintain variety
-    const topN = scored.slice(0, Math.min(5, scored.length));
-    const picked = topN[Math.floor(Math.random() * topN.length)];
-
-    // picked is always defined because pool.length >= 1 at this point
-    return ((picked ?? scored[0]) as { card: Card; score: number }).card;
+  // picked is always defined because pool.length >= 1 at this point
+  return ((picked ?? scored[0]) as { card: Card; score: number }).card;
 }
 
 /**
@@ -112,30 +111,30 @@ export function selectCard(
  * was shown `card`. Mutates nothing — returns a new map.
  */
 export function recordCardShown(
-    histories: PlayerHistories,
-    playerId: string,
-    card: Card
+  histories: PlayerHistories,
+  playerId: string,
+  card: Card,
 ): PlayerHistories {
-    const key = cardKey(card);
-    const prev: PlayerHistory = histories[playerId] ?? {
-        playerId,
-        seenCards: new Set<string>(),
-        recentCards: [],
-    };
+  const key = cardKey(card);
+  const prev: PlayerHistory = histories[playerId] ?? {
+    playerId,
+    seenCards: new Set<string>(),
+    recentCards: [],
+  };
 
-    const seenCards = new Set(prev.seenCards);
-    seenCards.add(key);
+  const seenCards = new Set(prev.seenCards);
+  seenCards.add(key);
 
-    const recentCards = [...prev.recentCards, key].slice(-RECENT_WINDOW);
+  const recentCards = [...prev.recentCards, key].slice(-RECENT_WINDOW);
 
-    return {
-        ...histories,
-        [playerId]: { playerId, seenCards, recentCards },
-    };
+  return {
+    ...histories,
+    [playerId]: { playerId, seenCards, recentCards },
+  };
 }
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
 
 export function cardKey(card: Card): string {
-    return `${card.tier}|${card.type}|${card.id}`;
+  return `${card.tier}|${card.type}|${card.id}`;
 }

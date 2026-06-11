@@ -13,31 +13,28 @@ import type { Player, Sex } from '../types/index.js';
  * @param targetPlayer  - The target player for this card (optional).
  */
 export function formatCardText(
-    rawText: string,
-    activePlayer: Player,
-    targetPlayer?: Player
+  rawText: string,
+  activePlayer: Player,
+  targetPlayer?: Player,
 ): string {
-    let text = rawText;
+  let text = rawText;
 
-    // Replace target player placeholder
-    if (targetPlayer) {
-        text = text.replaceAll(
-            '[Target Player]',
-            `<strong>${escapeHtml(targetPlayer.name)}</strong>`
-        );
-    }
+  // Replace target player placeholder
+  if (targetPlayer) {
+    text = text.replaceAll('[Target Player]', `<strong>${escapeHtml(targetPlayer.name)}</strong>`);
+  }
 
-    return text;
+  return text;
 }
 
 /** Minimal HTML entity escaping to prevent XSS when inserting player names. */
 function escapeHtml(str: string): string {
-    return str
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#x27;');
+  return str
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#x27;');
 }
 
 /**
@@ -45,37 +42,37 @@ function escapeHtml(str: string): string {
  * Used in the UI to display player profiles.
  */
 export function sexLabel(sex: Sex): string {
-    return sex === 'male' ? 'Masculino' : 'Feminino';
+  return sex === 'male' ? 'Masculino' : 'Feminino';
 }
 
 /**
  * Returns the Portuguese label for an orientation value.
  */
 export function orientationLabel(o: Player['orientation']): string {
-    switch (o) {
-        case 'hetero':
-            return 'Heterossexual';
-        case 'homo':
-            return 'Homossexual';
-        case 'bi':
-            return 'Bissexual';
-        default:
-            return '—';
-    }
+  switch (o) {
+    case 'hetero':
+      return 'Heterossexual';
+    case 'homo':
+      return 'Homossexual';
+    case 'bi':
+      return 'Bissexual';
+    default:
+      return '—';
+  }
 }
 
 /**
  * Returns the Portuguese label for a relationship status.
  */
 export function relationshipLabel(r: Player['relationshipStatus']): string {
-    switch (r) {
-        case 'single':
-            return 'Solteiro/a';
-        case 'open':
-            return 'Relação Aberta';
-        case 'closed':
-            return 'Relação Exclusiva';
-        default:
-            return '—';
-    }
+  switch (r) {
+    case 'single':
+      return 'Solteiro/a';
+    case 'open':
+      return 'Relação Aberta';
+    case 'closed':
+      return 'Relação Exclusiva';
+    default:
+      return '—';
+  }
 }
