@@ -102,11 +102,13 @@ function main(): void {
   const appEl = document.getElementById('app');
   if (!appEl) throw new Error('#app element not found in DOM');
 
-  // 8. Render the current screen on phase change; re-colour particles on theme switch
+  // 8. Render the current screen on state changes; re-colour particles on theme switch
   let lastTheme = store.state.theme;
   let lastPhase = store.state.phase;
   let lastShowingPenalty = store.state.showingPenalty;
   let lastPendingRoundExpiry = store.state.pendingRoundExpiry.length;
+  let lastTimerRunning = store.state.timerRunning;
+  let lastPlayerIndex = store.state.currentPlayerIndex;
   store.subscribe(() => {
     if (store.state.theme !== lastTheme) {
       lastTheme = store.state.theme;
@@ -115,10 +117,14 @@ function main(): void {
     const phaseChanged = store.state.phase !== lastPhase;
     const penaltyChanged = store.state.showingPenalty !== lastShowingPenalty;
     const expiryChanged = store.state.pendingRoundExpiry.length !== lastPendingRoundExpiry;
-    if (phaseChanged || penaltyChanged || expiryChanged) {
+    const timerChanged = store.state.timerRunning !== lastTimerRunning;
+    const playerChanged = store.state.currentPlayerIndex !== lastPlayerIndex;
+    if (phaseChanged || penaltyChanged || expiryChanged || timerChanged || playerChanged) {
       lastPhase = store.state.phase;
       lastShowingPenalty = store.state.showingPenalty;
       lastPendingRoundExpiry = store.state.pendingRoundExpiry.length;
+      lastTimerRunning = store.state.timerRunning;
+      lastPlayerIndex = store.state.currentPlayerIndex;
       renderScreen(appEl, store);
     }
   });

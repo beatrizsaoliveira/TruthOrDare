@@ -11,6 +11,8 @@ export const truthT1NoTarget: Card = {
   hasTarget: false,
   roundsCount: null,
   hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: false,
 };
 
 export const truthT1WithTarget: Card = {
@@ -22,6 +24,8 @@ export const truthT1WithTarget: Card = {
   hasTarget: true,
   roundsCount: null,
   hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: false,
 };
 
 export const dareT1NoTarget: Card = {
@@ -33,6 +37,8 @@ export const dareT1NoTarget: Card = {
   hasTarget: false,
   roundsCount: null,
   hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: false,
 };
 
 export const dareT1WithTarget: Card = {
@@ -44,6 +50,8 @@ export const dareT1WithTarget: Card = {
   hasTarget: true,
   roundsCount: null,
   hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: false,
 };
 
 // ─── Tier 2 ───────────────────────────────────────────────────────────────────
@@ -57,6 +65,8 @@ export const truthT2: Card = {
   hasTarget: false,
   roundsCount: null,
   hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: false,
 };
 
 export const dareT2: Card = {
@@ -68,6 +78,8 @@ export const dareT2: Card = {
   hasTarget: false,
   roundsCount: null,
   hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: false,
 };
 
 // ─── Tier 3 ───────────────────────────────────────────────────────────────────
@@ -81,6 +93,8 @@ export const truthT3NoTarget: Card = {
   hasTarget: false,
   roundsCount: null,
   hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: false,
 };
 
 export const dareT3WithTarget: Card = {
@@ -92,6 +106,8 @@ export const dareT3WithTarget: Card = {
   hasTarget: true,
   roundsCount: null,
   hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: false,
 };
 
 // ─── Tier 4 ───────────────────────────────────────────────────────────────────
@@ -105,6 +121,8 @@ export const truthT4NoTarget: Card = {
   hasTarget: false,
   roundsCount: null,
   hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: false,
 };
 
 export const dareT4NoTarget: Card = {
@@ -116,6 +134,107 @@ export const dareT4NoTarget: Card = {
   hasTarget: false,
   roundsCount: null,
   hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: false,
+};
+
+// ─── Card with timer ──────────────────────────────────────────────────────────
+
+export const dareT3WithTimer: Card = {
+  id: 50,
+  type: 'dare',
+  tier: 3,
+  rawText: 'Dança durante 30 segundos.',
+  shots: 2,
+  hasTarget: false,
+  roundsCount: null,
+  hasRounds: false,
+  timerSeconds: 30,
+  requiresThirdParty: false,
+};
+
+/** Timer above the 60s threshold — must NOT trigger the timer phase. */
+export const dareT3WithTimerOver60: Card = {
+  id: 51,
+  type: 'dare',
+  tier: 3,
+  rawText: 'Mantém-te em equilíbrio durante 90 segundos.',
+  shots: 2,
+  hasTarget: false,
+  roundsCount: null,
+  hasRounds: false,
+  timerSeconds: 90,
+  requiresThirdParty: false,
+};
+
+/** Timer boundary at the minimum (1s) — must trigger the timer phase. */
+export const dareT3TimerSeconds1: Card = {
+  id: 52,
+  type: 'dare',
+  tier: 3,
+  rawText: 'Fica parado durante 1 segundo.',
+  shots: 2,
+  hasTarget: false,
+  roundsCount: null,
+  hasRounds: false,
+  timerSeconds: 1,
+  requiresThirdParty: false,
+};
+
+/** Timer boundary at the maximum (60s) — must trigger the timer phase. */
+export const dareT3TimerSeconds60: Card = {
+  id: 53,
+  type: 'dare',
+  tier: 3,
+  rawText: 'Dança durante 60 segundos.',
+  shots: 2,
+  hasTarget: false,
+  roundsCount: null,
+  hasRounds: false,
+  timerSeconds: 60,
+  requiresThirdParty: false,
+};
+
+/** Timed dare that also lasts multiple rounds — tests effect registration + timer. */
+export const dareT3TimedRounds: Card = {
+  id: 54,
+  type: 'dare',
+  tier: 3,
+  rawText: 'Fala com sotaque durante 20 segundos nas próximas 2 rondas.',
+  shots: 2,
+  hasTarget: false,
+  roundsCount: 2,
+  hasRounds: true,
+  timerSeconds: 20,
+  requiresThirdParty: false,
+};
+
+// ─── Cards requiring a third party (excluded for closed relationships) ────────
+
+export const dareT3RequiresThirdParty: Card = {
+  id: 55,
+  type: 'dare',
+  tier: 3,
+  rawText: 'Pede a alguém que não jogue para escolher uma prenda para ti.',
+  shots: 2,
+  hasTarget: false,
+  roundsCount: null,
+  hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: true,
+};
+
+export const dareT4RequiresThirdPartyTarget: Card = {
+  id: 56,
+  type: 'dare',
+  tier: 4,
+  rawText: 'Convida [Target Player] e um terceiro convidado para um jogo.',
+  shots: 3,
+  hasTarget: true,
+  roundsCount: null,
+  hasRounds: false,
+  timerSeconds: null,
+  requiresThirdParty: true,
 };
 
 // ─── Cards with round duration ──────────────────────────────────────────────
@@ -129,6 +248,8 @@ export const dareT1WithRounds: Card = {
   hasTarget: false,
   roundsCount: 2,
   hasRounds: true,
+  timerSeconds: null,
+  requiresThirdParty: false,
 };
 
 // ─── Full mock pool ───────────────────────────────────────────────────────────

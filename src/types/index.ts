@@ -25,6 +25,7 @@ export type GamePhase =
   | 'setup'
   | 'game-selecting'
   | 'game-showing'
+  | 'game-timer'
   | 'ranking'
   | 'end';
 
@@ -44,6 +45,10 @@ export interface Card {
   readonly roundsCount: number | null;
   /** Whether this card has a round-based duration */
   readonly hasRounds: boolean;
+  /** Timer duration in seconds (extracted from dare text, ≤60s). null if N/A. */
+  readonly timerSeconds: number | null;
+  /** Whether this card requires a third party beyond the target player (excluded for closed relationships). */
+  readonly requiresThirdParty: boolean;
 }
 
 // ─── Player ──────────────────────────────────────────────────────────────────
@@ -118,6 +123,8 @@ export interface GameState {
   readonly activeEffects: readonly RoundEffect[];
   /** Effects that just expired for the current player — cleared after acknowledgement */
   readonly pendingRoundExpiry: readonly RoundEffect[];
+  /** Whether the countdown timer is currently running */
+  readonly timerRunning: boolean;
   /**
    * All parsed cards for the active tier. NOT persisted to localStorage —
    * re-derived from the markdown at startup.

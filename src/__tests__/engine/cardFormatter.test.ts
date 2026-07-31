@@ -130,6 +130,31 @@ describe('formatCardText', () => {
 });
 
 // ---------------------------------------------------------------------------
+// formatCardText — italic markers
+// ---------------------------------------------------------------------------
+
+describe('formatCardText — italic markers', () => {
+  it('converts *text* to <em>text</em>', () => {
+    expect(formatCardText('Faz *isto* agora', player('A'))).toBe('Faz <em>isto</em> agora');
+  });
+
+  it('converts multiple italic segments in the same text', () => {
+    expect(formatCardText('*um* e *dois*', player('A'))).toBe('<em>um</em> e <em>dois</em>');
+  });
+
+  it('leaves text without * markers unchanged', () => {
+    expect(formatCardText('Sem itálico aqui', player('A'))).toBe('Sem itálico aqui');
+  });
+
+  it('combines italic conversion with [Target Player] replacement', () => {
+    const raw = 'Diz *algo* a [Target Player]';
+    expect(formatCardText(raw, player('A'), player('Bob'))).toBe(
+      'Diz <em>algo</em> a <strong>Bob</strong>',
+    );
+  });
+});
+
+// ---------------------------------------------------------------------------
 // sexLabel
 // ---------------------------------------------------------------------------
 

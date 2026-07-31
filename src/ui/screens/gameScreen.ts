@@ -1,7 +1,9 @@
 import { formatCardText } from '../../engine/cardFormatter.js';
+import { setDebugForceTimer } from '../../engine/repetitionEngine.js';
 import type { GameStore } from '../../state/store.js';
 import { Actions } from '../../state/store.js';
 import type { Card, Player, RoundEffect } from '../../types/index.js';
+import { showConfirm } from '../confirmModal.js';
 
 /** Colour palette for player dot indicators (reserved for future use) */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -29,6 +31,10 @@ export function createGameScreen(store: GameStore): HTMLElement {
     return buildShowingScreen(store);
   }
 
+  if (state.phase === 'game-timer') {
+    return buildTimerScreen(store);
+  }
+
   // Fallback
   return el('div', 'screen');
 }
@@ -54,14 +60,14 @@ function buildSelectingScreen(store: GameStore): HTMLElement {
     const debt = shotCounts[currentPlayer.id] ?? 0;
     if (debt > 0) {
       const debtEl = el('div', 'turn-banner__shot-debt');
-      debtEl.innerHTML = `🍺 Conta: <strong>${debt}</strong> shot${debt === 1 ? '' : 's'}`;
+      debtEl.innerHTML = `🍺 Saldo: <strong>${debt}</strong> shot${debt === 1 ? '' : 's'}`;
       banner.appendChild(debtEl);
     }
   }
 
   // Round badge
   {
-    const roundEl = el('div', 'turn-banner__shot-debt');
+    const roundEl = el('div', 'turn-banner__round-badge');
     roundEl.textContent = `🔁 Ronda ${currentRound}`;
     banner.appendChild(roundEl);
   }
@@ -108,15 +114,37 @@ function buildSelectingScreen(store: GameStore): HTMLElement {
 
   // ── Footer ────────────────────────────────────────────────
   const footer = el('footer', 'container pb-safe');
-  footer.style.cssText = 'padding-top:.75rem;padding-bottom:var(--dock-clearance);';
+  footer.style.cssText =
+    'padding-top:.75rem;padding-bottom:var(--dock-clearance);display:flex;flex-direction:column;gap:.5rem;';
+
+  const skipBtn = el<HTMLButtonElement>('button', 'btn btn--ghost btn--sm');
+  skipBtn.style.cssText = 'width:100%;color:var(--clr-text-muted);';
+  skipBtn.textContent = '⏭️  Saltar Jogador';
+  skipBtn.setAttribute('aria-label', 'Saltar este jogador e passar ao próximo');
+  skipBtn.addEventListener('click', () => {
+    showConfirm({
+      title: 'Saltar Jogador',
+      message: `Saltar ${currentPlayer.name} e passar ao próximo jogador?`,
+      confirmLabel: 'Saltar',
+    }).then((ok) => {
+      if (ok) store.update(Actions.skipPlayer());
+    });
+  });
+  footer.appendChild(skipBtn);
+
   const endBtn = el<HTMLButtonElement>('button', 'btn btn--ghost btn--sm');
   endBtn.style.cssText = 'width:100%;color:var(--clr-text-muted);';
   endBtn.textContent = 'Terminar Jogo';
   endBtn.setAttribute('aria-label', 'Terminar o jogo e voltar ao início');
   endBtn.addEventListener('click', () => {
-    if (confirm('Tens a certeza que queres terminar o jogo?')) {
-      store.update(Actions.endGame());
-    }
+    showConfirm({
+      title: 'Terminar Jogo',
+      message: 'Tens a certeza que queres terminar o jogo?',
+      confirmLabel: 'Terminar',
+      danger: true,
+    }).then((ok) => {
+      if (ok) store.update(Actions.endGame());
+    });
   });
   footer.appendChild(endBtn);
 
@@ -127,6 +155,23 @@ function buildSelectingScreen(store: GameStore): HTMLElement {
     screen.style.position = 'relative';
     screen.appendChild(overlay);
   }
+
+  // DEBUG: Ctrl+Shift+K (Cmd+Shift+K on Mac) forces next dare to have a countdown timer
+  document.addEventListener('keydown', function _debugTimerShortcut(e) {
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'K' || e.key === 'k')) {
+      e.preventDefault();
+      if (store.state.phase !== 'game-selecting') return;
+      setDebugForceTimer(true);
+      dareBtn.style.outline = '3px solid #fbbf24';
+      dareBtn.style.outlineOffset = '3px';
+      dareBtn.innerHTML = '<span aria-hidden="true">🔥</span>DESAFIO ⏱️';
+      setTimeout(() => {
+        dareBtn.style.outline = '';
+        dareBtn.style.outlineOffset = '';
+        dareBtn.innerHTML = '<span aria-hidden="true">🔥</span>DESAFIO';
+      }, 2000);
+    }
+  });
 
   screen.append(banner, dotsRow, main, footer);
   return screen;
@@ -182,8 +227,17 @@ function buildShowingScreen(store: GameStore): HTMLElement {
   footer.style.cssText = 'padding-top:1rem;padding-bottom:var(--dock-clearance);';
 
   const acceptBtn = el<HTMLButtonElement>('button', 'btn btn--primary btn--full btn--lg');
-  acceptBtn.innerHTML = '✅  Feito!';
-  acceptBtn.setAttribute('aria-label', 'Marquei como feito, passar para o próximo jogador');
+  const hasTimer =
+    currentCard?.timerSeconds != null &&
+    currentCard.timerSeconds > 0 &&
+    currentCard.timerSeconds <= 60;
+  acceptBtn.innerHTML = hasTimer ? '⏱️  Aceitar Desafio' : '✅  Feito!';
+  acceptBtn.setAttribute(
+    'aria-label',
+    hasTimer ?
+      'Aceitar desafio com cronómetro'
+    : 'Marquei como feito, passar para o próximo jogador',
+  );
   acceptBtn.addEventListener('click', () => store.update(Actions.acceptCard()));
 
   footer.appendChild(acceptBtn);
@@ -199,6 +253,119 @@ function buildShowingScreen(store: GameStore): HTMLElement {
 
   screen.append(main, footer);
   return screen;
+}
+
+// ─── Timer screen ─────────────────────────────────────────────────────────────
+
+function buildTimerScreen(store: GameStore): HTMLElement {
+  const { currentCard, players, currentPlayerIndex, penaltiesEnabled, timerRunning } = store.state;
+  const currentPlayer = players[currentPlayerIndex] as Player;
+  const targetPlayerId = store.state.currentTargetPlayerId;
+  const targetPlayer = targetPlayerId ? players.find((p) => p.id === targetPlayerId) : undefined;
+
+  const timerSeconds = currentCard?.timerSeconds ?? 0;
+  let remaining = timerSeconds;
+  let intervalId: ReturnType<typeof setInterval> | null = null;
+
+  const screen = el('div', 'screen timer-screen');
+
+  // ── Banner ────────────────────────────────────────────────
+  const banner = buildCompactBanner(
+    currentPlayer,
+    currentPlayerIndex,
+    players.length,
+    store.state.currentRound,
+  );
+  screen.appendChild(banner);
+
+  // ── Main ──────────────────────────────────────────────────
+  const main = el('main', '');
+  main.style.cssText =
+    'flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;';
+
+  const container = el('div', 'timer-screen__content stack stack--5');
+
+  // Challenge text
+  if (currentCard) {
+    const cardLabel = el('p', 'timer-screen__label text-muted');
+    cardLabel.textContent = 'Desafio aceite:';
+    container.appendChild(cardLabel);
+
+    const cardText = el('p', 'timer-screen__challenge');
+    cardText.innerHTML = formatCardText(currentCard.rawText, currentPlayer, targetPlayer);
+    container.appendChild(cardText);
+  }
+
+  // Timer display
+  const timeDisplay = el('div', 'timer-screen__time');
+  timeDisplay.setAttribute('aria-live', 'polite');
+  timeDisplay.setAttribute('aria-label', `${remaining} segundos restantes`);
+  timeDisplay.textContent = formatTime(remaining);
+
+  const timeLabel = el('p', 'timer-screen__time-label');
+  timeLabel.textContent = timerRunning ? '⏳ A cumprir o desafio...' : '⏱️ Pronto para começar?';
+
+  container.append(timeDisplay, timeLabel);
+
+  // ── Buttons ───────────────────────────────────────────────
+  const actions = el('div', 'timer-screen__actions stack stack--3');
+
+  if (!timerRunning) {
+    // Start button
+    const startBtn = el<HTMLButtonElement>('button', 'btn btn--primary btn--lg btn--full');
+    startBtn.innerHTML = '▶️  Iniciar';
+    startBtn.setAttribute('aria-label', `Iniciar contagem de ${remaining} segundos`);
+    startBtn.addEventListener('click', () => {
+      store.update(Actions.startTimer());
+      // Re-render with timerRunning = true
+    });
+    actions.appendChild(startBtn);
+
+    // Refuse button
+    const refuseBtn = el<HTMLButtonElement>('button', 'btn btn--ghost btn--full');
+    const shotsHint = penaltiesEnabled && currentCard?.shots ? ` (${currentCard.shots} shots)` : '';
+    refuseBtn.innerHTML = `❌  Recusar${shotsHint}`;
+    refuseBtn.setAttribute('aria-label', `Recusar cumprir o desafio${shotsHint}`);
+    refuseBtn.addEventListener('click', () => store.update(Actions.refuseTimer()));
+    actions.appendChild(refuseBtn);
+
+    setTimeout(() => startBtn.focus(), 50);
+  }
+
+  container.appendChild(actions);
+  main.appendChild(container);
+  screen.appendChild(main);
+
+  // ── Timer interval (only when running) ─────────────────────
+  if (timerRunning) {
+    // No buttons — just show countdown
+    timeDisplay.classList.add('timer-screen__time--running');
+
+    intervalId = setInterval(() => {
+      remaining--;
+      if (remaining <= 0) {
+        if (intervalId) clearInterval(intervalId);
+        store.update(Actions.completeTimer());
+        return;
+      }
+      timeDisplay.textContent = formatTime(remaining);
+      timeDisplay.setAttribute('aria-label', `${remaining} segundos restantes`);
+    }, 1000);
+
+    // Easing pulse animation
+    timeDisplay.style.animation = 'timer-pulse 1s ease-in-out infinite';
+  }
+
+  return screen;
+}
+
+function formatTime(seconds: number): string {
+  if (seconds >= 60) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return s > 0 ? `${m}:${String(s).padStart(2, '0')}` : `${m}:00`;
+  }
+  return `${seconds}s`;
 }
 
 // ─── Game card ────────────────────────────────────────────────────────────────

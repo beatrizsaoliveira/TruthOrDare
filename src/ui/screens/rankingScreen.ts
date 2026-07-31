@@ -1,6 +1,7 @@
 import type { GameStore } from '../../state/store.js';
 import { Actions } from '../../state/store.js';
 import type { Player } from '../../types/index.js';
+import { createGitHubLink } from '../domHelpers.js';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
@@ -33,7 +34,11 @@ export function createRankingScreen(store: GameStore): HTMLElement {
   const header = el('header', 'app-header');
   const logo = el('div', 'app-header__logo');
   logo.textContent = '🎲 Verdade ou Desafio';
-  header.appendChild(logo);
+
+  const actions = el('div', 'app-header__actions');
+  actions.appendChild(createGitHubLink());
+
+  header.append(logo, actions);
 
   // ── Main ──────────────────────────────────────────────────
   const main = el('main', 'screen-body');
@@ -42,7 +47,11 @@ export function createRankingScreen(store: GameStore): HTMLElement {
   const container = el('div', 'container stack stack--6 text-center');
 
   const title = el('h1', 'heading-xl gradient-text');
-  title.textContent = 'Ranking dos mais bêbados 🍺';
+  title.textContent = 'Ranking dos mais bêbados';
+  const emoji = document.createElement('span');
+  emoji.textContent = ' 🍺';
+  emoji.style.cssText = '-webkit-text-fill-color: initial;';
+  title.appendChild(emoji);
 
   const subtitle = el('p', 'body-lg text-muted');
   subtitle.textContent = 'Shots consumidos durante o jogo';
@@ -55,7 +64,7 @@ export function createRankingScreen(store: GameStore): HTMLElement {
 
   ranked.forEach((entry, i) => {
     // Medal index only applies to players who actually drank
-    const medalIndex = entry.shots > 0 ? i : -1;
+    const medalIndex = i;
     const item = buildRankingItem(entry.player, entry.shots, medalIndex);
     list.appendChild(item);
   });
@@ -82,11 +91,11 @@ export function createRankingScreen(store: GameStore): HTMLElement {
 
 function buildRankingItem(player: Player, shots: number, index: number): HTMLElement {
   const item = el('li', 'ranking-item');
-  if (index === 0) item.classList.add('ranking-item--first');
+  if (shots > 0 && index === 0) item.classList.add('ranking-item--first');
 
   const medal = el('span', 'ranking-item__medal');
   medal.setAttribute('aria-hidden', 'true');
-  medal.textContent = MEDALS[index] ?? `${index + 1}.`;
+  medal.textContent = shots > 0 && index < 3 ? (MEDALS[index] ?? `${index + 1}º`) : `${index + 1}º`;
 
   const name = el('span', 'ranking-item__name');
   name.textContent = player.name;

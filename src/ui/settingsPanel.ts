@@ -668,8 +668,9 @@ function buildWikiContent(): DocumentFragment {
         <li>Ativa ou desativa o sistema de penalizações em <em>shots</em>.</li>
         <li>Carrega em <strong>Iniciar Jogo</strong>.</li>
         <li>Na tua vez, escolhe <strong>Verdade</strong> ou <strong>Desafio</strong>.</li>
-        <li>Responde ou completa o desafio e carrega em ✅ Feito! para passar a vez.</li>
+        <li>Se o desafio tiver cronómetro (até 60 segundos), carrega em <strong>⏱️ Aceitar Desafio</strong> e depois em <strong>▶️ Iniciar</strong> — a vez só passa quando o tempo chegar a zero. Caso contrário, completa o desafio e carrega em ✅ Feito! para passar a vez.</li>
         <li>Se recusares, carrega em ❌ Recusar e ajusta os shots bebidos de facto (pode ser zero).</li>
+        <li>No ecrã de escolha, também podes usar <strong>⏭️ Saltar Jogador</strong> para avançar a vez sem carta (por exemplo, se um membro de um casal tiver de sair).</li>
         <li>Quando o jogo terminar com penalizações ativas e algum jogador tiver bebido, é mostrado um <strong>ranking</strong> antes de voltar ao início.</li>
       </ol>`,
         },
@@ -681,13 +682,15 @@ function buildWikiContent(): DocumentFragment {
         <li><strong>Nível 1:</strong> Apenas o nome.</li>
         <li><strong>Nível 2:</strong> Nome + género + estado de casal (<em>Solteiro/a</em> ou <em>Em casal</em>). Jogadores em casal interagem exclusivamente entre si nas cartas com alvo.</li>
         <li><strong>Níveis 3 e 4:</strong> Nome, género, orientação sexual e estado relacional. O toggle <em>"aberto/a a interações externas"</em> é necessário para poder ser alvo de outros (relações abertas) ou definir preferência de sexo alvo (solteiros).</li>
-      </ul>`,
+      </ul>
+      <p>Podes <strong>editar</strong> um jogador a qualquer momento (botão de lápis) ou <strong>removê-lo</strong> (✕). Ambas as ações pedem confirmação numa janela de vidro; ao remover um jogador, a ligação com o/a parceiro/a é desfeita automaticamente.</p>`,
         },
         {
           icon: '🎯',
           title: 'Sistema de Alvos (Níveis 2–4)',
           html: `<p><strong>Nível 2:</strong> Jogadores <em>Em casal</em> interagem exclusivamente com o/a seu/sua parceiro/a. Solteiros/as podem ser alvo de qualquer outro jogador.</p>
-      <p><strong>Níveis 3 e 4:</strong> O motor respeita orientação sexual mútua, exclusividade relacional e o toggle de interação externa. Se não existir alvo elegível, o jogador realiza o desafio sozinho.</p>`,
+      <p><strong>Níveis 3 e 4:</strong> O motor respeita orientação sexual mútua, exclusividade relacional e o toggle de interação externa. Se não existir alvo elegível, o jogador realiza o desafio sozinho.</p>
+      <p><strong>Relações exclusivas:</strong> 15 cartas exigem uma terceira pessoa para além do alvo (ex.: um beijo a três). Essas cartas são removidas do baralho para jogadores em relações exclusivas.</p>`,
         },
         {
           icon: '🔁',
@@ -697,11 +700,18 @@ function buildWikiContent(): DocumentFragment {
       <p>Quando chegares à ronda alvo e for <strong>a tua vez</strong>, aparece um aviso a informar que o efeito terminou — antes de escolheres Verdade ou Desafio.</p>`,
         },
         {
+          icon: '⏱️',
+          title: 'Desafios com Cronómetro',
+          html: `<p>Alguns desafios têm uma duração em <strong>segundos</strong> (até 60) — por exemplo, <em>"Dança como um robô durante 30 segundos."</em> O campo <code>timerSeconds</code> vem pré-calculado na base de dados.</p>
+      <p>Quando aceitas um desafio destes com <strong>⏱️ Aceitar Desafio</strong>, abre um ecrã de cronómetro com o texto do desafio e o tempo. Carrega em <strong>▶️ Iniciar</strong> para começar a contagem — o jogo fica bloqueado até chegar a zero e só então passa a vez automaticamente. Se preferires não o fazer, carrega em ❌ Recusar (vai para a penalização, se estiver ativa).</p>
+      <p>Durações superiores a 60 segundos ficam guardadas nos dados, mas não ativam o cronómetro.</p>`,
+        },
+        {
           icon: '🍺',
           title: 'Penalizações (Shots)',
           html: `<p>Nos níveis 2–4, cada carta indica quantos <em>shots</em> o jogador deve beber se recusar. A indicação <em>🍺 N shots se recusar</em> só aparece quando o modo de penalizações está ativo.</p>
       <p>Ao recusar, aparece um seletor para ajustar os shots bebidos de facto — podes colocar zero. O jogo regista apenas o que confirmares. O botão ❌ Recusar está sempre disponível.</p>
-      <p>A conta acumulada por jogador é visível durante o jogo. No fim, se alguém bebeu, é mostrado um <strong>ranking 🏆</strong> antes de voltar ao início. Este sistema pode ser desativado antes de iniciar o jogo.</p>`,
+      <p>O <strong>Saldo</strong> de shots por jogador é visível durante o jogo (<em>Saldo: X shots</em>). No fim, se alguém bebeu, é mostrado um <strong>ranking 🏆</strong> antes de voltar ao início — medalhas para os 3 primeiros que beberam e posição numérica (ex.: 4º) para os restantes. Este sistema pode ser desativado antes de iniciar o jogo.</p>`,
         },
         {
           icon: '🔄',

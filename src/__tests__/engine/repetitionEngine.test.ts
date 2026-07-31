@@ -10,6 +10,7 @@ import {
   truthT3NoTarget,
   truthT4NoTarget,
 } from '../fixtures/cards';
+import { closedMale } from '../fixtures/players';
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -27,6 +28,8 @@ function makeCard(id: number, overrides?: Partial<Card>): Card {
     hasTarget: false,
     roundsCount: null,
     hasRounds: false,
+    timerSeconds: null,
+    requiresThirdParty: false,
     ...overrides,
   };
 }
@@ -271,5 +274,64 @@ describe('selectCard', () => {
     const card = selectCard(mockCards, 4, 'truth', testPlayer1, null, {});
     expect(card).toBeDefined();
     expect(card).not.toBeNull();
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────────────
+//  selectCard — requiresThirdParty exclusion for closed relationships
+// ───────────────────────────────────────────────────────────────────────────────
+
+describe('selectCard — requiresThirdParty for closed relationships', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('excludes requiresThirdParty cards from the pool for a closed player', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+
+    const pool: Card[] = [
+      makeCard(100, { type: 'dare', tier: 3, requiresThirdParty: true, hasTarget: false }),
+      makeCard(101, { type: 'dare', tier: 3, requiresThirdParty: false, hasTarget: false }),
+    ];
+
+    const card = selectCard(pool, 3, 'dare', closedMale, null, {});
+    expect(card.requiresThirdParty).toBe(false);
+    expect(card.id).toBe(101);
+  });
+
+  it('keeps requiresThirdParty cards in the pool for a non-closed player', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+
+    const pool: Card[] = [
+      makeCard(100, { type: 'dare', tier: 3, requiresThirdParty: true, hasTarget: false }),
+      makeCard(101, { type: 'dare', tier: 3, requiresThirdParty: false, hasTarget: false }),
+    ];
+
+    const card = selectCard(pool, 3, 'dare', testPlayer1, null, {});
+    expect(card.id).toBe(100); // the requiresThirdParty card is still eligible
+  });
+
+  it('does not filter requiresThirdParty cards when relationshipStatus is undefined', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+
+    const pool: Card[] = [
+      makeCard(200, { type: 'dare', tier: 4, requiresThirdParty: true, hasTarget: false }),
+      makeCard(201, { type: 'dare', tier: 4, requiresThirdParty: false, hasTarget: false }),
+    ];
+
+    const card = selectCard(pool, 4, 'dare', { id: 'plain', name: 'Plain' }, null, {});
+    expect(card.id).toBe(200);
+  });
+
+  it('falls back to the full pool when a closed player has ONLY third-party dares', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+
+    const onlyThirdParty: Card[] = [
+      makeCard(300, { type: 'dare', tier: 4, requiresThirdParty: true, hasTarget: false }),
+    ];
+
+    const card = selectCard(onlyThirdParty, 4, 'dare', closedMale, null, {});
+    expect(card).toBeDefined();
+    expect(card.id).toBe(300);
   });
 });

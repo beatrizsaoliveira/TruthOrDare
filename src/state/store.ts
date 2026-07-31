@@ -57,6 +57,7 @@ export function buildInitialState(allCards: readonly Card[]): GameState {
     currentRound: 1,
     activeEffects: [],
     pendingRoundExpiry: [],
+    timerRunning: false,
     theme: prefersDark() ? 'dark' : 'light',
     allCards,
   };
@@ -222,6 +223,7 @@ export const Actions = {
     currentRound: 1,
     activeEffects: [],
     pendingRoundExpiry: [],
+    timerRunning: false,
     currentCard: null,
     pendingCardType: null,
     currentTargetPlayerId: null,
@@ -275,9 +277,8 @@ export const Actions = {
       };
     },
 
-  /** Player accepted the card — advance to the next player. */
+  /** Player accepted the card — if it has a timer, go to timer phase; otherwise advance. */
   acceptCard: (): Updater => (state) => {
-    // If the card has a round duration, register a round effect
     const card = state.currentCard;
     const activePlayer = state.players[state.currentPlayerIndex];
     let activeEffects = state.activeEffects;
@@ -290,6 +291,16 @@ export const Actions = {
         targetRound: state.currentRound + card.roundsCount,
       };
       activeEffects = [...activeEffects, effect];
+    }
+
+    // If the card has a timer ≤ 60s, transition to the timer phase
+    if (card?.timerSeconds != null && card.timerSeconds > 0 && card.timerSeconds <= 60) {
+      return {
+        ...state,
+        phase: 'game-timer',
+        timerRunning: false,
+        activeEffects,
+      };
     }
 
     const { nextIndex, newRound, expiring } = computeAdvance({
@@ -379,6 +390,22 @@ export const Actions = {
     };
   },
 
+  /** Skip the current player — advance to the next without a card. */
+  skipPlayer: (): Updater => (state) => {
+    const { nextIndex, newRound, expiring } = computeAdvance(state);
+    return {
+      ...state,
+      phase: 'game-selecting',
+      currentPlayerIndex: nextIndex,
+      currentRound: newRound,
+      pendingRoundExpiry: expiring,
+      currentCard: null,
+      pendingCardType: null,
+      currentTargetPlayerId: null,
+      showingPenalty: false,
+    };
+  },
+
   /** Clears expired round effects after the player has acknowledged them. */
   acknowledgeRoundExpiry: (): Updater => (state) => ({
     ...state,
@@ -391,6 +418,49 @@ export const Actions = {
     ),
     pendingRoundExpiry: [],
   }),
+
+  // ─── Timer actions ─────────────────────────────────────────────────────────
+
+  /** Starts the countdown timer. */
+  startTimer: (): Updater => (state) => ({
+    ...state,
+    timerRunning: true,
+  }),
+
+  /** Player refused to do the timed challenge — go to penalty overlay or advance. */
+  refuseTimer: (): Updater => (state) => {
+    if (state.penaltiesEnabled) {
+      return { ...state, phase: 'game-showing', showingPenalty: true, timerRunning: false };
+    }
+    const { nextIndex, newRound, expiring } = computeAdvance(state);
+    return {
+      ...state,
+      phase: 'game-selecting',
+      currentPlayerIndex: nextIndex,
+      currentRound: newRound,
+      pendingRoundExpiry: expiring,
+      currentCard: null,
+      currentTargetPlayerId: null,
+      showingPenalty: false,
+      timerRunning: false,
+    };
+  },
+
+  /** Timer completed — advance to next player. */
+  completeTimer: (): Updater => (state) => {
+    const { nextIndex, newRound, expiring } = computeAdvance(state);
+    return {
+      ...state,
+      phase: 'game-selecting',
+      currentPlayerIndex: nextIndex,
+      currentRound: newRound,
+      pendingRoundExpiry: expiring,
+      currentCard: null,
+      currentTargetPlayerId: null,
+      showingPenalty: false,
+      timerRunning: false,
+    };
+  },
 
   endGame: (): Updater => (state) => {
     // If penalties were enabled and at least one player drank, show ranking first.
@@ -509,6 +579,8 @@ function deserialize(persisted: PersistedState): Omit<GameState, 'allCards'> {
     (persisted as unknown as { activeEffects?: RoundEffect[] }).activeEffects ?? [];
   const pendingRoundExpiry: readonly RoundEffect[] =
     (persisted as unknown as { pendingRoundExpiry?: RoundEffect[] }).pendingRoundExpiry ?? [];
+  const timerRunning: boolean =
+    (persisted as unknown as { timerRunning?: boolean }).timerRunning ?? false;
   return {
     ...persisted,
     playerHistories,
@@ -517,5 +589,6 @@ function deserialize(persisted: PersistedState): Omit<GameState, 'allCards'> {
     currentRound,
     activeEffects,
     pendingRoundExpiry,
+    timerRunning,
   };
 }

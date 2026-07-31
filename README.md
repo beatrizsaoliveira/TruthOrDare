@@ -25,17 +25,25 @@
 
 ## Features
 
+- **800-card dataset** — 200 cards per tier (100 truths + 100 dares) with curated, non-repeating content; shots limited to 1–3 for Tiers 2–4, Tier 1 shot-free
+- **Countdown timer** — dares with a time component (`timerSeconds` between 1 and 60, e.g. "durante 30 segundos") trigger a dedicated countdown screen: the player hits **⏱️ Aceitar Desafio**, then **▶️ Iniciar** to start the timer; the game is locked until it reaches 0 and then advances. **❌ Recusar** on the timer screen goes to the penalty flow (if enabled). Values > 60s are stored in the dataset but don't trigger the countdown. `timerSeconds` is pre-computed in the dataset
+- **Skip player** — a **⏭️ Saltar Jogador** button on the selecting screen advances the turn without drawing a card, for players who aren't present (e.g. a couple member who left mid-dare); confirmed via a glass modal
+- **[Target Player] enforcement** — all cards that involve another player use the `[Target Player]` placeholder, ensuring the matching engine selects an eligible target compatible with couple constraints (closed couples = partner only)
+- **Third-party exclusion** — 15 dares are flagged `requiresThirdParty` (e.g. a three-way kiss); these are removed from the card pool for players in _closed_ relationships, so couple-exclusive play never surfaces a card that needs an outsider
 - **4 Tier system** — from family-friendly to mature adult content (18+)
 - **Age-gating** — mandatory 18+ confirmation for Tiers 2–4
 - **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status); at **Tier 2** a couple-status radio (**Solteiro/a** vs **Em casal**) and a partner selector are shown — coupled players interact exclusively with their registered partner; at **Tier 3–4** the full partner dropdown, orientation, relationship-status, _open-to-outside_ toggle and target-sex selector are shown; for open-relationship players the toggle also controls eligibility as an interaction target; the target-sex selector is shown once the toggle is active
-- **Saved-player roster** — registered players are persisted to `localStorage` (`tod_roster_v1`) and offered for reuse at the start of every new session via a dedicated Roster screen; couples are displayed grouped with a visual connector; choosing **Começar do zero** triggers a confirmation dialog before discarding the saved roster
+- **Saved-player roster** — registered players are persisted to `localStorage` (`tod_roster_v1`) and offered for reuse at the start of every new session via a dedicated Roster screen; couples are displayed grouped with a visual connector; choosing **Começar do zero** triggers a glass confirm modal before discarding the saved roster
 - **Orientation & relationship-aware matching engine** (Tiers 2–4) — at Tier 2 coupled players can only target their registered partner; at Tiers 3–4 a full three-constraint algorithm (mutual orientation, relationship exclusivity, open-gate) ensures targets are mutually compatible
 - **Anti-repetition card engine** — weighted scoring prevents recently seen cards from reappearing; couples share history
-- **Drink/shot penalty system** — on card refusal a penalty overlay with a `−`/value/`+` stepper appears; the player confirms how many shots they actually drank (zero is valid — nobody is forced); the **Recusar** button is always visible; the card's penalty hint (`🍺 N shots se recusar`) is only displayed when the penalty mode is active; a running shot count chip (🍺 Conta) is shown in the turn banner, persisted per player, and reset on new game; can be disabled before starting
-- **End-of-game ranking** — when a game with penalties ends and at least one player drank, a ranking screen is shown before returning home: players with shots are listed descending with 🥇🥈🥉 medals, followed by zero-shot players sorted alphabetically (dimmed); shot counts remain in `localStorage` while the ranking is on screen (so a refresh still shows the ranking correctly) and are only cleared when the player navigates to the home screen
+- **Drink/shot penalty system** — on card refusal a penalty overlay with a `−`/value/`+` stepper appears; the player confirms how many shots they actually drank (zero is valid — nobody is forced); the **Recusar** button is always visible; the card's penalty hint (`🍺 N shots se recusar`) is only displayed when the penalty mode is active; a running shot count chip (🍺 Saldo: X shots) is shown in the turn banner, persisted per player, and reset on new game; can be disabled before starting
+- **End-of-game ranking** — when a game with penalties ends and at least one player drank, a ranking screen is shown before returning home: players with shots are listed descending — the top three with shots receive 🥇🥈🥉 medals, all others show their position number (e.g. 4º) — followed by zero-shot players sorted alphabetically (dimmed); shot counts remain in `localStorage` while the ranking is on screen (so a refresh still shows the ranking correctly) and are only cleared when the player navigates to the home screen
 - **Round tracker** — a round counter (🔁 Ronda N) is shown in the turn banner and increments every time the turn wraps back to the first player; round-based dare cards (e.g. _"Fala com sotaque estrangeiro durante as próximas 3 rondas"_) automatically register a timed effect, and when the target round is reached on the affected player's turn a dismissible popup announces the effect has ended, before they choose Truth or Dare
 - **pt-PT inclusive notation** — card text encodes gender variants directly using the `(a)` pattern (e.g. `nu(a)`, `sozinho(a)`); no dynamic gender resolution is performed at runtime
-- **Player editing** — each registered player chip shows an edit (pencil) button that opens a pre-filled glass modal; the modal warns with a `confirm()` dialog before discarding unsaved changes when closed via X, ESC, or backdrop click (Cancel and Save close immediately without prompting)
+- **Inline emphasis** — `*text*` in a card's raw text is rendered as _italic_ (`<em>`) in the UI
+- **Glass confirm modals** — every `window.confirm()` has been replaced with a custom glass-styled modal (`showConfirm`): skip player, end game, start fresh roster, remove player, and discard unsaved player edits all ask for confirmation this way
+- **Player editing** — each registered player chip shows an edit (pencil) button that opens a pre-filled glass modal; the modal warns via a glass confirm modal before discarding unsaved changes when closed via X, ESC, or backdrop click (Cancel and Save close immediately without prompting). Clicking the ✕ on a chip asks for confirmation before removing the player
+- **Debug timer shortcut** — **Ctrl+Shift+K** (**⌘⇧K** on macOS) forces the next dare to carry a countdown timer for testing (highlights the DESAFIO button)
 - **Persistent game state** — full game state is saved to `localStorage` (`tod_state_v1`) on every update, including the active theme and per-player shot counts; player roster is persisted separately in `tod_roster_v1`; first visit uses OS dark/light preference
 - **Ambient background** — floating bokeh particles (tsParticles v2 via CDN) that smoothly re-colour to match the active palette when the theme changes
 - **Liquid Glass dock** — physics-based floating glass toolbar (always visible) with a **Temas** button (colour palette) and a **Definições** button (dark/light mode toggle, frosted glass toggle + in-game wiki)
@@ -157,7 +165,7 @@ Coverage is configured to include `src/engine/**` and `src/state/**`.
 .
 ├── src/
 │   ├── data/
-│   │   └── dataset.json       # 400 cards (bundled at build time)
+│   │   └── dataset.json       # 800 cards (bundled at build time)
 │   ├── engine/
 │   │   ├── glassDistortion.ts  # Physics-based SVG displacement map (Liquid Glass)
 │   │   ├── datasetLoader.ts    # Loads & flattens dataset.json; filterCards utility
@@ -220,35 +228,37 @@ Coverage is configured to include `src/engine/**` and `src/state/**`.
 
 ### The 4 Tiers
 
-| Nível | Nome                     | Restrição de idade | Penalização shots | Descrição                                                                                                                                                |
-| ----- | ------------------------ | :----------------: | :---------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1     | 🌟 Diversão Familiar     |         ✗          |         ✗         | Perguntas leves e desafios divertidos — adequado a todas as idades                                                                                       |
-| 2     | 🎉 Noite entre Amigos    |        18+         |         ✓         | Conteúdo mais picante sobre vida pessoal, segredos e momentos embaraçosos; inclui estado de casal — jogadores em casal interagem exclusivamente entre si |
-| 3     | 🔥 Onde a Ousadia Começa |        18+         |         ✓         | Conteúdo adulto com desafios físicos entre jogadores; motor de alvos com base na orientação sexual                                                       |
-| 4     | 💀 Extremo               |        18+         |         ✓         | Conteúdo adulto intenso para grupos completamente à vontade entre si                                                                                     |
+| Tier | Name                     | Age Restriction | Shot Penalties | Description                                                                                                                                          |
+| ---- | ------------------------ | :-------------: | :------------: | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | 🌟 Family Fun            |        ✗        |       ✗        | Light questions and fun dares — suitable for all ages                                                                                                |
+| 2    | 🎉 Night with Friends    |       18+       |       ✓        | Spicier content about personal life, secrets and embarrassing moments; includes couple status — coupled players interact exclusively with each other |
+| 3    | 🔥 Where the Heat Begins |       18+       |       ✓        | Adult content with physical challenges between players; sexual-orientation-based targeting engine                                                    |
+| 4    | 💀 Extreme               |       18+       |       ✓        | Intense adult content for groups who are fully comfortable with each other                                                                           |
 
 ### Turn Flow
 
 1. The current player's name is displayed.
 2. They choose **VERDADE** (Truth) or **DESAFIO** (Dare).
 3. A card is drawn and displayed. The target player (if any) is resolved automatically. If penalties are enabled, the card shows `🍺 N shots se recusar`.
-4. The player either completes the challenge (✅ Feito!) or refuses (❌ Recusar).
+4. The player either completes the challenge (✅ Feito! — or ⏱️ **Aceitar Desafio** when the card carries a countdown timer) or refuses (❌ Recusar). Accepting a timed challenge opens the **countdown screen**, where the player presses ▶️ **Iniciar** to start the timer; the turn advances only when it reaches 0. Recusing on the timer screen routes to the penalty flow (if enabled).
 5. Refusing triggers a penalty overlay with a stepper. The player adjusts the quantity to what they actually drank (can be zero) and confirms. Nobody is forced to drink — the game records only what is confirmed.
 6. The turn passes to the next player in registration order.
 
-    Between steps 6 and 7, if the turn wraps back to player 0, the **round counter increments**. Before the next player can act, the game checks for any round-effect expirations for that player and shows a popup if any are found.
+   The selecting screen also offers a **⏭️ Saltar Jogador** button (confirmed via glass modal) to advance the turn without a card — useful when a player isn't present, e.g. a couple member who left mid-dare.
+
+   Between steps 6 and 7, if the turn wraps back to player 0, the **round counter increments**. Before the next player can act, the game checks for any round-effect expirations for that player and shows a popup if any are found.
 
 7. When the game ends (via **Terminar Jogo**), if penalties were active and at least one player drank, a **ranking screen** is shown with all players sorted by shots consumed before returning to the home screen.
 
 ### Penalty System
 
-Each card in Tiers 2–4 carries a shot count (`[N shots]` in the source data). Refusing a card triggers a full-screen penalty overlay with a `−` / value / `+` stepper defaulting to the card's shot count. The player adjusts the quantity to what they actually drank (including zero) and confirms — the game records only the confirmed amount. The **Recusar** button is always shown; if the card has no shot count, refusing simply advances the turn.
+Each card in Tiers 2–4 carries a shot count (1–3 in the source data). Tier 1 has no shots. Refusing a card triggers a full-screen penalty overlay with a `−` / value / `+` stepper defaulting to the card's shot count. The player adjusts the quantity to what they actually drank (including zero) and confirms — the game records only the confirmed amount. The **Recusar** button is always shown; if the card has no shot count, refusing simply advances the turn.
 
 The `🍺 N shots se recusar` hint on the card face is **only rendered when the penalty mode is active** — games with penalties disabled show a clean card.
 
-A **shot count chip** (🍺 Conta: N shots) appears in the selecting-phase turn banner showing the player's session total. It is stored in `shotCounts` (part of `GameState`) and persisted to `localStorage` throughout the active game, including while the ranking screen is visible (so a refresh on the ranking screen restores the correct data). Shot counts are only erased when `confirmEndGame` resets the full state on return to home.
+A **shot count chip** (🍺 Saldo: N shots) appears in the selecting-phase turn banner showing the player's session total. It is stored in `shotCounts` (part of `GameState`) and persisted to `localStorage` throughout the active game, including while the ranking screen is visible (so a refresh on the ranking screen restores the correct data). Shot counts are only erased when `confirmEndGame` resets the full state on return to home.
 
-At the end of a game where penalties were on and at least one player drank, a **ranking screen** is shown listing all players: those with shots sorted descending (with 🥇🥈🥉 medals), then zero-shot players sorted alphabetically (dimmed). The **Voltar ao Início** button resets the full state and returns to the home screen.
+At the end of a game where penalties were on and at least one player drank, a **ranking screen** is shown listing all players: those with shots sorted descending (the top three with shots get 🥇🥈🥉 medals, all others show their position number e.g. 4º), then zero-shot players sorted alphabetically (dimmed). The **Voltar ao Início** button resets the full state and returns to the home screen.
 
 The feature can be disabled in the setup screen before the game starts — useful for alcohol-free play.
 
@@ -268,6 +278,17 @@ When it is that player's turn and the current round equals or exceeds `targetRou
 
 Cards with round durations carry two additional dataset fields: `roundsCount` and `hasRounds`.
 
+### Countdown Timer
+
+Some dare cards carry an explicit time duration (e.g. _"Dança como um robô durante 30 segundos."_). When a player accepts such a card, the accept button reads **⏱️ Aceitar Desafio** (instead of ✅ Feito!) and opens a dedicated **countdown screen**:
+
+1. The **countdown screen** appears showing the challenge text and a large timer display.
+2. The player presses **▶️ Iniciar** to start the countdown, or **❌ Recusar** to back out (which routes to the penalty flow if enabled).
+3. Once the timer starts, the game is **locked** — no advancing, no other actions.
+4. When the timer reaches **0**, the game automatically advances to the next player.
+
+Only cards with `timerSeconds` between 1 and 60 trigger the countdown; values greater than 60 are stored in the dataset but don't trigger a timer. The `timerSeconds` value is pre-computed in the dataset. Round-based cards (e.g. _"durante as próximas 3 rondas"_) are excluded from the timer system and use the round-effect tracker instead.
+
 ### Matching Engine (Tiers 2–4)
 
 When a card contains `[Target Player]`, the engine selects an eligible target based on the active tier.
@@ -285,6 +306,8 @@ When a card contains `[Target Player]`, the engine selects an eligible target ba
 
 If no eligible target exists at any tier, the active player performs the challenge alone.
 
+On top of target selection, 15 dares are flagged `requiresThirdParty` (e.g. a three-way kiss). These are removed from the card pool for players in _closed relationships_, so couple-exclusive play never draws a card that needs an outsider.
+
 ### Anti-Repetition Engine
 
 Before each card draw, every candidate card receives a penalty score:
@@ -301,6 +324,8 @@ The card with the lowest total score is selected (from the top-5 lowest, with ra
 ### pt-PT Inclusive Notation
 
 Card text encodes gender variants directly using the `(a)` pattern (e.g. `nu(a)`, `sozinho(a)`, `amigo(a)`). No runtime resolution is performed — the text is shown as-is, keeping the notation neutral.
+
+Card text may also use `*emphasis*`, which is rendered as _italic_ (`<em>`) in the UI.
 
 The `[Target Player]` placeholder is replaced with the target's `<strong>name</strong>` and all output is HTML-escaped to prevent XSS.
 
@@ -327,31 +352,40 @@ The router maps `GamePhase` values to screen factory functions:
 
 ```mermaid
 flowchart TD
-    HOME["🏠 Home\n(Tier Selection)"]
-    AGEGATE["🔞 Age Gate\n(18+ Confirmation)"]
-    ROSTER["👥 Player Roster\n(Reuse or start fresh)"]
-    SETUP["⚙️ Setup\n(Register Players)"]
-    SEL["🎴 Game — Selecting\n(Truth or Dare?)"]
-    SHOW["📋 Game — Showing\n(Card Revealed)"]
-    PEN["🍺 Penalty Overlay\n(Shots stepper)"]
-    ROUNDEXP["🔁 Round Expiry\n(Effect ended popup)"]
-    RANK["🏆 Ranking\n(Shot Counts)"]
+    HOME["Home - Tier Selection"]
+    AGEGATE["Age Gate - 18+"]
+    ROSTER["Player Roster"]
+    SETUP["Setup - Register Players"]
+    SEL["Game - Truth or Dare?"]
+    SHOW["Game - Card Revealed"]
+    TIMER["Game - Countdown Timer"]
+    RANK["Ranking - Shot Counts"]
+    END["End"]
+    PEN["Penalty Overlay"]
+    ROUNDEXP["Round Expiry Popup"]
+    SKIP["Skip Player"]
 
     HOME -->|"Tier 1"| ROSTER
-    HOME -->|"Tiers 2–4"| AGEGATE
+    HOME -->|"Tiers 2-4"| AGEGATE
     AGEGATE -->|"Confirmed 18+"| ROSTER
-    ROSTER --> SETUP
+    ROSTER -->|"Roster ready"| SETUP
     SETUP -->|"Start Game"| SEL
-    SEL -->|"pending round expiry"| ROUNDEXP
-    ROUNDEXP -->|"Acknowledged"| SEL
+    SEL -->|"round expiry"| ROUNDEXP
+    ROUNDEXP -->|"ok"| SEL
+    SEL -->|"skip player"| SKIP
+    SKIP -->|"confirm skip"| SEL
     SEL -->|"Truth / Dare"| SHOW
-    SHOW -->|"✅ Accept"| SEL
-    SHOW -->|"❌ Refuse, no penalties"| SEL
-    SHOW -->|"❌ Refuse + penalties active"| PEN
-    PEN -->|"Confirm shots"| SEL
-    SEL -->|"End Game — no shots"| HOME
-    SEL -->|"End Game — shots drank"| RANK
-    RANK -->|"Voltar ao Início"| HOME
+    SHOW -->|"accept with timer"| TIMER
+    TIMER -->|"recusar + penalty"| PEN
+    TIMER -->|"timer complete"| SEL
+    SHOW -->|"accept (no timer)"| SEL
+    SHOW -->|"refuse"| SEL
+    SHOW -->|"refuse + penalty"| PEN
+    PEN -->|"confirm penalty"| SEL
+    SEL -->|"end (no shots)"| END
+    SEL -->|"end (has shots)"| RANK
+    RANK -->|"back home"| END
+    END -->|"new game"| HOME
 ```
 
 The `player-roster` phase shows saved players from `tod_roster_v1` and lets the group reuse them or start fresh.
@@ -376,32 +410,42 @@ A `--dock-clearance` CSS custom property (`max(120px, env(safe-area-inset-bottom
 
 ## Dataset
 
-Game content lives in `src/data/dataset.json` — a static JSON file with **400 cards** (50 truths + 50 dares per tier) organised by tier and card type. `datasetLoader.ts` flattens this structure into a single `Card[]` at startup; `type` and `tier` are derived from the group keys and are not stored in each entry.
+Game content lives in `src/data/dataset.json` — a static JSON file with **800 cards** (100 truths + 100 dares per tier, 200 per tier) stored as a **flat array** of already-flattened entries. Each entry carries explicit `type` and `tier` fields — there is no nested per-tier structure to unwind. `datasetLoader.ts` simply normalises the optional fields (`roundsCount`, `hasRounds`, `timerSeconds`, `requiresThirdParty`) to their defaults and returns the `Card[]`. The JSON is bundled at build time — no runtime parsing.
 
 ### JSON structure
 
 ```jsonc
-{
-  "tier1": {
-    "truths": [ { "id": 1, "rawText": "…", "shots": null, "hasTarget": false }, … ],
-    "dares":  [ … ]
+[
+  {
+    "id": 1,
+    "type": "truth",
+    "tier": 1,
+    "rawText": "…",
+    "shots": null,
+    "hasTarget": false,
+    "roundsCount": null,
+    "hasRounds": false,
+    "timerSeconds": null,
+    "requiresThirdParty": false
   },
-  "tier2": { "truths": [ … ], "dares": [ … ] },
-  "tier3": { "truths": [ … ], "dares": [ … ] },
-  "tier4": { "truths": [ … ], "dares": [ … ] }
-}
+  … // 800 entries total
+]
 ```
 
 ### Entry shape
 
-| Field         | Type             | Description                                                                                        |
-| ------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
-| `id`          | `number`         | Unique within the same tier + type group                                                           |
-| `rawText`     | `string`         | Card text; may contain `[Target Player]` placeholder                                               |
-| `shots`       | `number \| null` | Penalty shots on refusal (`null` = no penalty; always `null` for Tier 1)                           |
-| `hasTarget`   | `boolean`        | `true` when `rawText` contains the `[Target Player]` placeholder                                   |
-| `roundsCount` | `number \| null` | Number of rounds the effect lasts (`null` when not applicable)                                     |
-| `hasRounds`   | `boolean`        | `true` when the card has a round-based duration (always `false` for truths and non-duration dares) |
+| Field                | Type                | Description                                                                                                |
+| -------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `id`                 | `number`            | Unique within the same tier + type group                                                                   |
+| `type`               | `"truth" \| "dare"` | Card type                                                                                                  |
+| `tier`               | `1 \| 2 \| 3 \| 4`  | Intensity tier                                                                                             |
+| `rawText`            | `string`            | Card text; may contain `[Target Player]` placeholder                                                       |
+| `shots`              | `number \| null`    | Penalty shots on refusal (`null` = no penalty; always `null` for Tier 1)                                   |
+| `hasTarget`          | `boolean`           | `true` when `rawText` contains the `[Target Player]` placeholder                                           |
+| `roundsCount`        | `number \| null`    | Number of rounds the effect lasts (`null` when not applicable)                                             |
+| `hasRounds`          | `boolean`           | `true` when the card has a round-based duration (always `false` for truths and non-duration dares)         |
+| `timerSeconds`       | `number \| null`    | Time-based dare duration in seconds (`null` when N/A); only values 1–60 trigger the countdown timer        |
+| `requiresThirdParty` | `boolean`           | `true` for 15 dares that need a third person; excluded from the pool for players in _closed_ relationships |
 
 ---
 

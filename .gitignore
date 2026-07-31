@@ -40,5 +40,6 @@ yarn-error.log*
 pnpm-debug.log*
 
 # ── Temporary / debug files ───────────────────────────────────
+CARDS.md
 build_output.txt
 tsc_output.txt

@@ -19,6 +19,9 @@ export function formatCardText(
 ): string {
   let text = rawText;
 
+  // Convert *italic* markers to <em> tags
+  text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
   // Replace target player placeholder
   if (targetPlayer) {
     text = text.replaceAll('[Target Player]', `<strong>${escapeHtml(targetPlayer.name)}</strong>`);

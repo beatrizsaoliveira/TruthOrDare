@@ -9,6 +9,8 @@ import type {
   TargetSex,
   Tier,
 } from '../../types/index.js';
+import { showConfirm } from '../confirmModal.js';
+import { createGitHubLink } from '../domHelpers.js';
 import { animateLiquidToggle, buildLiquidToggle } from '../settingsPanel.js';
 
 /** Colour palette rotated through player avatars */
@@ -40,9 +42,12 @@ export function createSetupScreen(store: GameStore): HTMLElement {
 
   const headerTitle = el('div', 'heading-sm');
   headerTitle.textContent = `Tier ${tier} · Jogadores`;
-  header.append(backBtn, headerTitle);
+  const actions = el('div', 'app-header__actions');
+  actions.appendChild(createGitHubLink());
 
-  // ── Main content ──────────────────────────────────────────
+  header.append(backBtn, headerTitle, actions);
+
+  // ── Body ──────────────────────────────────────────────────
   const main = el('main', '');
   main.style.cssText =
     'flex:1; min-height:0; padding-top: 1.5rem; padding-bottom: var(--dock-clearance); overflow-y:auto; overflow-x:hidden;';
@@ -524,7 +529,16 @@ function buildPlayerChip(
   const removeBtn = el<HTMLButtonElement>('button', 'player-chip__remove');
   removeBtn.setAttribute('aria-label', `Remover ${player.name}`);
   removeBtn.innerHTML = '✕';
-  removeBtn.addEventListener('click', () => store.update(Actions.removePlayer(player.id)));
+  removeBtn.addEventListener('click', () => {
+    showConfirm({
+      title: 'Remover Jogador',
+      message: `Remover ${player.name} da lista de jogadores?`,
+      confirmLabel: 'Remover',
+      danger: true,
+    }).then((ok) => {
+      if (ok) store.update(Actions.removePlayer(player.id));
+    });
+  });
 
   const chipActions = el('div', 'player-chip__actions');
   chipActions.append(editBtn, removeBtn);
@@ -587,8 +601,18 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
   }
 
   function closeModal(): void {
-    if (isDirty() && !confirm('Tens alterações não guardadas. Queres mesmo fechar sem guardar?'))
+    if (isDirty()) {
+      showConfirm({
+        title: 'Alterações Não Guardadas',
+        message: 'Tens alterações não guardadas. Queres mesmo fechar sem guardar?',
+        confirmLabel: 'Fechar',
+        danger: true,
+      }).then((ok) => {
+        if (!ok) return;
+        forceClose();
+      });
       return;
+    }
     forceClose();
   }
 

@@ -1,7 +1,9 @@
 import { sexLabel } from '../../engine/cardFormatter.js';
 import type { GameStore } from '../../state/store.js';
+import { showConfirm } from '../confirmModal.js';
 import { Actions, loadSavedPlayers } from '../../state/store.js';
 import type { Player } from '../../types/index.js';
+import { createGitHubLink } from '../domHelpers.js';
 
 const AVATAR_COLORS = [
   '#7C3AED',
@@ -31,7 +33,10 @@ export function createRosterScreen(store: GameStore): HTMLElement {
   backBtn.addEventListener('click', () => store.update(Actions.goBack()));
   const headerTitle = el('div', 'heading-sm');
   headerTitle.textContent = `Tier ${tier ?? ''} · Jogadores`;
-  header.append(backBtn, headerTitle);
+  const actions = el('div', 'app-header__actions');
+  actions.appendChild(createGitHubLink());
+
+  header.append(backBtn, headerTitle, actions);
 
   // ── Main ──────────────────────────────────────────────────
   const main = el('main', '');
@@ -57,9 +62,15 @@ export function createRosterScreen(store: GameStore): HTMLElement {
     const skipBtn = el<HTMLButtonElement>('button', 'btn btn--ghost btn--full');
     skipBtn.textContent = 'Começar do zero';
     skipBtn.addEventListener('click', () => {
-      if (!confirm('Tens a certeza? Os jogadores guardados serão ignorados e começarás do zero.'))
-        return;
-      store.update(Actions.skipRoster());
+      showConfirm({
+        title: 'Começar do Zero',
+        message: 'Tens a certeza? Os jogadores guardados serão ignorados e começarás do zero.',
+        confirmLabel: 'Começar do Zero',
+        danger: true,
+      }).then((ok) => {
+        if (!ok) return;
+        store.update(Actions.skipRoster());
+      });
     });
 
     container.append(heading, desc, list, useBtn, skipBtn);

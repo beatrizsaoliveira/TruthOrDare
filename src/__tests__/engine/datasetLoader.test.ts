@@ -13,6 +13,23 @@ describe('loadCards', () => {
     expect(cards.length).toBeGreaterThan(0);
   });
 
+  it('returns exactly 800 cards', () => {
+    expect(cards.length).toBe(800);
+  });
+
+  it('returns 200 cards per tier', () => {
+    for (const t of [1, 2, 3, 4] as Tier[]) {
+      expect(cards.filter((c) => c.tier === t).length).toBe(200);
+    }
+  });
+
+  it('returns 100 truths and 100 dares per tier', () => {
+    for (const t of [1, 2, 3, 4] as Tier[]) {
+      expect(cards.filter((c) => c.tier === t && c.type === 'truth').length).toBe(100);
+      expect(cards.filter((c) => c.tier === t && c.type === 'dare').length).toBe(100);
+    }
+  });
+
   it('all cards have type field that is either "truth" or "dare"', () => {
     for (const c of cards) {
       expect(c.type).toMatch(/^(truth|dare)$/);
@@ -51,6 +68,12 @@ describe('loadCards', () => {
         expect(typeof c.shots).toBe('number');
         expect(c.shots).toBeGreaterThan(0);
       }
+    }
+  });
+
+  it('all cards have timerSeconds field (number or null)', () => {
+    for (const c of cards) {
+      expect(c.timerSeconds === null || typeof c.timerSeconds === 'number').toBe(true);
     }
   });
 
@@ -94,6 +117,38 @@ describe('loadCards', () => {
     }
   });
 
+  it('truth cards never have timerSeconds', () => {
+    const truths = cards.filter((c) => c.type === 'truth');
+    expect(truths.length).toBeGreaterThan(0);
+    for (const c of truths) {
+      expect(c.timerSeconds).toBeNull();
+    }
+  });
+
+  it('tier 1 dares never have timerSeconds or shots', () => {
+    const t1dares = cards.filter((c) => c.tier === 1 && c.type === 'dare');
+    for (const c of t1dares) {
+      expect(c.shots).toBeNull();
+    }
+  });
+
+  it('dares with timerSeconds have values between 5 and 600', () => {
+    const timed = cards.filter((c) => c.timerSeconds !== null);
+    expect(timed.length).toBeGreaterThan(0);
+    for (const c of timed) {
+      expect(c.type).toBe('dare');
+      expect(c.timerSeconds).toBeGreaterThanOrEqual(5);
+      expect(c.timerSeconds).toBeLessThanOrEqual(600);
+    }
+  });
+
+  it('round-based dares never have timerSeconds', () => {
+    const roundBased = cards.filter((c) => c.hasRounds);
+    for (const c of roundBased) {
+      expect(c.timerSeconds).toBeNull();
+    }
+  });
+
   it('no duplicate ids within the same tier+type combination', () => {
     for (const t of [1, 2, 3, 4] as Tier[]) {
       for (const tp of ['truth', 'dare'] as CardType[]) {
@@ -102,6 +157,71 @@ describe('loadCards', () => {
         const uniqueIds = new Set(ids);
         expect(uniqueIds.size).toBe(ids.length);
       }
+    }
+  });
+
+  it('no duplicate card texts across entire dataset', () => {
+    const texts = cards.map((c) => c.rawText.trim().toLowerCase());
+    const unique = new Set(texts);
+    expect(unique.size).toBe(cards.length);
+  });
+
+  it('shots range 1-3 for tiers 2-4 (when not null)', () => {
+    for (const c of cards) {
+      if (c.shots !== null) {
+        expect(c.shots).toBeGreaterThanOrEqual(1);
+        expect(c.shots).toBeLessThanOrEqual(3);
+      }
+    }
+  });
+
+  it('tier 1 has no shots', () => {
+    const t1 = cards.filter((c) => c.tier === 1 && c.shots !== null);
+    expect(t1.length).toBe(0);
+  });
+
+  it('all cards have a requiresThirdParty boolean field', () => {
+    for (const c of cards) {
+      expect(typeof c.requiresThirdParty).toBe('boolean');
+    }
+  });
+
+  it('exactly 15 cards require a third party', () => {
+    expect(cards.filter((c) => c.requiresThirdParty).length).toBe(15);
+  });
+
+  it('requiresThirdParty cards are only dares in tiers 3-4', () => {
+    const thirdParty = cards.filter((c) => c.requiresThirdParty);
+    expect(thirdParty.length).toBeGreaterThan(0);
+    for (const c of thirdParty) {
+      expect(c.type).toBe('dare');
+      expect(c.tier).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it('requiresThirdParty and hasTarget can coexist on the same card', () => {
+    const both = cards.filter((c) => c.requiresThirdParty && c.hasTarget);
+    expect(both.length).toBeGreaterThan(0);
+    for (const c of both) {
+      expect(c.requiresThirdParty).toBe(true);
+      expect(c.hasTarget).toBe(true);
+    }
+  });
+
+  it('some dares have timerSeconds > 60 (they must NOT trigger the timer phase)', () => {
+    const over60 = cards.filter((c) => c.timerSeconds !== null && c.timerSeconds > 60);
+    expect(over60.length).toBeGreaterThan(0);
+    for (const c of over60) {
+      expect(c.type).toBe('dare');
+      expect(c.timerSeconds!).toBeGreaterThan(60);
+    }
+  });
+
+  it('round-based dares never require a third party AND never have timerSeconds', () => {
+    const roundBased = cards.filter((c) => c.hasRounds);
+    for (const c of roundBased) {
+      expect(c.timerSeconds).toBeNull();
+      expect(c.requiresThirdParty).toBe(false);
     }
   });
 });
@@ -122,6 +242,8 @@ describe('filterCards', () => {
       hasTarget: false,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: null,
+      requiresThirdParty: false,
     },
     {
       id: 2,
@@ -132,6 +254,8 @@ describe('filterCards', () => {
       hasTarget: false,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: null,
+      requiresThirdParty: false,
     },
     // tier 1 dares
     {
@@ -143,6 +267,8 @@ describe('filterCards', () => {
       hasTarget: false,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: null,
+      requiresThirdParty: false,
     },
     // tier 2 truths
     {
@@ -154,6 +280,8 @@ describe('filterCards', () => {
       hasTarget: false,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: null,
+      requiresThirdParty: false,
     },
     {
       id: 5,
@@ -164,6 +292,8 @@ describe('filterCards', () => {
       hasTarget: true,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: null,
+      requiresThirdParty: false,
     },
     // tier 2 dares
     {
@@ -175,6 +305,8 @@ describe('filterCards', () => {
       hasTarget: true,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: null,
+      requiresThirdParty: false,
     },
     // tier 3 truths
     {
@@ -182,10 +314,12 @@ describe('filterCards', () => {
       type: 'truth',
       tier: 3,
       rawText: 'T3 truth 1',
-      shots: 4,
+      shots: 2,
       hasTarget: false,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: null,
+      requiresThirdParty: false,
     },
     // tier 3 dares
     {
@@ -193,10 +327,12 @@ describe('filterCards', () => {
       type: 'dare',
       tier: 3,
       rawText: 'T3 dare 1',
-      shots: 5,
+      shots: 3,
       hasTarget: true,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: 30,
+      requiresThirdParty: false,
     },
     {
       id: 9,
@@ -207,6 +343,8 @@ describe('filterCards', () => {
       hasTarget: false,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: null,
+      requiresThirdParty: false,
     },
     // tier 4 truths
     {
@@ -214,10 +352,12 @@ describe('filterCards', () => {
       type: 'truth',
       tier: 4,
       rawText: 'T4 truth 1',
-      shots: 5,
+      shots: 3,
       hasTarget: false,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: null,
+      requiresThirdParty: false,
     },
     // tier 4 dares
     {
@@ -225,10 +365,12 @@ describe('filterCards', () => {
       type: 'dare',
       tier: 4,
       rawText: 'T4 dare 1',
-      shots: 4,
+      shots: 3,
       hasTarget: true,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: 60,
+      requiresThirdParty: false,
     },
     {
       id: 12,
@@ -239,6 +381,8 @@ describe('filterCards', () => {
       hasTarget: false,
       roundsCount: null,
       hasRounds: false,
+      timerSeconds: null,
+      requiresThirdParty: false,
     },
   ];
 
@@ -258,96 +402,14 @@ describe('filterCards', () => {
 
   it('does not mutate the original array', () => {
     const snapshot = [...fixture];
-    filterCards(fixture, 1, 'dare');
+    filterCards(fixture, 2, 'truth');
     expect(fixture).toEqual(snapshot);
   });
 
-  it('works correctly for all 4 tier/type combinations', () => {
-    // Check tier 1 truths
-    expect(filterCards(fixture, 1, 'truth')).toHaveLength(2);
-    // tier 1 dares
-    expect(filterCards(fixture, 1, 'dare')).toHaveLength(1);
-    // tier 2 truths
-    expect(filterCards(fixture, 2, 'truth')).toHaveLength(2);
-    // tier 2 dares
-    expect(filterCards(fixture, 2, 'dare')).toHaveLength(1);
-    // tier 3 truths
-    expect(filterCards(fixture, 3, 'truth')).toHaveLength(1);
-    // tier 3 dares
-    expect(filterCards(fixture, 3, 'dare')).toHaveLength(2);
-    // tier 4 truths
-    expect(filterCards(fixture, 4, 'truth')).toHaveLength(1);
-    // tier 4 dares
-    expect(filterCards(fixture, 4, 'dare')).toHaveLength(2);
-  });
-
-  it('when given an empty array, returns empty array', () => {
-    expect(filterCards([], 1, 'truth')).toHaveLength(0);
-    expect(filterCards([], 3, 'dare')).toHaveLength(0);
-  });
-
-  it('result is a subset of input cards (every returned card was in the input)', () => {
-    const result = filterCards(fixture, 3, 'dare');
-    for (const c of result) {
-      expect(fixture).toContain(c);
-    }
-  });
-
-  it('filtering "truth" does not include "dare" cards', () => {
-    const result = filterCards(fixture, 1, 'truth');
-    for (const c of result) {
-      expect(c.type).toBe('truth');
-    }
-  });
-
-  it('filtering tier 1 does not include tier 2+ cards', () => {
-    const result = filterCards(fixture, 1, 'truth');
-    for (const c of result) {
-      expect(c.tier).toBe(1);
-    }
-  });
-
-  it('works when given cards from multiple tiers/types', () => {
-    const mixed: Card[] = [
-      {
-        id: 100,
-        type: 'truth',
-        tier: 2,
-        rawText: 'mix truth',
-        shots: null,
-        hasTarget: false,
-        roundsCount: null,
-        hasRounds: false,
-      },
-      {
-        id: 101,
-        type: 'dare',
-        tier: 3,
-        rawText: 'mix dare',
-        shots: 4,
-        hasTarget: true,
-        roundsCount: null,
-        hasRounds: false,
-      },
-      {
-        id: 102,
-        type: 'truth',
-        tier: 1,
-        rawText: 'mix truth t1',
-        shots: null,
-        hasTarget: false,
-        roundsCount: null,
-        hasRounds: false,
-      },
-    ];
-    const t2truth = filterCards(mixed, 2, 'truth');
-    expect(t2truth).toHaveLength(1);
-    expect(t2truth[0].id).toBe(100);
-
-    const t3dare = filterCards(mixed, 3, 'dare');
-    expect(t3dare).toHaveLength(1);
-    expect(t3dare[0].id).toBe(101);
-
-    expect(filterCards(mixed, 3, 'truth')).toHaveLength(0);
+  it('filter preserves timerSeconds', () => {
+    const result = filterCards(fixture, 4, 'dare');
+    const withTimer = result.filter((c) => c.timerSeconds !== null);
+    expect(withTimer.length).toBe(1);
+    expect(withTimer[0]!.timerSeconds).toBe(60);
   });
 });

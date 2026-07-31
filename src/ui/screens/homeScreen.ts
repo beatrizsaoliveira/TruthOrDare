@@ -1,6 +1,7 @@
 import type { GameStore } from '../../state/store.js';
 import { Actions } from '../../state/store.js';
 import { TIER_META } from '../../types/index.js';
+import { createGitHubLink } from '../domHelpers.js';
 
 /**
  * Home screen — tier selection grid.
@@ -15,7 +16,10 @@ export function createHomeScreen(store: GameStore): HTMLElement {
   const logo = el('div', 'app-header__logo');
   logo.textContent = '🎲 Verdade ou Desafio';
 
-  header.appendChild(logo);
+  const actions = el('div', 'app-header__actions');
+  actions.appendChild(createGitHubLink());
+
+  header.append(logo, actions);
 
   // ── Hero ────────────────────────────────────────────────────
   const main = el('main', 'screen-body');

@@ -207,7 +207,7 @@ a {
   --clr-text: #fafafa;
   --clr-text-muted: #a1a1aa;
   --clr-text-inv: #09090b;
-  --clr-danger: #fca5a5;
+  --clr-danger: #ef4444;
   --clr-danger-lt: #450a0a;
   --clr-success: #86efac;
   --clr-success-lt: #052e16;
@@ -670,8 +670,8 @@ a {
 
 [data-theme='dark'] .help-modal-panel,
 [data-theme^='dark-'] .help-modal-panel {
-  --text-secondary: #9da8b2;
-  --clr-text-muted: #9da8b2;
+  --text-secondary: #c9d1d9;
+  --clr-text-muted: #c9d1d9;
   --border: #30363d;
 }
 
@@ -853,6 +853,25 @@ a {
   display: flex;
   align-items: center;
   gap: var(--sp-2);
+}
+
+.app-header__gh-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-full);
+  color: var(--clr-text-muted);
+  transition:
+    color var(--dur-fast),
+    background-color var(--dur-fast);
+}
+
+.app-header__gh-link:hover,
+.app-header__gh-link:focus-visible {
+  color: var(--clr-text);
+  background: var(--clr-surface-hover);
 }
 
 /* ── Buttons ──────────────────────────────────────────────── */
@@ -1680,6 +1699,7 @@ a {
 .turn-banner__round-badge {
   display: inline-block;
   margin-top: var(--sp-1);
+  margin-left: var(--sp-2);
   font-size: 0.7rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.85);
@@ -2829,11 +2849,13 @@ a {
 .help-modal-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 [data-theme='dark'] .help-modal-backdrop {
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.72);
 }
 
 .help-modal-panel {
@@ -2863,6 +2885,12 @@ a {
   transform: scale(1) translateY(0);
 }
 
+/* Confirm modal — narrower variant */
+.confirm-modal-panel {
+  width: min(88vw, 400px);
+  max-height: none;
+}
+
 .help-modal-panel > .glass-effect {
   position: absolute;
   inset: 0;
@@ -2884,8 +2912,15 @@ a {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: var(--glass-surface-bg);
+  /* More opaque than regular surfaces — modal text must remain readable
+     even on default (non-frosted) glass */
+  background: color-mix(in srgb, var(--glass-c-glass) 55%, transparent);
   transition: background 0.4s cubic-bezier(1, 0, 0.4, 1);
+}
+
+[data-glass='frosted'] .help-modal-panel > .glass-tint {
+  /* Restore frosted background when frosted mode is active */
+  background: var(--glass-surface-bg);
 }
 
 .help-modal-panel > .glass-shine {
@@ -3242,5 +3277,76 @@ a {
   .btn--dare {
     padding: 1rem 0.75rem;
     font-size: 1.1rem;
+  }
+}
+
+/* ── Timer Screen ─────────────────────────────────────────── */
+
+.timer-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.timer-screen__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-5);
+  max-width: 400px;
+  width: 100%;
+}
+
+.timer-screen__label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.timer-screen__challenge {
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--clr-text);
+  max-width: 340px;
+}
+
+.timer-screen__time {
+  font-size: 4.5rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--clr-text);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s ease;
+}
+
+.timer-screen__time--running {
+  color: var(--clr-accent);
+}
+
+.timer-screen__time-label {
+  font-size: 0.9rem;
+  color: var(--clr-text-muted);
+}
+
+.timer-screen__actions {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+/* Pulse animation for running timer */
+@keyframes timer-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.85;
   }
 }

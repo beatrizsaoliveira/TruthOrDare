@@ -18,6 +18,7 @@ const SCREENS: Partial<Record<GamePhase, ScreenFactory>> = {
   setup: createSetupScreen,
   'game-selecting': createGameScreen,
   'game-showing': createGameScreen,
+  'game-timer': createGameScreen,
   ranking: createRankingScreen,
 };
 

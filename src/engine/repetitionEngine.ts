@@ -30,6 +30,15 @@ const SCORE_SEEN_EVER = 30; // player has seen it before but not recently
 const SCORE_COUPLE_RECENT = 80; // partner just saw this card
 const SCORE_JITTER_MAX = 15; // random jitter to avoid tie-breaking being deterministic
 
+// ─── Debug: force next dare to have a countdown timer ────────────────────────
+
+let _debugForceTimer = false;
+
+/** Sets the debug flag — next dare card will have a timer ≤ 60s. Auto-resets after use. */
+export function setDebugForceTimer(on: boolean): void {
+  _debugForceTimer = on;
+}
+
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 /**
@@ -59,6 +68,22 @@ export function selectCard(
   requireNoTarget?: boolean,
 ): Card {
   let pool = filterCards(allCards, tier, type);
+
+  // DEBUG: force next dare to have a countdown timer
+  if (_debugForceTimer && type === 'dare') {
+    const timerPool = pool.filter(
+      (c) => c.timerSeconds != null && c.timerSeconds > 0 && c.timerSeconds <= 60,
+    );
+    if (timerPool.length > 0) {
+      pool = timerPool;
+      _debugForceTimer = false; // auto-reset after use
+    }
+  }
+
+  // Exclude cards requiring a third party when the active player is in a closed relationship
+  if (activePlayer.relationshipStatus === 'closed') {
+    pool = pool.filter((c) => !c.requiresThirdParty);
+  }
 
   if (requireNoTarget) {
     pool = pool.filter((c) => !c.hasTarget);
