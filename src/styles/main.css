@@ -1176,7 +1176,6 @@ a {
   text-transform: uppercase;
   padding: 0.35rem 0.9rem;
   border-radius: var(--r-full);
-  margin-bottom: var(--sp-5);
 }
 .game-card__type-badge--truth {
   background: #ede9fe;
@@ -1194,6 +1193,63 @@ a {
 [data-theme='dark'] .game-card__type-badge--dare {
   background: #500724;
   color: #fbcfe8;
+}
+
+.game-card__badges {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+}
+
+.game-card__tier-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--r-full);
+  opacity: 0.85;
+}
+
+/* Tier 1 — green/leaf */
+.game-card__tier-badge--t1 {
+  background: #dcfce7;
+  color: #166534;
+}
+[data-theme='dark'] .game-card__tier-badge--t1 {
+  background: #052e16;
+  color: #86efac;
+}
+
+/* Tier 2 — amber/gold */
+.game-card__tier-badge--t2 {
+  background: #fef3c7;
+  color: #92400e;
+}
+[data-theme='dark'] .game-card__tier-badge--t2 {
+  background: #451a03;
+  color: #fcd34d;
+}
+
+/* Tier 3 — red/orange */
+.game-card__tier-badge--t3 {
+  background: #fee2e2;
+  color: #991b1b;
+}
+[data-theme='dark'] .game-card__tier-badge--t3 {
+  background: #450a0a;
+  color: #fca5a5;
+}
+
+/* Tier 4 — purple/violet */
+.game-card__tier-badge--t4 {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+[data-theme='dark'] .game-card__tier-badge--t4 {
+  background: #2e1065;
+  color: #c4b5fd;
 }
 
 .game-card__text {
@@ -1682,6 +1738,15 @@ a {
 }
 
 /* Shot debt chip shown inside turn banner when player has accumulated shots */
+.turn-banner__tier {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--r-full);
+  margin-top: var(--sp-1);
+}
+
 .turn-banner__shot-debt {
   display: inline-block;
   margin-top: var(--sp-2);

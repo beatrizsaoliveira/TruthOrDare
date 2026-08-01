@@ -53,7 +53,12 @@ function buildSelectingScreen(store: GameStore): HTMLElement {
   bannerLabel.textContent = 'É a vez de';
   const bannerName = el('h1', 'turn-banner__name');
   bannerName.textContent = currentPlayer.name;
-  banner.append(bannerLabel, bannerName);
+
+  const tierBadge = el('span', `turn-banner__tier game-card__tier-badge--t${store.state.tier}`);
+  tierBadge.textContent = `Tier ${store.state.tier}`;
+  tierBadge.setAttribute('aria-label', `Tier ${store.state.tier}`);
+
+  banner.append(bannerLabel, bannerName, tierBadge);
 
   // Shot debt chip — only visible when penalties are on and shots > 0
   if (penaltiesEnabled) {
