@@ -4,19 +4,7 @@ import type { GameStore } from '../../state/store.js';
 import { Actions } from '../../state/store.js';
 import type { Card, Player, RoundEffect } from '../../types/index.js';
 import { showConfirm } from '../confirmModal.js';
-
-/** Colour palette for player dot indicators (reserved for future use) */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const _AVATAR_COLORS = [
-  '#7C3AED',
-  '#DB2777',
-  '#059669',
-  '#D97706',
-  '#2563EB',
-  '#DC2626',
-  '#0891B2',
-  '#65A30D',
-];
+import { el } from '../domHelpers.js';
 
 // ─── Public ───────────────────────────────────────────────────────────────────
 
@@ -43,7 +31,7 @@ export function createGameScreen(store: GameStore): HTMLElement {
 
 function buildSelectingScreen(store: GameStore): HTMLElement {
   const { players, currentPlayerIndex, penaltiesEnabled, shotCounts, currentRound } = store.state;
-  const currentPlayer = players[currentPlayerIndex] as Player;
+  const currentPlayer = players[currentPlayerIndex]!;
 
   const screen = el('div', 'screen');
 
@@ -127,7 +115,7 @@ function buildSelectingScreen(store: GameStore): HTMLElement {
   skipBtn.textContent = '⏭️  Saltar Jogador';
   skipBtn.setAttribute('aria-label', 'Saltar este jogador e passar ao próximo');
   skipBtn.addEventListener('click', () => {
-    showConfirm({
+    void showConfirm({
       title: 'Saltar Jogador',
       message: `Saltar ${currentPlayer.name} e passar ao próximo jogador?`,
       confirmLabel: 'Saltar',
@@ -142,7 +130,7 @@ function buildSelectingScreen(store: GameStore): HTMLElement {
   endBtn.textContent = 'Terminar Jogo';
   endBtn.setAttribute('aria-label', 'Terminar o jogo e voltar ao início');
   endBtn.addEventListener('click', () => {
-    showConfirm({
+    void showConfirm({
       title: 'Terminar Jogo',
       message: 'Tens a certeza que queres terminar o jogo?',
       confirmLabel: 'Terminar',
@@ -194,7 +182,7 @@ function buildShowingScreen(store: GameStore): HTMLElement {
     showingPenalty,
   } = store.state;
 
-  const currentPlayer = players[currentPlayerIndex] as Player;
+  const currentPlayer = players[currentPlayerIndex]!;
   const targetPlayer =
     currentTargetPlayerId ? players.find((p) => p.id === currentTargetPlayerId) : undefined;
 
@@ -264,7 +252,7 @@ function buildShowingScreen(store: GameStore): HTMLElement {
 
 function buildTimerScreen(store: GameStore): HTMLElement {
   const { currentCard, players, currentPlayerIndex, penaltiesEnabled, timerRunning } = store.state;
-  const currentPlayer = players[currentPlayerIndex] as Player;
+  const currentPlayer = players[currentPlayerIndex]!;
   const targetPlayerId = store.state.currentTargetPlayerId;
   const targetPlayer = targetPlayerId ? players.find((p) => p.id === targetPlayerId) : undefined;
 
@@ -601,9 +589,3 @@ function buildRoundExpiryOverlay(effects: readonly RoundEffect[], store: GameSto
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function el<T extends HTMLElement = HTMLDivElement>(tag: string, className?: string): T {
-  const e = document.createElement(tag) as T;
-  if (className) e.className = className;
-  return e;
-}

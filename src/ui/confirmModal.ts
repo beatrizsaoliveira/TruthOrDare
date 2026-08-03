@@ -3,14 +3,14 @@
  * Returns a Promise that resolves to true (confirmed) or false (cancelled).
  */
 
-interface ConfirmOptions {
+type ConfirmOptions = {
   title: string;
   message: string;
   confirmLabel?: string;
   cancelLabel?: string;
   /** If true, the confirm button uses a danger/pill style */
   danger?: boolean;
-}
+};
 
 export function showConfirm(options: ConfirmOptions): Promise<boolean> {
   const {
@@ -22,6 +22,8 @@ export function showConfirm(options: ConfirmOptions): Promise<boolean> {
   } = options;
 
   return new Promise((resolve) => {
+    let settled = false;
+
     // ── Build DOM ────────────────────────────────────────────
     const modal = document.createElement('div');
     modal.className = 'help-modal confirm-modal';
@@ -77,7 +79,8 @@ export function showConfirm(options: ConfirmOptions): Promise<boolean> {
 
     // ── Cleanup ──────────────────────────────────────────────
     function cleanup(value: boolean): void {
-      if (!modal.classList.contains('visible')) return;
+      if (settled) return;
+      settled = true;
       modal.classList.remove('visible');
       modal.addEventListener(
         'transitionend',

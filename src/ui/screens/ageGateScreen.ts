@@ -1,6 +1,7 @@
 import type { GameStore } from '../../state/store.js';
 import { Actions } from '../../state/store.js';
 import { TIER_META } from '../../types/index.js';
+import { el } from '../domHelpers.js';
 
 /**
  * Age-gate screen — displayed before tiers 2, 3, and 4.
@@ -69,10 +70,4 @@ export function createAgeGateScreen(store: GameStore): HTMLElement {
   actions.append(confirmBtn, backBtn);
   screen.append(title, body, warn, actions);
   return screen;
-}
-
-function el<T extends HTMLElement = HTMLDivElement>(tag: string, className?: string): T {
-  const e = document.createElement(tag) as T;
-  if (className) e.className = className;
-  return e;
 }

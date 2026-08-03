@@ -1,7 +1,7 @@
 import type { GameStore } from '../../state/store.js';
 import { Actions } from '../../state/store.js';
 import { TIER_META } from '../../types/index.js';
-import { createGitHubLink } from '../domHelpers.js';
+import { createGitHubLink, el } from '../domHelpers.js';
 
 /**
  * Home screen — tier selection grid.
@@ -99,12 +99,4 @@ function buildTierCard(meta: (typeof TIER_META)[number], onClick: () => void): H
   card.append(bg, content);
   card.addEventListener('click', onClick);
   return card;
-}
-
-// ─── Tiny DOM helper ─────────────────────────────────────────────────────────
-
-function el<T extends HTMLElement = HTMLDivElement>(tag: string, className?: string): T {
-  const e = document.createElement(tag) as T;
-  if (className) e.className = className;
-  return e;
 }

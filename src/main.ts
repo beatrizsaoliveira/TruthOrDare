@@ -2,6 +2,7 @@ import { loadCards } from './engine/datasetLoader.js';
 import { initGlassDistortion } from './engine/glassDistortion.js';
 import { GameStore } from './state/store.js';
 import './styles/main.css';
+import { getPaletteId, PALETTE_COLOURS } from './theme.js';
 import { renderScreen } from './ui/router.js';
 import { createSettingsPanel, initGlassState } from './ui/settingsPanel.js';
 
@@ -12,23 +13,6 @@ declare const tsParticles:
     }
   | undefined;
 
-// ─── Theme → particle colour mapping ─────────────────────────────────────────
-const PALETTE_COLOURS: Record<string, string[]> = {
-  violet: ['#a855f7', '#7c3aed', '#e11d48', '#f97316'],
-  ocean: ['#22d3ee', '#0369a1', '#2dd4bf', '#06b6d4'],
-  warm: ['#f59e0b', '#d97706', '#fb923c', '#dc2626'],
-  rose: ['#f43f5e', '#db2777', '#c084fc', '#fb923c'],
-  forest: ['#4ade80', '#22c55e', '#2dd4bf', '#86efac'],
-};
-
-function getPaletteId(theme: string): string {
-  if (theme.includes('ocean')) return 'ocean';
-  if (theme.includes('warm')) return 'warm';
-  if (theme.includes('rose')) return 'rose';
-  if (theme.includes('forest')) return 'forest';
-  return 'violet';
-}
-
 let particlesContainer: { destroy: () => void } | null = null;
 
 async function startParticles(theme: string): Promise<void> {
@@ -37,7 +21,7 @@ async function startParticles(theme: string): Promise<void> {
     particlesContainer.destroy();
     particlesContainer = null;
   }
-  const colours = PALETTE_COLOURS[getPaletteId(theme)] ?? PALETTE_COLOURS['violet'];
+  const colours = PALETTE_COLOURS[getPaletteId(theme)] ?? PALETTE_COLOURS.violet;
   const container = (await tsParticles.load('particles-bg', {
     background: { opacity: 0 },
     fpsLimit: 30,
@@ -84,7 +68,7 @@ function main(): void {
   const store = new GameStore(allCards);
 
   // 3. Apply theme from store state (persisted or OS preference)
-  document.documentElement.dataset['theme'] = store.state.theme;
+  document.documentElement.dataset.theme = store.state.theme;
 
   // 4. Apply frosted glass preference from localStorage
   initGlassState();

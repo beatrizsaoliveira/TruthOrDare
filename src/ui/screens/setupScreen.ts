@@ -10,7 +10,7 @@ import type {
   Tier,
 } from '../../types/index.js';
 import { showConfirm } from '../confirmModal.js';
-import { createGitHubLink } from '../domHelpers.js';
+import { createGitHubLink, el } from '../domHelpers.js';
 import { animateLiquidToggle, buildLiquidToggle } from '../settingsPanel.js';
 
 /** Colour palette rotated through player avatars */
@@ -118,8 +118,8 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
       { value: 'female', label: '♀ Feminino' },
     ]);
     sexInputs = {
-      m: sexGroup.querySelector<HTMLInputElement>('input[value="male"]') as HTMLInputElement,
-      f: sexGroup.querySelector<HTMLInputElement>('input[value="female"]') as HTMLInputElement,
+      m: sexGroup.querySelector<HTMLInputElement>('input[value="male"]')!,
+      f: sexGroup.querySelector<HTMLInputElement>('input[value="female"]')!,
     };
     bioWrap = el('div', 'field-group-wrap field-group-wrap--inline');
     bioWrap.appendChild(sexGroup);
@@ -140,9 +140,7 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
         { value: 'couple', label: '💑 Em casal' },
       ],
     );
-    tier2CoupleRadio = coupleStatusGroup.querySelector<HTMLInputElement>(
-      'input[value="couple"]',
-    ) as HTMLInputElement;
+    tier2CoupleRadio = coupleStatusGroup.querySelector<HTMLInputElement>('input[value="couple"]')!;
 
     tier2PartnerGroup = el('div', 'form-group');
     tier2PartnerGroup.style.display = 'none';
@@ -427,7 +425,7 @@ function updatePlayerList(section: HTMLElement, store: GameStore): void {
     type CoupleEntry = { a: Player; aIdx: number; b: Player; bIdx: number };
     const rendered = new Set<string>();
     const coupleGroups: CoupleEntry[] = [];
-    const singles: Array<{ player: Player; idx: number }> = [];
+    const singles: { player: Player; idx: number }[] = [];
 
     players.forEach((player, idx) => {
       if (rendered.has(player.id)) return;
@@ -530,7 +528,7 @@ function buildPlayerChip(
   removeBtn.setAttribute('aria-label', `Remover ${player.name}`);
   removeBtn.innerHTML = '✕';
   removeBtn.addEventListener('click', () => {
-    showConfirm({
+    void showConfirm({
       title: 'Remover Jogador',
       message: `Remover ${player.name} da lista de jogadores?`,
       confirmLabel: 'Remover',
@@ -602,7 +600,7 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
 
   function closeModal(): void {
     if (isDirty()) {
-      showConfirm({
+      void showConfirm({
         title: 'Alterações Não Guardadas',
         message: 'Tens alterações não guardadas. Queres mesmo fechar sem guardar?',
         confirmLabel: 'Fechar',
@@ -658,12 +656,8 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
       { value: 'male', label: '♂ Masculino' },
       { value: 'female', label: '♀ Feminino' },
     ]);
-    const mInput = sexGroup.querySelector<HTMLInputElement>(
-      'input[value="male"]',
-    ) as HTMLInputElement;
-    const fInput = sexGroup.querySelector<HTMLInputElement>(
-      'input[value="female"]',
-    ) as HTMLInputElement;
+    const mInput = sexGroup.querySelector<HTMLInputElement>('input[value="male"]')!;
+    const fInput = sexGroup.querySelector<HTMLInputElement>('input[value="female"]')!;
     mInput.defaultChecked = false;
     fInput.defaultChecked = false;
     if (player.sex === 'male') {
@@ -689,12 +683,8 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
       { value: 'single', label: '🙋 Solteiro/a' },
       { value: 'couple', label: '💑 Em casal' },
     ]);
-    const coupleInput = coupleStatusGroup.querySelector<HTMLInputElement>(
-      'input[value="couple"]',
-    ) as HTMLInputElement;
-    const singleInput = coupleStatusGroup.querySelector<HTMLInputElement>(
-      'input[value="single"]',
-    ) as HTMLInputElement;
+    const coupleInput = coupleStatusGroup.querySelector<HTMLInputElement>('input[value="couple"]')!;
+    const singleInput = coupleStatusGroup.querySelector<HTMLInputElement>('input[value="single"]')!;
     if (player.partnerId) {
       coupleInput.checked = true;
       coupleInput.defaultChecked = true;
@@ -968,7 +958,7 @@ function updateStartButton(section: HTMLElement, store: GameStore): void {
 function buildRadioGroup<T extends string>(
   name: string,
   label: string,
-  options: Array<{ value: T; label: string }>,
+  options: { value: T; label: string }[],
 ): HTMLElement {
   const group = el('div', 'form-group');
 
@@ -1022,12 +1012,6 @@ function targetSexLabel(t: TargetSex): string {
   if (t === 'male') return '♂ masc.';
   if (t === 'female') return '♀ fem.';
   return '⚥ ambos';
-}
-
-function el<T extends HTMLElement = HTMLDivElement>(tag: string, className?: string): T {
-  const e = document.createElement(tag) as T;
-  if (className) e.className = className;
-  return e;
 }
 
 /** Returns an empty NodeList of the given type (used as a fallback). */

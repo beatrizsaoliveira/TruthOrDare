@@ -31,7 +31,7 @@ export type GamePhase =
 
 // ─── Card ────────────────────────────────────────────────────────────────────
 
-export interface Card {
+export type Card = {
   readonly id: string;
   readonly type: CardType;
   readonly tier: Tier;
@@ -51,7 +51,7 @@ export interface Card {
   readonly timerSeconds: number | null;
   /** Whether this card requires a third party beyond the target player (excluded for closed relationships). */
   readonly requiresThirdParty: boolean;
-}
+};
 
 // ─── Player ──────────────────────────────────────────────────────────────────
 
@@ -59,7 +59,7 @@ export interface Card {
  * Flat player model. Fields beyond `id`/`name` are populated
  * progressively based on the active tier.
  */
-export interface Player {
+export type Player = {
   readonly id: string;
   readonly name: string;
   // Tier 2+
@@ -70,24 +70,24 @@ export interface Player {
   readonly partnerId?: string | null;
   readonly openToOutside?: boolean;
   readonly targetSex?: TargetSex;
-}
+};
 
 // ─── Anti-Repetition History ──────────────────────────────────────────────────
 
-export interface PlayerHistory {
+export type PlayerHistory = {
   readonly playerId: string;
   /** All card keys ever seen by this player ("tier|type|id") */
   readonly seenCards: ReadonlySet<string>;
   /** Sliding window of the last RECENT_WINDOW card keys */
   readonly recentCards: readonly string[];
-}
+};
 
 export type PlayerHistories = Readonly<Record<string, PlayerHistory>>;
 
 // ─── Round Effect ─────────────────────────────────────────────────────────────
 
 /** Tracks an active round-based card effect for a player. */
-export interface RoundEffect {
+export type RoundEffect = {
   /** The card's id */
   readonly cardId: string;
   /** Raw text of the card (used for the expiry popup message) */
@@ -98,11 +98,11 @@ export interface RoundEffect {
   readonly triggerRound: number;
   /** The round number when this effect expires (triggerRound + roundsCount) */
   readonly targetRound: number;
-}
+};
 
 // ─── Game State ───────────────────────────────────────────────────────────────
 
-export interface GameState {
+export type GameState = {
   readonly phase: GamePhase;
   readonly tier: Tier | null;
   readonly penaltiesEnabled: boolean;
@@ -132,15 +132,15 @@ export interface GameState {
    * re-derived from the markdown at startup.
    */
   readonly allCards: readonly Card[];
-}
+};
 
 // ─── LocalStorage serialisation ───────────────────────────────────────────────
 
-export interface SerializedHistory {
+export type SerializedHistory = {
   readonly playerId: string;
   readonly seenCards: readonly string[];
   readonly recentCards: readonly string[];
-}
+};
 
 /** Persisted slice of GameState (omits `allCards` to keep storage small) */
 export type PersistedState = Omit<GameState, 'allCards' | 'playerHistories'> & {
@@ -149,14 +149,14 @@ export type PersistedState = Omit<GameState, 'allCards' | 'playerHistories'> & {
 
 // ─── UI helpers ───────────────────────────────────────────────────────────────
 
-export interface TierMeta {
+export type TierMeta = {
   readonly tier: Tier;
   readonly label: string;
   readonly subtitle: string;
   readonly emoji: string;
   readonly gradient: string;
   readonly restricted: boolean;
-}
+};
 
 export const TIER_META: readonly TierMeta[] = [
   {

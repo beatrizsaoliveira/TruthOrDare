@@ -1,5 +1,6 @@
 import type { GameStore } from '../state/store.js';
 import { Actions } from '../state/store.js';
+import { flipThemeMode, getThemeMode, getThemePalette, PALETTES } from '../theme.js';
 import type { Theme } from '../types/index.js';
 
 // ─── LocalStorage key for frosted glass preference ────────────────────────────
@@ -116,7 +117,7 @@ export function createSettingsPanel(store: GameStore): void {
     darkToggle.setAttribute('aria-checked', String(next));
     animateLiquidToggle(darkToggle, next);
     const newTheme = flipThemeMode(store.state.theme, next ? 'dark' : 'light');
-    document.documentElement.dataset['theme'] = newTheme;
+    document.documentElement.dataset.theme = newTheme;
     store.update(Actions.setTheme(newTheme));
   });
 
@@ -127,10 +128,10 @@ export function createSettingsPanel(store: GameStore): void {
     frostedToggle.setAttribute('aria-checked', String(next));
     animateLiquidToggle(frostedToggle, next);
     if (next) {
-      document.documentElement.dataset['glass'] = 'frosted';
+      document.documentElement.dataset.glass = 'frosted';
       localStorage.setItem(GLASS_KEY, 'frosted');
     } else {
-      delete document.documentElement.dataset['glass'];
+      delete document.documentElement.dataset.glass;
       localStorage.removeItem(GLASS_KEY);
     }
   });
@@ -140,7 +141,7 @@ export function createSettingsPanel(store: GameStore): void {
 export function initGlassState(): void {
   const saved = localStorage.getItem(GLASS_KEY);
   if (saved === 'frosted') {
-    document.documentElement.dataset['glass'] = 'frosted';
+    document.documentElement.dataset.glass = 'frosted';
   }
 }
 
@@ -214,13 +215,13 @@ function buildThemesMenu(store: GameStore): {
   label.textContent = 'Paleta de cor';
   content.appendChild(label);
 
-  const paletteRows: Array<{ btn: HTMLButtonElement; id: string }> = [];
+  const paletteRows: { btn: HTMLButtonElement; id: string }[] = [];
 
   PALETTES.forEach(({ id, label: palLabel, desc, swatch }) => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'palette-row';
-    btn.dataset['palette'] = id;
+    btn.dataset.palette = id;
     const isActive = getThemePalette(store.state.theme) === id;
     if (isActive) btn.classList.add('palette-row--active');
     btn.innerHTML = `
@@ -237,8 +238,8 @@ function buildThemesMenu(store: GameStore): {
     `;
     btn.addEventListener('click', () => {
       const mode = getThemeMode(store.state.theme);
-      const newTheme: Theme = id === 'violet' ? (mode as Theme) : (`${mode}-${id}` as Theme);
-      document.documentElement.dataset['theme'] = newTheme;
+      const newTheme: Theme = id === 'violet' ? mode : (`${mode}-${id}` as Theme);
+      document.documentElement.dataset.theme = newTheme;
       store.update(Actions.setTheme(newTheme));
     });
     content.appendChild(btn);
@@ -282,7 +283,7 @@ function buildSettingsMenu(store: GameStore): {
   darkToggle: HTMLButtonElement;
   darkIconSvg: SVGSVGElement;
 } {
-  const isFrosted = document.documentElement.dataset['glass'] === 'frosted';
+  const isFrosted = document.documentElement.dataset.glass === 'frosted';
   const frostedToggle = buildLiquidToggle('toggle-frosted-glass', isFrosted);
   const isDark = store.state.theme.startsWith('dark');
   const darkToggle = buildLiquidToggle('toggle-dark-mode', isDark);
@@ -394,61 +395,6 @@ function buildSettingsMenu(store: GameStore): {
 
   return { menu, frostedToggle, darkToggle, darkIconSvg };
 }
-
-function getThemeMode(theme: Theme): 'light' | 'dark' {
-  return theme.startsWith('dark') ? 'dark' : 'light';
-}
-
-function getThemePalette(theme: Theme): string {
-  if (theme === 'light' || theme === 'dark') return 'violet';
-  return theme.replace(/^(light|dark)-/, '');
-}
-
-function flipThemeMode(theme: Theme, mode: 'light' | 'dark'): Theme {
-  const palette = getThemePalette(theme);
-  if (palette === 'violet') return mode as Theme;
-  return `${mode}-${palette}` as Theme;
-}
-
-interface PaletteOption {
-  id: string;
-  label: string;
-  desc: string;
-  swatch: string;
-}
-
-const PALETTES: PaletteOption[] = [
-  {
-    id: 'violet',
-    label: 'Violeta',
-    desc: 'Roxo · profundo e clássico',
-    swatch: '#8b5cf6',
-  },
-  {
-    id: 'ocean',
-    label: 'Oceano',
-    desc: 'Azul · fresco e sereno',
-    swatch: '#0ea5e9',
-  },
-  {
-    id: 'warm',
-    label: 'Âmbar',
-    desc: 'Âmbar · quente e aconchegante',
-    swatch: '#f59e0b',
-  },
-  {
-    id: 'rose',
-    label: 'Rosa',
-    desc: 'Rosa · vivo e apaixonado',
-    swatch: '#f43f5e',
-  },
-  {
-    id: 'forest',
-    label: 'Floresta',
-    desc: 'Verde · natural e sereno',
-    swatch: '#22c55e',
-  },
-];
 
 // ─── Wiki Modal ───────────────────────────────────────────────────────────────
 
@@ -573,7 +519,7 @@ export function animateLiquidToggle(btn: HTMLButtonElement, toChecked: boolean):
   if (startVal === endVal) return;
 
   // Phase 1: set active (squish) immediately
-  btn.dataset['active'] = 'true';
+  btn.dataset.active = 'true';
 
   // Phase 2: after brief delay, animate --complete (matches GSAP delay: 180ms)
   const DELAY = 180;
@@ -601,7 +547,7 @@ export function animateLiquidToggle(btn: HTMLButtonElement, toChecked: boolean):
     } else {
       // Phase 3: clear active after 50ms (matches GSAP onComplete delay)
       setTimeout(() => {
-        delete btn.dataset['active'];
+        delete btn.dataset.active;
       }, 50);
     }
   }
@@ -613,17 +559,17 @@ export function animateLiquidToggle(btn: HTMLButtonElement, toChecked: boolean):
 
 // ─── Wiki content factory ─────────────────────────────────────────────────────
 
-interface WikiBlock {
+type WikiBlock = {
   icon?: string;
   title: string;
   html: string;
   warn?: boolean;
-}
+};
 
-interface WikiSection {
+type WikiSection = {
   label?: string;
   blocks: WikiBlock[];
-}
+};
 
 const WIKI_CHEVRON = `<svg class="wiki-block__chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
   fill="none" stroke="currentColor" stroke-width="2.2"

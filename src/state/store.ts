@@ -3,7 +3,6 @@ import { recordCardShown, selectCard } from '../engine/repetitionEngine.js';
 import type {
   Card,
   CardType,
-  GamePhase,
   GameState,
   PersistedState,
   Player,
@@ -344,7 +343,7 @@ export const Actions = {
     return {
       ...state,
       showingPenalty: false,
-      phase: 'game-selecting' as GamePhase,
+      phase: 'game-selecting',
       currentPlayerIndex: nextIndex,
       currentRound: newRound,
       activeEffects: state.activeEffects,
@@ -579,6 +578,7 @@ function deserialize(persisted: PersistedState): Omit<GameState, 'allCards'> {
   }
   const playerHistories: PlayerHistories = mutableHistories;
   const theme: Theme =
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- Set.has() doesn't narrow the type
     VALID_THEMES.has(persisted.theme) ? (persisted.theme as Theme)
     : prefersDark() ? 'dark'
     : 'light';

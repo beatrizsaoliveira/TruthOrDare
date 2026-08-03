@@ -1,17 +1,9 @@
 import type { GameStore } from '../../state/store.js';
 import { Actions } from '../../state/store.js';
 import type { Player } from '../../types/index.js';
-import { createGitHubLink } from '../domHelpers.js';
+import { createGitHubLink, el } from '../domHelpers.js';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
-
-// ─── Helper ───────────────────────────────────────────────────────────────────
-
-function el<T extends HTMLElement = HTMLDivElement>(tag: string, className?: string): T {
-  const e = document.createElement(tag) as T;
-  if (className) e.className = className;
-  return e;
-}
 
 export function createRankingScreen(store: GameStore): HTMLElement {
   const { players, shotCounts } = store.state;
@@ -100,10 +92,10 @@ function buildRankingItem(player: Player, shots: number, index: number): HTMLEle
   const name = el('span', 'ranking-item__name');
   name.textContent = player.name;
 
-  const shots_el = el('span', 'ranking-item__shots');
-  shots_el.setAttribute('aria-label', `${shots} shot${shots === 1 ? '' : 's'}`);
-  shots_el.textContent = `${shots} shot${shots === 1 ? '' : 's'}`;
+  const shotsEl = el('span', 'ranking-item__shots');
+  shotsEl.setAttribute('aria-label', `${shots} shot${shots === 1 ? '' : 's'}`);
+  shotsEl.textContent = `${shots} shot${shots === 1 ? '' : 's'}`;
 
-  item.append(medal, name, shots_el);
+  item.append(medal, name, shotsEl);
   return item;
 }

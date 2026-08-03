@@ -47,6 +47,25 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,json,svg,png,ico,webp}'],
+        globIgnores: ['**/node_modules/**/*'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-static-cache',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+            },
+          },
+        ],
       },
     }),
   ],
@@ -55,6 +74,7 @@ export default defineConfig({
     minify: 'esbuild',
     target: 'es2020',
     cssMinify: true,
+    assetsInlineLimit: 4096,
     rollupOptions: {
       output: {
         // Single JS bundle — no code-splitting needed for this app size

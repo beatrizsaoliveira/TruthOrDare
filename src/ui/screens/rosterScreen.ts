@@ -1,9 +1,9 @@
 import { sexLabel } from '../../engine/cardFormatter.js';
 import type { GameStore } from '../../state/store.js';
-import { showConfirm } from '../confirmModal.js';
 import { Actions, loadSavedPlayers } from '../../state/store.js';
 import type { Player } from '../../types/index.js';
-import { createGitHubLink } from '../domHelpers.js';
+import { showConfirm } from '../confirmModal.js';
+import { createGitHubLink, el } from '../domHelpers.js';
 
 const AVATAR_COLORS = [
   '#7C3AED',
@@ -62,7 +62,7 @@ export function createRosterScreen(store: GameStore): HTMLElement {
     const skipBtn = el<HTMLButtonElement>('button', 'btn btn--ghost btn--full');
     skipBtn.textContent = 'Começar do zero';
     skipBtn.addEventListener('click', () => {
-      showConfirm({
+      void showConfirm({
         title: 'Começar do Zero',
         message: 'Tens a certeza? Os jogadores guardados serão ignorados e começarás do zero.',
         confirmLabel: 'Começar do Zero',
@@ -96,7 +96,7 @@ function buildGroupedRosterList(players: readonly Player[]): HTMLElement {
   type CoupleEntry = { a: Player; aIdx: number; b: Player; bIdx: number };
   const rendered = new Set<string>();
   const coupleGroups: CoupleEntry[] = [];
-  const singles: Array<{ player: Player; idx: number }> = [];
+  const singles: { player: Player; idx: number }[] = [];
 
   players.forEach((player, idx) => {
     if (rendered.has(player.id)) return;
@@ -182,10 +182,4 @@ function buildCoupleConnector(asDiv = false): HTMLElement {
   const lineB = el('span', 'player-couple-connector__line');
   container.append(lineA, heart, lineB);
   return container;
-}
-
-function el<T extends HTMLElement = HTMLDivElement>(tag: string, className?: string): T {
-  const e = document.createElement(tag) as T;
-  if (className) e.className = className;
-  return e;
 }

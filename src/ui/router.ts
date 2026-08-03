@@ -33,7 +33,7 @@ export function renderScreen(container: HTMLElement, store: GameStore): void {
   const { phase, theme } = store.state;
 
   // Sync the data-theme attribute on the root element
-  document.documentElement.dataset['theme'] = theme;
+  document.documentElement.dataset.theme = theme;
 
   const factory = SCREENS[phase];
   if (!factory) {
