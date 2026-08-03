@@ -257,6 +257,7 @@ export const Actions = {
         activePlayer,
         partner,
         state.playerHistories,
+        state.players.length,
         hasEligibleTarget ? undefined : true,
       );
 

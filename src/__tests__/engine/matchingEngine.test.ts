@@ -91,10 +91,25 @@ describe('getEligibleTargets', () => {
       expect(result).toHaveLength(0);
     });
 
-    it('single player does not filter by partnerId — returns all others', () => {
+    it('single player only targets other singles at tier 2', () => {
       const result = getEligibleTargets(p1T2, [p1T2, p2T2Coupled, p3T2], 2);
-      expect(result).toHaveLength(2);
-      expect(result.map((p) => p.id)).toEqual(expect.arrayContaining(['p2', 'p3']));
+      // p2T2Coupled is coupled and must be excluded; only p3T2 qualifies
+      expect(result).toHaveLength(1);
+      expect(result[0].id).toBe('p3');
+    });
+
+    it('single player with only couples in pool returns empty', () => {
+      const result = getEligibleTargets(p1T2, [p1T2, p2T2Coupled], 2);
+      expect(result).toHaveLength(0);
+    });
+
+    it('single player with no other singles returns empty', () => {
+      // p1T2 is single, p2T2Coupled is coupled — no other singles
+      const result = getEligibleTargets(p1T2, [p1T2, p2T2Coupled, p2T2Coupled], 2);
+      // Wait — duplicate IDs. Let's use a fresh coupled player
+      const coupledOther: Player = { id: 'p4', name: 'Diana', sex: 'female', partnerId: 'p5' };
+      const result2 = getEligibleTargets(p1T2, [p1T2, coupledOther], 2);
+      expect(result2).toHaveLength(0);
     });
   });
 
@@ -189,6 +204,28 @@ describe('getEligibleTargets', () => {
         const result = getEligibleTargets(closedMaleOrphan, [closedMaleOrphan, heteroMale], 3);
         expect(result).toHaveLength(0);
       });
+
+      it('homo closed couple — each is eligible for the other', () => {
+        const homoClosedA: Player = {
+          id: 'hca',
+          name: 'HomoClosedA',
+          sex: 'male',
+          orientation: 'homo',
+          relationshipStatus: 'closed',
+          partnerId: 'hcb',
+        };
+        const homoClosedB: Player = {
+          id: 'hcb',
+          name: 'HomoClosedB',
+          sex: 'male',
+          orientation: 'homo',
+          relationshipStatus: 'closed',
+          partnerId: 'hca',
+        };
+        const fromA = getEligibleTargets(homoClosedA, [homoClosedA, homoClosedB], 3);
+        expect(fromA).toHaveLength(1);
+        expect(fromA[0].id).toBe('hcb');
+      });
     });
 
     // ── C3: Open relationships & targetSex ───────────────────────────────
@@ -215,6 +252,72 @@ describe('getEligibleTargets', () => {
         const result = getEligibleTargets(openMaleOutside, [openMaleOutside, openFemaleOutside], 3);
         expect(result).toHaveLength(1);
         expect(result[0].id).toBe('of');
+      });
+
+      it('single player with openToOutside=false → no targets', () => {
+        const closedSingle: Player = {
+          id: 'cs',
+          name: 'ClosedSingle',
+          sex: 'male',
+          orientation: 'hetero',
+          relationshipStatus: 'single',
+          openToOutside: false,
+        };
+        const result = getEligibleTargets(
+          closedSingle,
+          [closedSingle, heteroFemale, heteroMale],
+          3,
+        );
+        expect(result).toHaveLength(0);
+      });
+
+      it('single gate open, candidate gate closed → candidate excluded', () => {
+        const candidateGateClosed: Player = {
+          id: 'cgc',
+          name: 'GateClosed',
+          sex: 'female',
+          orientation: 'hetero',
+          relationshipStatus: 'single',
+          openToOutside: false,
+        };
+        const result = getEligibleTargets(
+          heteroMale,
+          [heteroMale, candidateGateClosed, heteroFemale2],
+          3,
+        );
+        // heteroMale can target heteroFemale2 (gate=undefined→open), but NOT candidateGateClosed
+        expect(result).toHaveLength(1);
+        expect(result[0].id).toBe('hf2');
+      });
+
+      it('open player gate open, partner absent → targets other compatible', () => {
+        const openNoPartner: Player = {
+          id: 'onp',
+          name: 'OpenNoPartner',
+          sex: 'female',
+          orientation: 'bi',
+          relationshipStatus: 'open',
+          partnerId: 'absent',
+          openToOutside: true,
+        };
+        const result = getEligibleTargets(openNoPartner, [openNoPartner, heteroMale, biFemale], 3);
+        // Partner absent, gate open → heteroMale and biFemale both compatible (bi+hetero, bi+bi)
+        expect(result).toHaveLength(2);
+      });
+
+      it('homo player + targetSex=female → no targets (orientation mismatch)', () => {
+        const homoTargetFemale: Player = {
+          id: 'htf',
+          name: 'HomoTargetF',
+          sex: 'male',
+          orientation: 'homo',
+          relationshipStatus: 'single',
+          openToOutside: true,
+          targetSex: 'female',
+        };
+        const result = getEligibleTargets(homoTargetFemale, [homoTargetFemale, heteroFemale], 3);
+        // targetSex=female passes, but homo orientation wants male → C1 fails
+        expect(result).toHaveLength(0);
       });
 
       it('bi female (targetSex:male) + bi male → eligible (target matches)', () => {
@@ -280,5 +383,33 @@ describe('pickRandomTarget', () => {
     const spy = vi.spyOn(Math, 'random').mockReturnValue(0.5);
     pickRandomTarget(p1T1, [p1T1, p2T1, p3T1], 1);
     expect(spy).toHaveBeenCalled();
+  });
+});
+
+// ─── Edge case: non-closed active targeting their closed partner ─────────────
+
+describe('non-closed active targeting their closed partner', () => {
+  it('open player can target their closed partner (partner bypass via C2)', () => {
+    const openWithClosed: Player = {
+      id: 'owc',
+      name: 'OpenWithClosed',
+      sex: 'female',
+      orientation: 'hetero',
+      relationshipStatus: 'open',
+      partnerId: 'cm',
+      openToOutside: true,
+    };
+    // closedMale has partnerId 'cf', but we need it to have partnerId 'owc'
+    const closedPartnerOfOpen: Player = {
+      id: 'cm',
+      name: 'ClosedP',
+      sex: 'male',
+      orientation: 'hetero',
+      relationshipStatus: 'closed',
+      partnerId: 'owc',
+    };
+    const result = getEligibleTargets(openWithClosed, [openWithClosed, closedPartnerOfOpen], 3);
+    expect(result).toHaveLength(1);
+    expect(result[0].id).toBe('cm');
   });
 });

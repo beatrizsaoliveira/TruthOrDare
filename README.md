@@ -29,12 +29,12 @@
 - **Countdown timer** — dares with a time component (`timerSeconds` between 1 and 60, e.g. "durante 30 segundos") trigger a dedicated countdown screen: the player hits **⏱️ Aceitar Desafio**, then **▶️ Iniciar** to start the timer; the game is locked until it reaches 0 and then advances. **❌ Recusar** on the timer screen goes to the penalty flow (if enabled). Values > 60s are stored in the dataset but don't trigger the countdown. `timerSeconds` is pre-computed in the dataset
 - **Skip player** — a **⏭️ Saltar Jogador** button on the selecting screen advances the turn without drawing a card, for players who aren't present (e.g. a couple member who left mid-dare); confirmed via a glass modal
 - **[Target Player] enforcement** — all cards that involve another player use the `[Target Player]` placeholder, ensuring the matching engine selects an eligible target compatible with couple constraints (closed couples = partner only)
-- **Third-party exclusion** — 57 cards are flagged `requiresThirdParty` (e.g. a three-way kiss); these are removed from the card pool for players in _closed_ relationships, so couple-exclusive play never surfaces a card that needs an outsider
+- **Third-party exclusion** — 57 cards are flagged `requiresThirdParty` (e.g. a three-way kiss); these are removed from the card pool for players in _closed_ relationships AND automatically when fewer than 3 players are in the game, so couple-exclusive play never surfaces a card that needs an outsider
 - **4 Tier system** — from family-friendly to mature adult content (18+)
 - **Age-gating** — mandatory 18+ confirmation for Tiers 2–4
-- **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status); at **Tier 2** a couple-status radio (**Solteiro/a** vs **Em casal**) and a partner selector are shown — coupled players interact exclusively with their registered partner; at **Tier 3–4** the full partner dropdown, orientation, relationship-status, _open-to-outside_ toggle and target-sex selector are shown; for open-relationship players the toggle also controls eligibility as an interaction target; the target-sex selector is shown once the toggle is active
+- **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status); at **Tier 2** a couple-status radio (**Solteiro/a** vs **Em casal**) and a partner selector are shown — coupled players interact exclusively with their registered partner, singles only with other singles; at **Tier 3–4** the full partner dropdown, orientation, relationship-status, _open-to-outside_ toggle and target-sex selector are shown; the target-sex options are dynamically filtered by orientation — hetero shows only the opposite sex, homo shows only the same sex, bi shows all three separated; for open-relationship players the toggle also controls eligibility as an interaction target; the target-sex selector is shown once the toggle is active
 - **Saved-player roster** — registered players are persisted to `localStorage` (`tod_roster_v1`) and offered for reuse at the start of every new session via a dedicated Roster screen; couples are displayed grouped with a visual connector; choosing **Começar do zero** triggers a glass confirm modal before discarding the saved roster
-- **Orientation & relationship-aware matching engine** (Tiers 2–4) — at Tier 2 coupled players can only target their registered partner; at Tiers 3–4 a full three-constraint algorithm (mutual orientation, relationship exclusivity, open-gate) ensures targets are mutually compatible
+- **Orientation & relationship-aware matching engine** (Tiers 2–4) — at Tier 2 coupled players can only target their registered partner and singles can only target other singles; at Tiers 3–4 a full three-constraint algorithm (mutual orientation, relationship exclusivity, open-gate) ensures targets are mutually compatible; partner always bypasses all gates
 - **Anti-repetition card engine** — weighted scoring prevents recently seen cards from reappearing; couples share history
 - **Drink/shot penalty system** — on card refusal a penalty overlay with a `−`/value/`+` stepper appears; the player confirms how many shots they actually drank (zero is valid — nobody is forced); the **Recusar** button is always visible; the card's penalty hint (`🍺 N shots se recusar`) is only displayed when the penalty mode is active; a running shot count chip (🍺 Saldo: X shots) is shown in the turn banner, persisted per player, and reset on new game; can be disabled before starting
 - **End-of-game ranking** — when a game with penalties ends and at least one player drank, a ranking screen is shown before returning home: players with shots are listed descending — the top three with shots receive 🥇🥈🥉 medals, all others show their position number (e.g. 4º) — followed by zero-shot players sorted alphabetically (dimmed); shot counts remain in `localStorage` while the ranking is on screen (so a refresh still shows the ranking correctly) and are only cleared when the player navigates to the home screen
@@ -234,12 +234,12 @@ Coverage is configured to include `src/engine/**`, `src/state/**`, and `src/ui/*
 
 ### The 4 Tiers
 
-| Tier | Name                     | Age Restriction | Shot Penalties | Description                                                                                                                                          |
-| ---- | ------------------------ | :-------------: | :------------: | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1    | 🌟 Family Fun            |        ✗        |       ✗        | Light questions and fun dares — suitable for all ages                                                                                                |
-| 2    | 🎉 Night with Friends    |       18+       |       ✓        | Spicier content about personal life, secrets and embarrassing moments; includes couple status — coupled players interact exclusively with each other |
-| 3    | 🔥 Where the Heat Begins |       18+       |       ✓        | Adult content with physical challenges between players; sexual-orientation-based targeting engine                                                    |
-| 4    | 💀 Extreme               |       18+       |       ✓        | Intense adult content for groups who are fully comfortable with each other                                                                           |
+| Tier | Name                     | Age Restriction | Shot Penalties | Description                                                                                                                                                                                 |
+| ---- | ------------------------ | :-------------: | :------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | 🌟 Family Fun            |        ✗        |       ✗        | Light questions and fun dares — suitable for all ages                                                                                                                                       |
+| 2    | 🎉 Night with Friends    |       18+       |       ✓        | Spicier content about personal life, secrets and embarrassing moments; includes couple status — coupled players interact exclusively with each other                                        |
+| 3    | 🔥 Where the Heat Begins |       18+       |       ✓        | Adult content with physical challenges between players; sexual-orientation-based targeting engine                                                                                           |
+| 4    | 💀 Extreme               |       18+       |       ✓        | Intense adult content for groups who are fully comfortable with each other; also ideal for couples wanting a spicy night — third-party cards are automatically excluded with only 2 players |
 
 ### Turn Flow
 
@@ -302,7 +302,7 @@ When a card contains `[Target Player]`, the engine selects an eligible target ba
 **Tier 2** applies a single couple constraint:
 
 - Players registered as **Em casal** (with a `partnerId`) interact exclusively with their registered partner.
-- Players registered as **Solteiro/a** (no `partnerId`) can target any other player.
+- Players registered as **Solteiro/a** (no `partnerId`) can only target other singles. Coupled players cannot be targets of singles at this tier. A coupled player whose partner is absent gets an empty target pool (falls back to no-target cards).
 
 **Tiers 3–4** apply three constraints in sequence:
 
@@ -312,7 +312,7 @@ When a card contains `[Target Player]`, the engine selects an eligible target ba
 
 If no eligible target exists at any tier, the active player performs the challenge alone (fallback to cards without `[Target Player]`).
 
-On top of target selection, 57 cards are flagged `requiresThirdParty` (e.g. a three-way kiss). These are removed from the card pool for players in _closed relationships_, so couple-exclusive play never draws a card that needs an outsider.
+On top of target selection, 57 cards are flagged `requiresThirdParty` (e.g. a three-way kiss). These are removed from the card pool for players in _closed relationships_ AND automatically when fewer than 3 players are in the game — so a couple playing alone at Tier 4 never draws a card that needs an outsider.
 
 ### Anti-Repetition Engine
 
@@ -353,46 +353,144 @@ store.update(Actions.someAction(payload))
 
 State is persisted to `localStorage` on every update. `allCards` (static bundle data) and `playerHistories` (contain `Set` objects) are serialised/deserialised specially.
 
-### Screen Lifecycle
+### Setup & Registration Flow
 
-The router maps `GamePhase` values to screen factory functions:
+From tier selection to player configuration — fields scale progressively per tier:
 
 ```mermaid
 flowchart TD
-    HOME["Home - Tier Selection"]
-    AGEGATE["Age Gate - 18+"]
-    ROSTER["Player Roster"]
-    SETUP["Setup - Register Players"]
-    SEL["Game - Truth or Dare?"]
-    SHOW["Game - Card Revealed"]
-    TIMER["Game - Countdown Timer"]
-    RANK["Ranking - Shot Counts"]
-    END["End"]
-    PEN["Penalty Overlay"]
-    ROUNDEXP["Round Expiry Popup"]
-    SKIP["Skip Player"]
+    HOME["Home — Tier Selection"]
+    AGEGATE["Age Gate — 18+ confirmation"]
+    ROSTER["Player Roster — saved players"]
+    CONFIG["Player Configuration"]
+    START["Game Starts"]
 
-    HOME -->|"Tier 1"| ROSTER
-    HOME -->|"Tiers 2-4"| AGEGATE
-    AGEGATE -->|"Confirmed 18+"| ROSTER
-    ROSTER -->|"Roster ready"| SETUP
-    SETUP -->|"Start Game"| SEL
-    SEL -->|"round expiry"| ROUNDEXP
-    ROUNDEXP -->|"ok"| SEL
-    SEL -->|"skip player"| SKIP
-    SKIP -->|"confirm skip"| SEL
-    SEL -->|"Truth / Dare"| SHOW
-    SHOW -->|"accept with timer"| TIMER
-    TIMER -->|"recusar + penalty"| PEN
-    TIMER -->|"timer complete"| SEL
-    SHOW -->|"accept (no timer)"| SEL
-    SHOW -->|"refuse"| SEL
-    SHOW -->|"refuse + penalty"| PEN
-    PEN -->|"confirm penalty"| SEL
-    SEL -->|"end (no shots)"| END
-    SEL -->|"end (has shots)"| RANK
-    RANK -->|"back home"| END
-    END -->|"new game"| HOME
+    HOME -->|"Tier 1 (all ages)"| ROSTER
+    HOME -->|"Tiers 2, 3, 4"| AGEGATE
+    AGEGATE -->|"confirmed: all players 18+"| ROSTER
+    AGEGATE -->|"back"| HOME
+
+    ROSTER -->|"use saved players"| CONFIG
+    ROSTER -->|"start fresh (confirm modal)"| CONFIG
+    ROSTER -->|"back"| HOME
+
+    CONFIG -->|"add player"| ADDFORM
+
+    subgraph TIERFIELDS["PLAYER FORM — fields per tier"]
+        direction TB
+        ADDFORM["Name — all tiers"]
+        ADDFORM --> T1{{"Tier 1?"}}
+        T1 -->|"yes"| DONE["Done"]
+        T1 -->|"no"| SEX["Sex — Tier 2+"]
+        SEX --> T2{{"Tier 2?"}}
+        T2 -->|"yes"| COUPLE{{"Couple?"}}
+        COUPLE -->|"yes"| T2PARTNER["Select partner"]
+        COUPLE -->|"no"| T2DONE["Done — single"]
+        T2PARTNER --> T2DONE2["Done — coupled"]
+        T2 -->|"no (Tiers 3-4)"| ORI["Orientation — hetero, homo, bi"]
+        ORI --> REL["Relationship: single, open, closed"]
+        REL --> ISCPL{{"Open or closed?"}}
+        ISCPL -->|"yes"| T34PARTNER["Select partner"]
+        ISCPL -->|"no (single)"| GATE
+        T34PARTNER --> GATE{{"Open to outside?"}}
+        GATE -->|"yes"| TSEX["Target sex: filtered by orientation"]
+        GATE -->|"no"| TSEX
+        TSEX --> T34DONE["Done"]
+    end
+
+    DONE --> CONFIG
+    T2DONE --> CONFIG
+    T2DONE2 --> CONFIG
+    T34DONE --> CONFIG
+
+    CONFIG -->|"edit player"| EDIT["Edit modal — pre-filled, dirty-check"]
+    EDIT --> CONFIG
+    CONFIG -->|"remove player"| REMOVE["Confirm modal — remove + unlink partner"]
+    REMOVE --> CONFIG
+
+    CONFIG -->|"penalties toggle (Tiers 2-4)"| PENON{{"Penalties enabled?"}}
+    CONFIG -->|"min 2 players"| START
+```
+
+### Game Flow
+
+From the moment the game starts — the complete turn loop, card drawing engine, and end game:
+
+```mermaid
+flowchart TD
+    subgraph TURN["TURN LOOP"]
+        direction TB
+        SEL["Truth or Dare?"]
+        SKIP{{"Skip player?"}}
+        PEN["Penalty Stepper"]
+        NEXT["Next Player"]
+        RNDEXP{{"Round Expiry?"}}
+
+        SEL -->|"skip"| SKIP
+        SKIP -->|"confirm (modal)"| NEXT
+        SKIP -->|"cancel"| SEL
+        SEL -->|"truth or dare"| DRAW
+
+        DRAW --> SHOW
+        SHOW -->|"accept, has timer"| TIMER
+        SHOW -->|"accept, no timer"| NEXT
+        SHOW -->|"refuse, no penalty"| NEXT
+        SHOW -->|"refuse, has penalty"| PEN
+        TIMER -->|"start countdown"| TCOUNT["Countdown Running"]
+        TIMER -->|"recusar"| PEN
+        TCOUNT -->|"timer done"| NEXT
+        PEN -->|"confirm shots"| NEXT
+        NEXT --> RNDEXP
+        RNDEXP -->|"yes, show popup"| SEL
+        RNDEXP -->|"no"| SEL
+    end
+
+    subgraph DRAWING["CARD DRAWING ENGINE"]
+        direction TB
+        DRAW["Filter pool by tier + type"]
+        NORT3{{"Closed relation or under 3 players?"}}
+        SCORE["Score every card: anti-repetition"]
+        PICK["Pick card with lowest score"]
+        HASTGT{{"Card has [Target Player]?"}}
+        FALLBACK["Fallback: draw card without target"]
+
+        DRAW --> NORT3
+        NORT3 -->|"yes"| EXCL["Remove requiresThirdParty cards"]
+        NORT3 -->|"no"| SCORE
+        EXCL --> SCORE
+        SCORE --> PICK
+        PICK --> HASTGT
+        HASTGT -->|"no"| SHOW["Show Card"]
+        HASTGT -->|"yes"| MATCH["Matching Engine: resolve target"]
+        MATCH -->|"target found"| SHOW
+        MATCH -->|"no targets"| FALLBACK
+        FALLBACK --> DRAW
+    end
+
+    subgraph ENDGAME["END GAME"]
+        direction TB
+        TERM{{"Terminar Jogo?"}}
+        RANK{{"Penalties on and anyone drank?"}}
+        RANKING["Shot Ranking: top 3 medals, rest numbered"]
+        DONE["Return to Home"]
+
+        SEL -->|"end game (confirm modal)"| TERM
+        TERM -->|"cancel"| SEL
+        TERM -->|"confirm"| RANK
+        RANK -->|"yes"| RANKING
+        RANK -->|"no"| DONE
+        RANKING -->|"back home"| DONE
+    end
+
+    subgraph CARDINFO["CARD PROPERTIES"]
+        direction LR
+        TIMERFLD["timerSeconds: triggers countdown?"]
+        ROUNDSFLD["hasRounds: round-based effect?"]
+        SHOTSFLD["shots: penalty if refused?"]
+        SUCCFLD["shotsOnSuccess: drink on complete?"]
+    end
+
+    SHOW --> CARDINFO
 ```
 
 The `player-roster` phase shows saved players from `tod_roster_v1` and lets the group reuse them or start fresh.
@@ -404,11 +502,13 @@ Each screen is fully re-created on phase transitions (no DOM diffing). Focus is 
 The app uses a fixed-height layout to prevent page-level scroll:
 
 ```
+
 html / body (height: 100%, overflow: hidden)
-  └─ #app (height: 100%, overflow: hidden)
-      └─ .screen (height: 100%, overflow: hidden)
-          ├─ header.app-header   ← sticky, always visible
-          └─ .screen-body        ← flex: 1, overflow-y: auto (scrolls if needed)
+└─ #app (height: 100%, overflow: hidden)
+└─ .screen (height: 100%, overflow: hidden)
+├─ header.app-header ← sticky, always visible
+└─ .screen-body ← flex: 1, overflow-y: auto (scrolls if needed)
+
 ```
 
 A `--dock-clearance` CSS custom property (`max(120px, env(safe-area-inset-bottom) + 120px)`) is set on `:root` and applied as `padding-bottom` on every scrollable container, ensuring the floating dock never obscures content on any screen or device.

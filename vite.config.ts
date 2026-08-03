@@ -92,7 +92,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
       include: ['src/engine/**/*.ts', 'src/state/**/*.ts'],
-      exclude: ['src/__tests__/**'],
+      exclude: ['src/__tests__/**', 'src/engine/glassDistortion.ts'],
     },
   },
 });

@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { cardKey, recordCardShown, selectCard } from '../../engine/repetitionEngine';
+import {
+  cardKey,
+  recordCardShown,
+  selectCard,
+  setDebugForceTimer,
+} from '../../engine/repetitionEngine';
 import type { Card, PlayerHistories } from '../../types/index.js';
 import {
   dareT1NoTarget,
@@ -151,7 +156,7 @@ describe('selectCard', () => {
   it('returns a card of the correct tier and type', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
 
-    const card = selectCard(mockCards, 2, 'dare', testPlayer1, null, {});
+    const card = selectCard(mockCards, 2, 'dare', testPlayer1, null, {}, 4);
     expect(card.tier).toBe(2);
     expect(card.type).toBe('dare');
     expect(card.id).toBe('fx6'); // dareT2
@@ -160,7 +165,7 @@ describe('selectCard', () => {
   it('returns a card from the filtered pool (not wrong tier/type)', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
 
-    const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, {});
+    const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, {}, 4);
     expect(card.tier).toBe(1);
     expect(card.type).toBe('truth');
   });
@@ -168,7 +173,7 @@ describe('selectCard', () => {
   it('with requireNoTarget=true — returns only cards where hasTarget is false', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
 
-    const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, {}, true);
+    const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, {}, 4, true);
     expect(card.hasTarget).toBe(false);
     expect(card.id).toBe('fx1'); // truthT1NoTarget
   });
@@ -177,7 +182,7 @@ describe('selectCard', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
 
     // Tier 3 dare pool has only dareT3WithTarget (hasTarget=true)
-    const card = selectCard(mockCards, 3, 'dare', testPlayer1, null, {}, true);
+    const card = selectCard(mockCards, 3, 'dare', testPlayer1, null, {}, 4, true);
     // Fallback opens the pool and returns dareT3WithTarget despite hasTarget
     expect(card).toBeDefined();
     expect(card.hasTarget).toBe(true);
@@ -199,7 +204,7 @@ describe('selectCard', () => {
     // Pool (tier=1, truth): truthT1NoTarget (key '1|truth|fx1') in recent → 200
     //                        truthT1WithTarget (key '1|truth|fx2') unseen → 0
     // Sorted ascending: truthT1WithTarget (0), truthT1NoTarget (200)
-    const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, histories);
+    const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, histories, 4);
     expect(card.id).toBe('fx2'); // truthT1WithTarget — the unseen card
   });
 
@@ -216,7 +221,7 @@ describe('selectCard', () => {
 
     // truthT1NoTarget (key '1|truth|fx1') unseen → 0
     // truthT1WithTarget (key '1|truth|fx2') seen-ever → 30
-    const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, histories);
+    const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, histories, 4);
     expect(card.id).toBe('fx1'); // truthT1NoTarget — unseen
   });
 
@@ -245,7 +250,7 @@ describe('selectCard', () => {
   it('with empty history — any card in the pool is valid', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
 
-    const card = selectCard(mockCards, 2, 'truth', testPlayer1, null, {});
+    const card = selectCard(mockCards, 2, 'truth', testPlayer1, null, {}, 4);
     expect(card).toBeDefined();
     expect(card.tier).toBe(2);
     expect(card.type).toBe('truth');
@@ -263,7 +268,7 @@ describe('selectCard', () => {
     };
 
     // Tier 2 truth pool has only truthT2
-    const card = selectCard(mockCards, 2, 'truth', testPlayer1, null, histories);
+    const card = selectCard(mockCards, 2, 'truth', testPlayer1, null, histories, 4);
     expect(card).toBeDefined();
     expect(card.id).toBe('fx5'); // truthT2
   });
@@ -271,7 +276,7 @@ describe('selectCard', () => {
   it('returns a card (not undefined or null)', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
 
-    const card = selectCard(mockCards, 4, 'truth', testPlayer1, null, {});
+    const card = selectCard(mockCards, 4, 'truth', testPlayer1, null, {}, 4);
     expect(card).toBeDefined();
     expect(card).not.toBeNull();
   });
@@ -294,7 +299,7 @@ describe('selectCard — requiresThirdParty for closed relationships', () => {
       makeCard(101, { type: 'dare', tier: 3, requiresThirdParty: false, hasTarget: false }),
     ];
 
-    const card = selectCard(pool, 3, 'dare', closedMale, null, {});
+    const card = selectCard(pool, 3, 'dare', closedMale, null, {}, 4);
     expect(card.requiresThirdParty).toBe(false);
     expect(card.id).toBe('101');
   });
@@ -307,7 +312,7 @@ describe('selectCard — requiresThirdParty for closed relationships', () => {
       makeCard(101, { type: 'dare', tier: 3, requiresThirdParty: false, hasTarget: false }),
     ];
 
-    const card = selectCard(pool, 3, 'dare', testPlayer1, null, {});
+    const card = selectCard(pool, 3, 'dare', testPlayer1, null, {}, 4);
     expect(card.id).toBe('100'); // the requiresThirdParty card is still eligible
   });
 
@@ -330,8 +335,87 @@ describe('selectCard — requiresThirdParty for closed relationships', () => {
       makeCard(300, { type: 'dare', tier: 4, requiresThirdParty: true, hasTarget: false }),
     ];
 
-    const card = selectCard(onlyThirdParty, 4, 'dare', closedMale, null, {});
+    const card = selectCard(onlyThirdParty, 4, 'dare', closedMale, null, {}, 4);
     expect(card).toBeDefined();
     expect(card.id).toBe('300');
+  });
+});
+
+// ─── selectCard — debug force timer ──────────────────────────────────────────
+
+describe('selectCard — debug force timer', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    // Reset debug flag
+    setDebugForceTimer(false);
+  });
+
+  it('setDebugForceTimer sets the internal flag', () => {
+    // Just verify the function can be called without error
+    expect(() => setDebugForceTimer(true)).not.toThrow();
+    expect(() => setDebugForceTimer(false)).not.toThrow();
+  });
+
+  it('forces a timer dare when debug flag is on', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+
+    const pool: Card[] = [
+      makeCard(400, {
+        type: 'dare',
+        tier: 3,
+        timerSeconds: 30,
+        requiresThirdParty: false,
+        hasTarget: false,
+      }),
+      makeCard(401, {
+        type: 'dare',
+        tier: 3,
+        timerSeconds: null,
+        requiresThirdParty: false,
+        hasTarget: false,
+      }),
+    ];
+
+    setDebugForceTimer(true);
+    const card = selectCard(pool, 3, 'dare', testPlayer1, null, {}, 4);
+    // Should return the timer dare (id 400), not the non-timer one
+    expect(card.timerSeconds).toBe(30);
+    expect(card.id).toBe('400');
+  });
+
+  it('does not force timer for truth cards even with debug flag', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+
+    setDebugForceTimer(true);
+    const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, {}, 4);
+    // Flag only applies to 'dare' type
+    expect(card).toBeDefined();
+  });
+
+  it('excludes requiresThirdParty when totalPlayers < 3', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+
+    const pool: Card[] = [
+      makeCard(500, { type: 'dare', tier: 3, requiresThirdParty: true, hasTarget: false }),
+      makeCard(501, { type: 'dare', tier: 3, requiresThirdParty: false, hasTarget: false }),
+    ];
+
+    // 2 players — requiresThirdParty should be filtered
+    const card = selectCard(pool, 3, 'dare', testPlayer1, null, {}, 2);
+    expect(card.requiresThirdParty).toBe(false);
+    expect(card.id).toBe('501');
+  });
+
+  it('keeps requiresThirdParty when totalPlayers >= 3 (non-closed)', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+
+    const pool: Card[] = [
+      makeCard(600, { type: 'dare', tier: 3, requiresThirdParty: true, hasTarget: false }),
+      makeCard(601, { type: 'dare', tier: 3, requiresThirdParty: false, hasTarget: false }),
+    ];
+
+    // 4 players — requiresThirdParty allowed for non-closed
+    const card = selectCard(pool, 3, 'dare', testPlayer1, null, {}, 4);
+    expect(card.id).toBe('600');
   });
 });

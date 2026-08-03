@@ -595,7 +595,7 @@ function buildWikiContent(): DocumentFragment {
         <li><strong>🌟 Diversão Familiar</strong> — Perguntas e desafios leves para qualquer grupo e idade. Sem conteúdo adulto nem penalizações.</li>
         <li><strong>🎉 Noite entre Amigos</strong> — Conteúdo picante sobre experiências e segredos. Inclui estado de casal e o sistema de <em>shots</em> como penalização. Requer 18+.</li>
         <li><strong>🔥 Onde a Ousadia Começa</strong> — Conteúdo adulto com envolvimento físico entre jogadores. Motor de alvos com base na orientação sexual e estado relacional. Requer 18+.</li>
-        <li><strong>💀 Extremo</strong> — O nível mais intenso. Apenas para grupos completamente à vontade entre si. Conteúdo explícito. Requer 18+.</li>
+        <li><strong>💀 Extremo</strong> — O nível mais intenso. Apenas para grupos completamente à vontade entre si. Conteúdo explícito. Também ideal para casais a dois — as cartas que exigem terceiros são automaticamente excluídas quando há apenas 2 jogadores. Requer 18+.</li>
       </ul>`,
         },
       ],
@@ -610,7 +610,7 @@ function buildWikiContent(): DocumentFragment {
         <li>Escolhe o nível na ecrã inicial.</li>
         <li>Confirma a idade, se necessário (18+ para os níveis 2, 3 e 4).</li>
         <li>Se já tiveres jogadores guardados, podes reutilizá-los diretamente ou começar do zero.</li>
-        <li>Adiciona (ou ajusta) os jogadores com as respetivas informações.</li>
+        <li>Adiciona (ou ajusta) os jogadores com as respetivas informações — <strong>mínimo 2 jogadores</strong> para iniciar.</li>
         <li>Ativa ou desativa o sistema de penalizações em <em>shots</em>.</li>
         <li>Carrega em <strong>Iniciar Jogo</strong>.</li>
         <li>Na tua vez, escolhe <strong>Verdade</strong> ou <strong>Desafio</strong>.</li>
@@ -627,16 +627,16 @@ function buildWikiContent(): DocumentFragment {
       <ul>
         <li><strong>Nível 1:</strong> Apenas o nome.</li>
         <li><strong>Nível 2:</strong> Nome + género + estado de casal (<em>Solteiro/a</em> ou <em>Em casal</em>). Jogadores em casal interagem exclusivamente entre si nas cartas com alvo.</li>
-        <li><strong>Níveis 3 e 4:</strong> Nome, género, orientação sexual e estado relacional. O toggle <em>"aberto/a a interações externas"</em> é necessário para poder ser alvo de outros (relações abertas) ou definir preferência de sexo alvo (solteiros).</li>
+        <li><strong>Níveis 3 e 4:</strong> Nome, género, orientação sexual e estado relacional. O toggle <em>"aberto/a a interações externas"</em> é necessário para poder interagir com terceiros (tanto solteiros como relações abertas). As opções de <strong>sexo alvo</strong> são filtradas automaticamente conforme a orientação: hetero mostra só o sexo oposto, homo só o mesmo sexo, bi mostra masculino, feminino e ambos.</li>
       </ul>
       <p>Podes <strong>editar</strong> um jogador a qualquer momento (botão de lápis) ou <strong>removê-lo</strong> (✕). Ambas as ações pedem confirmação numa janela de vidro; ao remover um jogador, a ligação com o/a parceiro/a é desfeita automaticamente.</p>`,
         },
         {
           icon: '🎯',
           title: 'Sistema de Alvos (Níveis 2–4)',
-          html: `<p><strong>Nível 2:</strong> Jogadores <em>Em casal</em> interagem exclusivamente com o/a seu/sua parceiro/a. Solteiros/as podem ser alvo de qualquer outro jogador.</p>
+          html: `<p><strong>Nível 2:</strong> Jogadores <em>Em casal</em> interagem exclusivamente com o/a seu/sua parceiro/a. Solteiros/as só podem ter como alvo outros solteiros/as — nunca jogadores em casal. Se o parceiro de um casal não estiver presente, cartas com alvo não são selecionadas (recua para cartas sem alvo).</p>
       <p><strong>Níveis 3 e 4:</strong> O motor respeita orientação sexual mútua, exclusividade relacional e o toggle de interação externa. Tanto solteiros como jogadores em relação aberta precisam de ter o toggle ativo para interagir com terceiros (ou ser alvo deles). O parceiro de uma relação exclusiva está sempre disponível como alvo. Se não existir alvo elegível, o jogo recua para cartas sem alvo.</p>
-      <p><strong>Relações exclusivas:</strong> 57 cartas exigem uma terceira pessoa para além do alvo (ex.: um beijo a três). Essas cartas são removidas do baralho para jogadores em relações exclusivas. O parceiro registado está sempre disponível como alvo, independentemente de outras restrições.</p>`,
+      <p><strong>Relações exclusivas:</strong> 57 cartas exigem uma terceira pessoa para além do alvo (ex.: um beijo a três). Essas cartas são removidas do baralho para jogadores em relações exclusivas E automaticamente quando há menos de 3 jogadores no total — assim, um casal a jogar sozinho no nível 4 nunca recebe uma carta que precise de alguém de fora. O parceiro registado está sempre disponível como alvo, independentemente de outras restrições.</p>`,
         },
         {
           icon: '🔁',

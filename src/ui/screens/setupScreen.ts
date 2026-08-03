@@ -258,15 +258,32 @@ function buildPlayerForm(tier: Tier, store: GameStore): HTMLElement {
       updateConditionalFields();
     });
     openRow.append(openLabelDiv, openLiquidToggle);
+    openWrap.appendChild(openRow);
 
-    // Target sex (inside openWrap, shown only when toggle is on)
-    targetSexGroup = buildRadioGroup<TargetSex>('player-targetsex', 'Sexo alvo para interações', [
-      { value: 'male', label: '♂ Masculino' },
-      { value: 'female', label: '♀ Feminino' },
-      { value: 'both', label: '⚥ Ambos' },
-    ]);
-    targetSexGroup.style.display = 'none';
-    openWrap.append(openRow, targetSexGroup);
+    // Target sex (inside openWrap, shown/options rebuilt dynamically)
+    function rebuildTargetSexGroup(): void {
+      const ori =
+        getCheckedValue<Orientation>(orientationInputs ?? emptyNodeList<HTMLInputElement>()) ??
+        'hetero';
+      const sex = sexInputs?.m.checked ? 'male' : 'female';
+      const opts = getTargetSexOptions(ori, sex);
+      if (targetSexGroup) targetSexGroup.remove();
+      targetSexGroup = buildRadioGroup<TargetSex>(
+        'player-targetsex',
+        'Sexo alvo para interações',
+        opts,
+      );
+      targetSexGroup.style.display = openChecked ? '' : 'none';
+      openWrap?.appendChild(targetSexGroup);
+    }
+    rebuildTargetSexGroup();
+
+    // Rebuild target-sex options when orientation or sex changes
+    orientationInputs?.forEach((inp) => inp.addEventListener('change', rebuildTargetSexGroup));
+    if (sexInputs) {
+      sexInputs.m.addEventListener('change', rebuildTargetSexGroup);
+      sexInputs.f.addEventListener('change', rebuildTargetSexGroup);
+    }
     form.appendChild(openWrap);
 
     statusSelect.addEventListener('change', updateConditionalFields);
@@ -801,20 +818,40 @@ function openEditModal(player: Player, tier: Tier, store: GameStore): void {
       updateConditionalFields();
     });
     openRow.append(openLabelDiv, openLiquidToggle);
+    openWrap.appendChild(openRow);
 
-    // Target sex (inside openWrap, shown only when toggle is on)
-    targetSexGroup = buildRadioGroup<TargetSex>('edit-targetsex', 'Sexo alvo para interações', [
-      { value: 'male', label: '♂ Masculino' },
-      { value: 'female', label: '♀ Feminino' },
-      { value: 'both', label: '⚥ Ambos' },
-    ]);
-    for (const inp of Array.from(targetSexGroup.querySelectorAll<HTMLInputElement>('input'))) {
-      inp.defaultChecked = false;
-      inp.checked = inp.value === (player.targetSex ?? 'both');
-      if (inp.checked) inp.defaultChecked = true;
+    // Target sex — options filtered by orientation & sex, rebuilt on change
+    function rebuildTargetSexGroup(): void {
+      const ori =
+        getCheckedValue<Orientation>(orientationInputs ?? emptyNodeList<HTMLInputElement>()) ??
+        player.orientation ??
+        'hetero';
+      const sex = sexInputs?.m.checked ? 'male' : 'female';
+      const opts = getTargetSexOptions(ori, sex);
+      if (targetSexGroup) targetSexGroup.remove();
+      targetSexGroup = buildRadioGroup<TargetSex>(
+        'edit-targetsex',
+        'Sexo alvo para interações',
+        opts,
+      );
+      // Restore previously saved value if it exists in the new options
+      const prevValue = player.targetSex ?? (ori === 'bi' ? 'both' : opts[0]?.value);
+      for (const inp of Array.from(targetSexGroup.querySelectorAll<HTMLInputElement>('input'))) {
+        inp.defaultChecked = false;
+        inp.checked = inp.value === prevValue;
+        if (inp.checked) inp.defaultChecked = true;
+      }
+      targetSexGroup.style.display = openChecked ? '' : 'none';
+      openWrap?.appendChild(targetSexGroup);
     }
-    targetSexGroup.style.display = 'none';
-    openWrap.append(openRow, targetSexGroup);
+    rebuildTargetSexGroup();
+
+    // Rebuild target-sex options when orientation or sex changes
+    orientationInputs?.forEach((inp) => inp.addEventListener('change', rebuildTargetSexGroup));
+    if (sexInputs) {
+      sexInputs.m.addEventListener('change', rebuildTargetSexGroup);
+      sexInputs.f.addEventListener('change', rebuildTargetSexGroup);
+    }
     form.appendChild(openWrap);
 
     statusSelect.addEventListener('change', updateConditionalFields);
@@ -945,12 +982,21 @@ function buildStartButton(store: GameStore): HTMLElement {
     store.update(Actions.startGame());
   });
   section.appendChild(btn);
+
+  // Feedback message when not enough players
+  const hint = el('p', 'body-sm text-muted text-center');
+  hint.style.cssText = 'min-height:1.5em;';
+  section.appendChild(hint);
+
   return section;
 }
 
 function updateStartButton(section: HTMLElement, store: GameStore): void {
   const btn = section.querySelector<HTMLButtonElement>('button');
-  if (btn) btn.disabled = store.state.players.length < 2;
+  const hint = section.querySelector<HTMLParagraphElement>('p');
+  const count = store.state.players.length;
+  if (btn) btn.disabled = count < 2;
+  if (hint) hint.textContent = count < 2 ? `Adiciona pelo menos 2 jogadores (atual: ${count})` : '';
 }
 
 // ─── Radio group helper ───────────────────────────────────────────────────────
@@ -1012,6 +1058,30 @@ function targetSexLabel(t: TargetSex): string {
   if (t === 'male') return '♂ masc.';
   if (t === 'female') return '♀ fem.';
   return '⚥ ambos';
+}
+
+/** Returns filtered target-sex options based on orientation and sex. */
+function getTargetSexOptions(
+  orientation: Orientation,
+  sex: Sex,
+): { value: TargetSex; label: string }[] {
+  switch (orientation) {
+    case 'hetero':
+      return [
+        {
+          value: sex === 'male' ? 'female' : 'male',
+          label: sex === 'male' ? '♀ Feminino' : '♂ Masculino',
+        },
+      ];
+    case 'homo':
+      return [{ value: sex, label: sex === 'male' ? '♂ Masculino' : '♀ Feminino' }];
+    case 'bi':
+      return [
+        { value: 'male', label: '♂ Masculino' },
+        { value: 'female', label: '♀ Feminino' },
+        { value: 'both', label: '⚥ Ambos' },
+      ];
+  }
 }
 
 /** Returns an empty NodeList of the given type (used as a fallback). */

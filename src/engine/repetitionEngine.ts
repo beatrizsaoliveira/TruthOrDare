@@ -39,14 +39,14 @@ export function setDebugForceTimer(on: boolean): void {
  *
  * Algorithm:
  *  1. Filter pool by tier + type.
- *  2. Score every candidate:
+ *  2. Exclude requiresThirdParty cards for closed relationships AND when totalPlayers < 3.
+ *  3. Score every candidate:
  *     - +200 if in player's own recent window (last 12)
  *     - +40  if seen ever (but not recent)
  *     - +120 if in partner's recent window (last 8)
  *     - +80  if in ANY other player's recent window
  *     - +0-20 random jitter
- *  3. Pick uniformly from ALL cards tied for the lowest score.
- *     (Previously picked from top-5, which could return duplicates.)
+ *  4. Pick uniformly from ALL cards tied for the lowest score.
  */
 export function selectCard(
   allCards: readonly Card[],
@@ -55,6 +55,7 @@ export function selectCard(
   activePlayer: Player,
   partner: Player | null,
   histories: PlayerHistories,
+  totalPlayers: number,
   requireNoTarget?: boolean,
 ): Card {
   let pool = filterCards(allCards, tier, type);
@@ -72,6 +73,11 @@ export function selectCard(
 
   // Closed relationship: exclude third-party cards
   if (activePlayer.relationshipStatus === 'closed') {
+    pool = pool.filter((c) => !c.requiresThirdParty);
+  }
+
+  // Fewer than 3 players: no third-party cards make sense (active + target = 2 max)
+  if (totalPlayers < 3) {
     pool = pool.filter((c) => !c.requiresThirdParty);
   }
 

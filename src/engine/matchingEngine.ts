@@ -6,7 +6,8 @@ import type { Player, Tier } from '../types/index.js';
  *
  * Tier 1: Any other player in the game is eligible.
  * Tier 2: Coupled players only target their registered partner;
- *         single players (no partnerId) can target anyone else.
+ *         single players can only target other singles (no partnerId).
+ *         A coupled player without their partner present gets no targets.
  *
  * Tiers 3–4 — three-constraint algorithm:
  *   C1 (Orientation): Hetero matches opposite sex; Homo matches same sex; Bi matches either.
@@ -32,11 +33,13 @@ export function getEligibleTargets(
     // Tier 2: if the active player is in a couple, target cards must be
     // directed exclusively at their partner (keeps things comfortable in a
     // friend-group setting where couples are present).
-    // Single players (no partnerId) can target anyone else.
+    // Single players (no partnerId) can ONLY target other singles.
+    // A coupled player whose partner is absent gets an empty pool (fallback to no-target card).
     if (activePlayer.partnerId) {
       return allPlayers.filter((p) => p.id === activePlayer.partnerId);
     }
-    return allPlayers.filter((p) => p.id !== activePlayer.id);
+    // Single player — only target other players who also have no partnerId
+    return allPlayers.filter((p) => p.id !== activePlayer.id && !p.partnerId);
   }
 
   return allPlayers.filter((candidate) => {
