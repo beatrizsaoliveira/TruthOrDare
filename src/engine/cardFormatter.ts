@@ -4,14 +4,15 @@ import { escapeHtml } from '../ui/domHelpers.js';
 /**
  * Processes raw card text for display:
  *
- *  1. Replaces `[Target Player]` with the target player's name (if provided).
+ *  1. Converts `*italic*` markers to `<em>` tags.
+ *  2. Replaces `[Target Player]` with the target player's name (if provided).
  *
  * Gender is expressed directly in the text using the (a) convention,
  * e.g. "nu(a)", "sozinho(a)". No dynamic adaptation is performed.
  *
  * @param rawText       - The original card text from the dataset.
- * @param activePlayer  - The player whose turn it is.
- * @param targetPlayer  - The target player for this card (optional).
+ * @param _activePlayer  - The player whose turn it is (reserved for future use).
+ * @param targetPlayer   - The target player for this card (optional).
  */
 export function formatCardText(
   rawText: string,

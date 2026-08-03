@@ -35,7 +35,7 @@ export type Card = {
   readonly id: string;
   readonly type: CardType;
   readonly tier: Tier;
-  /** Raw text from .md, including the /a gender placeholders */
+  /** Raw text from dataset.json, including the (a) gender placeholders */
   readonly rawText: string;
   /** Parsed penalty (null when penalties are absent or tier 1) */
   readonly shots: number | null;
@@ -129,7 +129,7 @@ export type GameState = {
   readonly timerRunning: boolean;
   /**
    * All parsed cards for the active tier. NOT persisted to localStorage —
-   * re-derived from the markdown at startup.
+   * re-derived from the JSON dataset at startup.
    */
   readonly allCards: readonly Card[];
 };

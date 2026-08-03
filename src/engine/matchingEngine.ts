@@ -4,14 +4,16 @@ import type { Player, Tier } from '../types/index.js';
  * Returns the list of players that are eligible interaction targets for
  * `activePlayer` given the current tier.
  *
- * Tiers 1–2: Any other player in the game is eligible.
+ * Tier 1: Any other player in the game is eligible.
+ * Tier 2: Coupled players only target their registered partner;
+ *         single players (no partnerId) can target anyone else.
  *
  * Tiers 3–4 — three-constraint algorithm:
  *   C1 (Orientation): Hetero matches opposite sex; Homo matches same sex; Bi matches either.
  *   C2 (Closed couple): A player in a closed relationship may ONLY be matched with their partner.
- *   C3 (Open/Single): Open-couple and single players may match outside if BOTH parties'
- *        orientation AND declared target-sex preferences align, and open-couple players
- *        have explicitly enabled outside interaction.
+ *   C3 (Outside-interaction gate): Both single AND open-relationship players must have
+ *        `openToOutside = true` to interact with (or be targeted by) third parties.
+ *        The player's registered partner always bypasses this gate.
  *
  * If no eligible target exists (e.g. all other players are incompatible),
  * the function returns an empty array — callers must handle this gracefully.

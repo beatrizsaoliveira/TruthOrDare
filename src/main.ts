@@ -60,7 +60,7 @@ function main(): void {
     const appEl2 = document.getElementById('app');
     if (appEl2)
       appEl2.innerHTML =
-        '<p style="padding:2rem;color:red">⚠️ Failed to parse dataset.md — no cards found.</p>';
+        '<p style="padding:2rem;color:red">⚠️ Failed to parse dataset.json — no cards found.</p>';
     return;
   }
 

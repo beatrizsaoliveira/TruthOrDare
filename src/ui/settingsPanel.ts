@@ -635,8 +635,8 @@ function buildWikiContent(): DocumentFragment {
           icon: '🎯',
           title: 'Sistema de Alvos (Níveis 2–4)',
           html: `<p><strong>Nível 2:</strong> Jogadores <em>Em casal</em> interagem exclusivamente com o/a seu/sua parceiro/a. Solteiros/as podem ser alvo de qualquer outro jogador.</p>
-      <p><strong>Níveis 3 e 4:</strong> O motor respeita orientação sexual mútua, exclusividade relacional e o toggle de interação externa. Se não existir alvo elegível, o jogador realiza o desafio sozinho.</p>
-      <p><strong>Relações exclusivas:</strong> 15 cartas exigem uma terceira pessoa para além do alvo (ex.: um beijo a três). Essas cartas são removidas do baralho para jogadores em relações exclusivas.</p>`,
+      <p><strong>Níveis 3 e 4:</strong> O motor respeita orientação sexual mútua, exclusividade relacional e o toggle de interação externa. Tanto solteiros como jogadores em relação aberta precisam de ter o toggle ativo para interagir com terceiros (ou ser alvo deles). O parceiro de uma relação exclusiva está sempre disponível como alvo. Se não existir alvo elegível, o jogo recua para cartas sem alvo.</p>
+      <p><strong>Relações exclusivas:</strong> 57 cartas exigem uma terceira pessoa para além do alvo (ex.: um beijo a três). Essas cartas são removidas do baralho para jogadores em relações exclusivas. O parceiro registado está sempre disponível como alvo, independentemente de outras restrições.</p>`,
         },
         {
           icon: '🔁',
@@ -657,6 +657,7 @@ function buildWikiContent(): DocumentFragment {
           title: 'Penalizações (Shots)',
           html: `<p>Nos níveis 2–4, cada carta indica quantos <em>shots</em> o jogador deve beber se recusar. A indicação <em>🍺 N shots se recusar</em> só aparece quando o modo de penalizações está ativo.</p>
       <p>Ao recusar, aparece um seletor para ajustar os shots bebidos de facto — podes colocar zero. O jogo regista apenas o que confirmares. O botão ❌ Recusar está sempre disponível.</p>
+      <p>Alguns desafios também incluem <strong>shots por sucesso</strong> — beber faz parte do próprio desafio, não é penalização. Esses também contam para o ranking final.</p>
       <p>O <strong>Saldo</strong> de shots por jogador é visível durante o jogo (<em>Saldo: X shots</em>). No fim, se alguém bebeu, é mostrado um <strong>ranking 🏆</strong> antes de voltar ao início — medalhas para os 3 primeiros que beberam e posição numérica (ex.: 4º) para os restantes. Este sistema pode ser desativado antes de iniciar o jogo.</p>`,
         },
         {
@@ -665,9 +666,11 @@ function buildWikiContent(): DocumentFragment {
           html: `<p>Antes de cada carta, o jogo calcula uma pontuação para cada candidata e favorece sempre as menos vistas recentemente:</p>
       <ul>
         <li>Cartas nos últimos <strong>12 turnos</strong> do jogador → penalização elevada (+200).</li>
-        <li>Cartas vistas pelo/a <strong>parceiro/a nos últimos 6 turnos</strong> → penalização média (+80).</li>
-        <li>Cartas já vistas mas não recentemente → penalização leve (+30).</li>
+        <li>Cartas vistas pelo/a <strong>parceiro/a nos últimos 8 turnos</strong> → penalização alta (+120).</li>
+        <li>Cartas vistas por <strong>qualquer outro jogador</strong> recentemente → penalização média (+80).</li>
+        <li>Cartas já vistas mas não recentemente → penalização leve (+40).</li>
         <li>Cartas nunca vistas → prioridade máxima.</li>
+        <li>Empates resolvidos com aleatoriedade uniforme entre as melhores.</li>
       </ul>`,
         },
       ],

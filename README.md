@@ -29,7 +29,7 @@
 - **Countdown timer** — dares with a time component (`timerSeconds` between 1 and 60, e.g. "durante 30 segundos") trigger a dedicated countdown screen: the player hits **⏱️ Aceitar Desafio**, then **▶️ Iniciar** to start the timer; the game is locked until it reaches 0 and then advances. **❌ Recusar** on the timer screen goes to the penalty flow (if enabled). Values > 60s are stored in the dataset but don't trigger the countdown. `timerSeconds` is pre-computed in the dataset
 - **Skip player** — a **⏭️ Saltar Jogador** button on the selecting screen advances the turn without drawing a card, for players who aren't present (e.g. a couple member who left mid-dare); confirmed via a glass modal
 - **[Target Player] enforcement** — all cards that involve another player use the `[Target Player]` placeholder, ensuring the matching engine selects an eligible target compatible with couple constraints (closed couples = partner only)
-- **Third-party exclusion** — 15 dares are flagged `requiresThirdParty` (e.g. a three-way kiss); these are removed from the card pool for players in _closed_ relationships, so couple-exclusive play never surfaces a card that needs an outsider
+- **Third-party exclusion** — 57 cards are flagged `requiresThirdParty` (e.g. a three-way kiss); these are removed from the card pool for players in _closed_ relationships, so couple-exclusive play never surfaces a card that needs an outsider
 - **4 Tier system** — from family-friendly to mature adult content (18+)
 - **Age-gating** — mandatory 18+ confirmation for Tiers 2–4
 - **Adaptive player registration** — fields scale with the selected tier (name → gender → orientation → relationship status); at **Tier 2** a couple-status radio (**Solteiro/a** vs **Em casal**) and a partner selector are shown — coupled players interact exclusively with their registered partner; at **Tier 3–4** the full partner dropdown, orientation, relationship-status, _open-to-outside_ toggle and target-sex selector are shown; for open-relationship players the toggle also controls eligibility as an interaction target; the target-sex selector is shown once the toggle is active
@@ -148,14 +148,18 @@ src/__tests__/
 │   └── repetitionEngine.test.ts # cardKey, recordCardShown, selectCard (scoring + history)
 ├── state/
 │   ├── actions.test.ts          # Every Action pure-updater function in isolation
-│   └── store.test.ts            # GameStore construction, subscribe/unsubscribe, update,
-│                                #   localStorage persistence, roster persistence
+│   ├── store.test.ts            # GameStore construction, subscribe/unsubscribe, update,
+│   │                            #   localStorage persistence, roster persistence
+│   └── timerAndSkip.test.ts     # Timer flow (accept → start → complete) + skipPlayer action
+├── ui/
+│   ├── confirmModal.test.ts     # showConfirm — glass modal creation, confirm/cancel/backdrop
+│   └── rankingScreen.test.ts    # Ranking screen — medal logic, ordering, shot display
 └── fixtures/
     ├── cards.ts                 # Hand-crafted Card objects covering all 4 tiers and both types
     └── players.ts               # Player fixtures: Tier 1/2, hetero/homo/bi, open/closed couples
 ```
 
-Coverage is configured to include `src/engine/**` and `src/state/**`.
+Coverage is configured to include `src/engine/**`, `src/state/**`, and `src/ui/**`.
 
 ---
 
@@ -191,6 +195,8 @@ Coverage is configured to include `src/engine/**` and `src/state/**`.
 │   ├── ui/
 │   │   ├── router.ts          # GamePhase → screen factory, focus management
 │   │   ├── settingsPanel.ts   # Glass dock + settings platform-menu + wiki modal
+│   │   ├── confirmModal.ts    # Glass-styled confirm dialog (returns Promise<boolean>)
+│   │   ├── domHelpers.ts      # Shared DOM utilities (el, createGitHubLink, escapeHtml)
 │   │   └── screens/
 │   │       ├── homeScreen.ts  # Tier selection grid
 │   │       ├── ageGateScreen.ts # 18+ confirmation (Tiers 2–4)
@@ -301,12 +307,12 @@ When a card contains `[Target Player]`, the engine selects an eligible target ba
 **Tiers 3–4** apply three constraints in sequence:
 
 1. **Mutual orientation** — only pairs where both players are attracted to the other's gender are eligible.
-2. **Relationship exclusivity** — players in a _closed relationship_ interact exclusively with their registered partner.
-3. **Open relationship gate** — players in an _open relationship_ must have `openToOutside = true` to be eligible as targets for others. _Single_ players are eligible by default; their `openToOutside` toggle only serves as a gateway to set a target-sex preference.
+2. **Relationship exclusivity** — players in a _closed relationship_ interact exclusively with their registered partner. Their partner is always eligible regardless of other constraints (partner bypass).
+3. **Outside-interaction gate** — both _single_ and _open-relationship_ players must have `openToOutside = true` to be eligible as targets for others (or to target others outside their couple). The toggle also gates the target-sex selector.
 
-If no eligible target exists at any tier, the active player performs the challenge alone.
+If no eligible target exists at any tier, the active player performs the challenge alone (fallback to cards without `[Target Player]`).
 
-On top of target selection, 15 dares are flagged `requiresThirdParty` (e.g. a three-way kiss). These are removed from the card pool for players in _closed relationships_, so couple-exclusive play never draws a card that needs an outsider.
+On top of target selection, 57 cards are flagged `requiresThirdParty` (e.g. a three-way kiss). These are removed from the card pool for players in _closed relationships_, so couple-exclusive play never draws a card that needs an outsider.
 
 ### Anti-Repetition Engine
 
@@ -315,11 +321,12 @@ Before each card draw, every candidate card receives a penalty score:
 | Factor                                    | Score penalty |
 | ----------------------------------------- | ------------- |
 | Appeared in active player's last 12 cards | +200          |
-| Active player has ever seen this card     | +30           |
-| Partner saw it in their last 6 cards      | +80           |
-| Random jitter (fairness)                  | ±15           |
+| Active player has ever seen this card     | +40           |
+| Partner saw it in their last 8 cards      | +120          |
+| Any other player recently saw this card   | +80           |
+| Random jitter (tie-breaking)              | 0–20          |
 
-The card with the lowest total score is selected (from the top-5 lowest, with randomness).
+The card with the lowest total score is selected uniformly from all cards tied for the minimum.
 
 ### pt-PT Inclusive Notation
 
@@ -410,42 +417,51 @@ A `--dock-clearance` CSS custom property (`max(120px, env(safe-area-inset-bottom
 
 ## Dataset
 
-Game content lives in `src/data/dataset.json` — a static JSON file with **800 cards** (100 truths + 100 dares per tier, 200 per tier) stored as a **flat array** of already-flattened entries. Each entry carries explicit `type` and `tier` fields — there is no nested per-tier structure to unwind. `datasetLoader.ts` simply normalises the optional fields (`roundsCount`, `hasRounds`, `timerSeconds`, `requiresThirdParty`) to their defaults and returns the `Card[]`. The JSON is bundled at build time — no runtime parsing.
+Game content lives in `src/data/dataset.json` — a static JSON file with **800 cards** (100 truths + 100 dares per tier, 200 per tier) stored in a **nested tier structure**. `datasetLoader.ts` flattens it at startup, normalises optional fields (`roundsCount`, `hasRounds`, `timerSeconds`, `requiresThirdParty`, `shotsOnSuccess`) to their defaults and returns a flat `Card[]`. The JSON is bundled at build time — no runtime parsing.
 
 ### JSON structure
 
 ```jsonc
-[
-  {
-    "id": 1,
-    "type": "truth",
-    "tier": 1,
-    "rawText": "…",
-    "shots": null,
-    "hasTarget": false,
-    "roundsCount": null,
-    "hasRounds": false,
-    "timerSeconds": null,
-    "requiresThirdParty": false
-  },
-  … // 800 entries total
-]
+// The actual JSON uses a nested structure — the loader flattens it at startup.
+{
+  "tiers": {
+    "1": { "truth": [ … ], "dare": [ … ] },
+    "2": { "truth": [ … ], "dare": [ … ] },
+    "3": { "truth": [ … ], "dare": [ … ] },
+    "4": { "truth": [ … ], "dare": [ … ] }
+  }
+}
+// Each card entry:
+{
+  "id": "t1t001",
+  "type": "truth",
+  "tier": 1,
+  "rawText": "…",
+  "shots": null,
+  "shotsOnSuccess": null,
+  "hasTarget": false,
+  "roundsCount": null,
+  "hasRounds": false,
+  "timerSeconds": null,
+  "requiresThirdParty": false
+}
 ```
 
 ### Entry shape
 
 | Field                | Type                | Description                                                                                                |
 | -------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `id`                 | `number`            | Unique within the same tier + type group                                                                   |
+| `id`                 | `string`            | Unique card ID (e.g. `"t2d042"` — tier + type + number)                                                    |
 | `type`               | `"truth" \| "dare"` | Card type                                                                                                  |
 | `tier`               | `1 \| 2 \| 3 \| 4`  | Intensity tier                                                                                             |
 | `rawText`            | `string`            | Card text; may contain `[Target Player]` placeholder                                                       |
 | `shots`              | `number \| null`    | Penalty shots on refusal (`null` = no penalty; always `null` for Tier 1)                                   |
+| `shotsOnSuccess`     | `number \| null`    | Shots drunk as part of the challenge itself (counts toward ranking); 10 dares use this                     |
 | `hasTarget`          | `boolean`           | `true` when `rawText` contains the `[Target Player]` placeholder                                           |
 | `roundsCount`        | `number \| null`    | Number of rounds the effect lasts (`null` when not applicable)                                             |
 | `hasRounds`          | `boolean`           | `true` when the card has a round-based duration (always `false` for truths and non-duration dares)         |
 | `timerSeconds`       | `number \| null`    | Time-based dare duration in seconds (`null` when N/A); only values 1–60 trigger the countdown timer        |
-| `requiresThirdParty` | `boolean`           | `true` for 15 dares that need a third person; excluded from the pool for players in _closed_ relationships |
+| `requiresThirdParty` | `boolean`           | `true` for 57 cards that need a third person; excluded from the pool for players in _closed_ relationships |
 
 ---
 

@@ -55,7 +55,7 @@ export function createRankingScreen(store: GameStore): HTMLElement {
   list.setAttribute('aria-label', 'Ranking de shots');
 
   ranked.forEach((entry, i) => {
-    // Medal index only applies to players who actually drank
+    // Pass the 0-based index to buildRankingItem for medal/position logic
     const medalIndex = i;
     const item = buildRankingItem(entry.player, entry.shots, medalIndex);
     list.appendChild(item);

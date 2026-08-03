@@ -310,7 +310,7 @@ function buildTimerScreen(store: GameStore): HTMLElement {
     startBtn.setAttribute('aria-label', `Iniciar contagem de ${remaining} segundos`);
     startBtn.addEventListener('click', () => {
       store.update(Actions.startTimer());
-      // Re-render with timerRunning = true
+      // Store subscriber in main.ts detects timerRunning = true and re-renders screen
     });
     actions.appendChild(startBtn);
 

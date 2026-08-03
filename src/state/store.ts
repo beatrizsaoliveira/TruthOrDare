@@ -231,7 +231,7 @@ export const Actions = {
 
   /**
    * Selects a card for the active player, using the anti-repetition engine and
-   * (for T3/T4) the matching engine to pick an eligible target.
+   * (for Tiers 2–4) the matching engine to pick an eligible target.
    */
   chooseCardType:
     (type: CardType): Updater =>
