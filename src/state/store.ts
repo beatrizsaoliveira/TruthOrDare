@@ -293,6 +293,15 @@ export const Actions = {
       activeEffects = [...activeEffects, effect];
     }
 
+    // Track shots drunk as part of the challenge (not penalty)
+    let shotCounts = state.shotCounts;
+    if (card?.shotsOnSuccess != null && card.shotsOnSuccess > 0 && activePlayer) {
+      shotCounts = {
+        ...shotCounts,
+        [activePlayer.id]: (shotCounts[activePlayer.id] ?? 0) + card.shotsOnSuccess,
+      };
+    }
+
     // If the card has a timer ≤ 60s, transition to the timer phase
     if (card?.timerSeconds != null && card.timerSeconds > 0 && card.timerSeconds <= 60) {
       return {
@@ -300,12 +309,14 @@ export const Actions = {
         phase: 'game-timer',
         timerRunning: false,
         activeEffects,
+        shotCounts,
       };
     }
 
     const { nextIndex, newRound, expiring } = computeAdvance({
       ...state,
       activeEffects,
+      shotCounts,
     });
 
     return {
@@ -314,6 +325,7 @@ export const Actions = {
       currentPlayerIndex: nextIndex,
       currentRound: newRound,
       activeEffects,
+      shotCounts,
       pendingRoundExpiry: expiring,
       currentCard: null,
       pendingCardType: null,

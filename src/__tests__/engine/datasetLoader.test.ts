@@ -42,11 +42,19 @@ describe('loadCards', () => {
     }
   });
 
-  it('all cards have numeric id field', () => {
+  it('all cards have string id matching pattern t{tier}{type[0]}{###}', () => {
+    const idPattern = /^t[1-4][td]\d{3}$/;
     for (const c of cards) {
-      expect(typeof c.id).toBe('number');
-      expect(Number.isInteger(c.id)).toBe(true);
+      expect(typeof c.id).toBe('string');
+      expect(idPattern.test(c.id)).toBe(true);
     }
+    // Spot-check Tier 1 Truth ids
+    const t1t = cards
+      .filter((c) => c.tier === 1 && c.type === 'truth')
+      .map((c) => c.id)
+      .sort();
+    expect(t1t[0]).toBe('t1t001');
+    expect(t1t[99]).toBe('t1t100');
   });
 
   it('all cards have rawText string field (non-empty)', () => {
@@ -186,16 +194,26 @@ describe('loadCards', () => {
     }
   });
 
-  it('exactly 15 cards require a third party', () => {
-    expect(cards.filter((c) => c.requiresThirdParty).length).toBe(15);
+  it('has 57 cards requiring a third party (all tiers, present-moment interactions)', () => {
+    const thirdParty = cards.filter((c) => c.requiresThirdParty);
+    expect(thirdParty.length).toBe(57);
+    // All tiers have flags
+    for (let t = 1; t <= 4; t++) {
+      expect(cards.filter((c) => c.tier === t && c.requiresThirdParty).length).toBeGreaterThan(0);
+    }
   });
 
-  it('requiresThirdParty cards are only dares in tiers 3-4', () => {
+  it('requiresThirdParty cards include both truths and dares (all tiers)', () => {
     const thirdParty = cards.filter((c) => c.requiresThirdParty);
     expect(thirdParty.length).toBeGreaterThan(0);
+    const types = new Set(thirdParty.map((c) => c.type));
+    expect(types.has('truth')).toBe(true);
+    // Dares are the majority (present-moment interactions)
+    const dares = thirdParty.filter((c) => c.type === 'dare');
+    expect(dares.length).toBeGreaterThan(thirdParty.filter((c) => c.type === 'truth').length);
+    // Only tiers 2-4
     for (const c of thirdParty) {
-      expect(c.type).toBe('dare');
-      expect(c.tier).toBeGreaterThanOrEqual(3);
+      // All tiers can have flags
     }
   });
 
@@ -217,11 +235,11 @@ describe('loadCards', () => {
     }
   });
 
-  it('round-based dares never require a third party AND never have timerSeconds', () => {
+  it('round-based dares never have timerSeconds', () => {
     const roundBased = cards.filter((c) => c.hasRounds);
+    expect(roundBased.length).toBeGreaterThan(0);
     for (const c of roundBased) {
       expect(c.timerSeconds).toBeNull();
-      expect(c.requiresThirdParty).toBe(false);
     }
   });
 });
@@ -234,7 +252,7 @@ describe('filterCards', () => {
   const fixture: Card[] = [
     // tier 1 truths
     {
-      id: 1,
+      id: 'fx1',
       type: 'truth',
       tier: 1,
       rawText: 'T1 truth 1',
@@ -246,7 +264,7 @@ describe('filterCards', () => {
       requiresThirdParty: false,
     },
     {
-      id: 2,
+      id: 'fx2',
       type: 'truth',
       tier: 1,
       rawText: 'T1 truth 2',
@@ -259,7 +277,7 @@ describe('filterCards', () => {
     },
     // tier 1 dares
     {
-      id: 3,
+      id: 'fx3',
       type: 'dare',
       tier: 1,
       rawText: 'T1 dare 1',
@@ -272,7 +290,7 @@ describe('filterCards', () => {
     },
     // tier 2 truths
     {
-      id: 4,
+      id: 'fx4',
       type: 'truth',
       tier: 2,
       rawText: 'T2 truth 1',
@@ -284,7 +302,7 @@ describe('filterCards', () => {
       requiresThirdParty: false,
     },
     {
-      id: 5,
+      id: 'fx5',
       type: 'truth',
       tier: 2,
       rawText: 'T2 truth 2',
@@ -297,7 +315,7 @@ describe('filterCards', () => {
     },
     // tier 2 dares
     {
-      id: 6,
+      id: 'fx6',
       type: 'dare',
       tier: 2,
       rawText: 'T2 dare 1',
@@ -310,7 +328,7 @@ describe('filterCards', () => {
     },
     // tier 3 truths
     {
-      id: 7,
+      id: 'fx7',
       type: 'truth',
       tier: 3,
       rawText: 'T3 truth 1',
@@ -323,7 +341,7 @@ describe('filterCards', () => {
     },
     // tier 3 dares
     {
-      id: 8,
+      id: 'fx8',
       type: 'dare',
       tier: 3,
       rawText: 'T3 dare 1',
@@ -335,7 +353,7 @@ describe('filterCards', () => {
       requiresThirdParty: false,
     },
     {
-      id: 9,
+      id: 'fx9',
       type: 'dare',
       tier: 3,
       rawText: 'T3 dare 2',
@@ -348,7 +366,7 @@ describe('filterCards', () => {
     },
     // tier 4 truths
     {
-      id: 10,
+      id: 'fx10',
       type: 'truth',
       tier: 4,
       rawText: 'T4 truth 1',
@@ -361,7 +379,7 @@ describe('filterCards', () => {
     },
     // tier 4 dares
     {
-      id: 11,
+      id: 'fx11',
       type: 'dare',
       tier: 4,
       rawText: 'T4 dare 1',
@@ -373,7 +391,7 @@ describe('filterCards', () => {
       requiresThirdParty: false,
     },
     {
-      id: 12,
+      id: 'fx12',
       type: 'dare',
       tier: 4,
       rawText: 'T4 dare 2',

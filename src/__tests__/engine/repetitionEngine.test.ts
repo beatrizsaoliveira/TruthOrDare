@@ -18,9 +18,9 @@ const testPlayer1 = { id: 'p1', name: 'Player 1' };
 const testPlayer2 = { id: 'p2', name: 'Player 2' };
 
 /** Creates a unique Card with a given id and default truth/tier 1 values. */
-function makeCard(id: number, overrides?: Partial<Card>): Card {
+function makeCard(id: number | string, overrides?: Partial<Card>): Card {
   return {
-    id,
+    id: String(id),
     type: 'truth',
     tier: 1,
     rawText: '',
@@ -40,19 +40,19 @@ function makeCard(id: number, overrides?: Partial<Card>): Card {
 
 describe('cardKey', () => {
   it('returns "tier|type|id" format', () => {
-    expect(cardKey(truthT1NoTarget)).toBe('1|truth|1');
+    expect(cardKey(truthT1NoTarget)).toBe('1|truth|fx1');
   });
 
   it('works for truth and dare types', () => {
-    expect(cardKey(dareT1NoTarget)).toBe('1|dare|3');
-    expect(cardKey(truthT2)).toBe('2|truth|5');
+    expect(cardKey(dareT1NoTarget)).toBe('1|dare|fx3');
+    expect(cardKey(truthT2)).toBe('2|truth|fx5');
   });
 
   it('works for all 4 tiers', () => {
-    expect(cardKey(truthT1NoTarget)).toBe('1|truth|1');
-    expect(cardKey(truthT2)).toBe('2|truth|5');
-    expect(cardKey(truthT3NoTarget)).toBe('3|truth|7');
-    expect(cardKey(truthT4NoTarget)).toBe('4|truth|9');
+    expect(cardKey(truthT1NoTarget)).toBe('1|truth|fx1');
+    expect(cardKey(truthT2)).toBe('2|truth|fx5');
+    expect(cardKey(truthT3NoTarget)).toBe('3|truth|fx7');
+    expect(cardKey(truthT4NoTarget)).toBe('4|truth|fx9');
   });
 });
 
@@ -73,14 +73,14 @@ describe('recordCardShown', () => {
     const histories: PlayerHistories = {};
     const updated = recordCardShown(histories, 'p1', truthT1NoTarget);
 
-    expect(updated['p1'].seenCards.has('1|truth|1')).toBe(true);
+    expect(updated['p1'].seenCards.has('1|truth|fx1')).toBe(true);
   });
 
   it('adds card key to recentCards', () => {
     const histories: PlayerHistories = {};
     const updated = recordCardShown(histories, 'p1', truthT1NoTarget);
 
-    expect(updated['p1'].recentCards).toContain('1|truth|1');
+    expect(updated['p1'].recentCards).toContain('1|truth|fx1');
   });
 
   it('updates existing history — seenCards grows', () => {
@@ -90,8 +90,8 @@ describe('recordCardShown', () => {
 
     histories = recordCardShown(histories, 'p1', truthT1WithTarget);
     expect(histories['p1'].seenCards.size).toBe(2);
-    expect(histories['p1'].seenCards.has('1|truth|1')).toBe(true);
-    expect(histories['p1'].seenCards.has('1|truth|2')).toBe(true);
+    expect(histories['p1'].seenCards.has('1|truth|fx1')).toBe(true);
+    expect(histories['p1'].seenCards.has('1|truth|fx2')).toBe(true);
   });
 
   it('sliding window — recentCards max length is 12', () => {
@@ -113,9 +113,9 @@ describe('recordCardShown', () => {
       histories = recordCardShown(histories, 'p1', card);
     }
 
-    // First card (id:0 → key "1|truth|0") should have fallen off
+    // First card (id:0 → key "1|truth|fx0") should have fallen off
     expect(histories['p1'].recentCards).not.toContain('1|truth|0');
-    // 13th card (id:12 → key "1|truth|12") should be present
+    // 13th card (id:12 → key "1|truth|fx12") should be present
     expect(histories['p1'].recentCards).toContain('1|truth|12');
   });
 
@@ -134,8 +134,8 @@ describe('recordCardShown', () => {
     const updated = recordCardShown(histories, 'p1', truthT1NoTarget);
 
     expect(updated['p2']).toBeDefined();
-    expect(updated['p2'].seenCards.has('1|dare|3')).toBe(true);
-    expect(updated['p2'].recentCards).toContain('1|dare|3');
+    expect(updated['p2'].seenCards.has('1|dare|fx3')).toBe(true);
+    expect(updated['p2'].recentCards).toContain('1|dare|fx3');
   });
 });
 
@@ -154,7 +154,7 @@ describe('selectCard', () => {
     const card = selectCard(mockCards, 2, 'dare', testPlayer1, null, {});
     expect(card.tier).toBe(2);
     expect(card.type).toBe('dare');
-    expect(card.id).toBe(6); // dareT2
+    expect(card.id).toBe('fx6'); // dareT2
   });
 
   it('returns a card from the filtered pool (not wrong tier/type)', () => {
@@ -170,7 +170,7 @@ describe('selectCard', () => {
 
     const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, {}, true);
     expect(card.hasTarget).toBe(false);
-    expect(card.id).toBe(1); // truthT1NoTarget
+    expect(card.id).toBe('fx1'); // truthT1NoTarget
   });
 
   it('with requireNoTarget=true and NO no-target cards — falls back to full pool', () => {
@@ -181,7 +181,7 @@ describe('selectCard', () => {
     // Fallback opens the pool and returns dareT3WithTarget despite hasTarget
     expect(card).toBeDefined();
     expect(card.hasTarget).toBe(true);
-    expect(card.id).toBe(8);
+    expect(card.id).toBe('fx8');
   });
 
   it('prefers cards NOT recently seen over recently seen ones', () => {
@@ -191,16 +191,16 @@ describe('selectCard', () => {
     const histories: PlayerHistories = {
       p1: {
         playerId: 'p1',
-        seenCards: new Set(['1|truth|1']),
-        recentCards: ['1|truth|1'],
+        seenCards: new Set(['1|truth|fx1']),
+        recentCards: ['1|truth|fx1'],
       },
     };
 
-    // Pool (tier=1, truth): truthT1NoTarget (key '1|truth|1') in recent → 200
-    //                        truthT1WithTarget (key '1|truth|2') unseen → 0
+    // Pool (tier=1, truth): truthT1NoTarget (key '1|truth|fx1') in recent → 200
+    //                        truthT1WithTarget (key '1|truth|fx2') unseen → 0
     // Sorted ascending: truthT1WithTarget (0), truthT1NoTarget (200)
     const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, histories);
-    expect(card.id).toBe(2); // truthT1WithTarget — the unseen card
+    expect(card.id).toBe('fx2'); // truthT1WithTarget — the unseen card
   });
 
   it('prefers cards not seen ever over seen-but-not-recent cards', () => {
@@ -209,15 +209,15 @@ describe('selectCard', () => {
     const histories: PlayerHistories = {
       p1: {
         playerId: 'p1',
-        seenCards: new Set(['1|truth|2']), // truthT1WithTarget seen ever (not recent)
+        seenCards: new Set(['1|truth|fx2']), // truthT1WithTarget seen ever (not recent)
         recentCards: [],
       },
     };
 
-    // truthT1NoTarget (key '1|truth|1') unseen → 0
-    // truthT1WithTarget (key '1|truth|2') seen-ever → 30
+    // truthT1NoTarget (key '1|truth|fx1') unseen → 0
+    // truthT1WithTarget (key '1|truth|fx2') seen-ever → 30
     const card = selectCard(mockCards, 1, 'truth', testPlayer1, null, histories);
-    expect(card.id).toBe(1); // truthT1NoTarget — unseen
+    expect(card.id).toBe('fx1'); // truthT1NoTarget — unseen
   });
 
   it('penalizes cards recently seen by the partner', () => {
@@ -231,15 +231,15 @@ describe('selectCard', () => {
       },
       p2: {
         playerId: 'p2',
-        seenCards: new Set(['1|truth|1']),
-        recentCards: ['1|truth|1'],
+        seenCards: new Set(['1|truth|fx1']),
+        recentCards: ['1|truth|fx1'],
       },
     };
 
-    // truthT1NoTarget (key '1|truth|1') — partner has it in recent → +80
-    // truthT1WithTarget (key '1|truth|2') — no partner history → 0
+    // truthT1NoTarget (key '1|truth|fx1') — partner has it in recent → +80
+    // truthT1WithTarget (key '1|truth|fx2') — no partner history → 0
     const card = selectCard(mockCards, 1, 'truth', testPlayer1, testPlayer2, histories);
-    expect(card.id).toBe(2); // truthT1WithTarget — no partner penalty
+    expect(card.id).toBe('fx2'); // truthT1WithTarget — no partner penalty
   });
 
   it('with empty history — any card in the pool is valid', () => {
@@ -257,15 +257,15 @@ describe('selectCard', () => {
     const histories: PlayerHistories = {
       p1: {
         playerId: 'p1',
-        seenCards: new Set(['2|truth|5']),
-        recentCards: ['2|truth|5'],
+        seenCards: new Set(['2|truth|fx5']),
+        recentCards: ['2|truth|fx5'],
       },
     };
 
     // Tier 2 truth pool has only truthT2
     const card = selectCard(mockCards, 2, 'truth', testPlayer1, null, histories);
     expect(card).toBeDefined();
-    expect(card.id).toBe(5); // truthT2
+    expect(card.id).toBe('fx5'); // truthT2
   });
 
   it('returns a card (not undefined or null)', () => {
@@ -296,7 +296,7 @@ describe('selectCard — requiresThirdParty for closed relationships', () => {
 
     const card = selectCard(pool, 3, 'dare', closedMale, null, {});
     expect(card.requiresThirdParty).toBe(false);
-    expect(card.id).toBe(101);
+    expect(card.id).toBe('101');
   });
 
   it('keeps requiresThirdParty cards in the pool for a non-closed player', () => {
@@ -308,7 +308,7 @@ describe('selectCard — requiresThirdParty for closed relationships', () => {
     ];
 
     const card = selectCard(pool, 3, 'dare', testPlayer1, null, {});
-    expect(card.id).toBe(100); // the requiresThirdParty card is still eligible
+    expect(card.id).toBe('100'); // the requiresThirdParty card is still eligible
   });
 
   it('does not filter requiresThirdParty cards when relationshipStatus is undefined', () => {
@@ -320,7 +320,7 @@ describe('selectCard — requiresThirdParty for closed relationships', () => {
     ];
 
     const card = selectCard(pool, 4, 'dare', { id: 'plain', name: 'Plain' }, null, {});
-    expect(card.id).toBe(200);
+    expect(card.id).toBe('200');
   });
 
   it('falls back to the full pool when a closed player has ONLY third-party dares', () => {
@@ -332,6 +332,6 @@ describe('selectCard — requiresThirdParty for closed relationships', () => {
 
     const card = selectCard(onlyThirdParty, 4, 'dare', closedMale, null, {});
     expect(card).toBeDefined();
-    expect(card.id).toBe(300);
+    expect(card.id).toBe('300');
   });
 });

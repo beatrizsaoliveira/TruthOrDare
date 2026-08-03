@@ -3,7 +3,7 @@ import type { Card } from '../../types/index.js';
 // ─── Tier 1 ───────────────────────────────────────────────────────────────────
 
 export const truthT1NoTarget: Card = {
-  id: 1,
+  id: 'fx1',
   type: 'truth',
   tier: 1,
   rawText: 'Qual é o teu hábito mais estranho?',
@@ -16,7 +16,7 @@ export const truthT1NoTarget: Card = {
 };
 
 export const truthT1WithTarget: Card = {
-  id: 2,
+  id: 'fx2',
   type: 'truth',
   tier: 1,
   rawText: 'O que pensas genuinamente de [Target Player]?',
@@ -29,7 +29,7 @@ export const truthT1WithTarget: Card = {
 };
 
 export const dareT1NoTarget: Card = {
-  id: 3,
+  id: 'fx3',
   type: 'dare',
   tier: 1,
   rawText: 'Faz 10 flexões.',
@@ -42,7 +42,7 @@ export const dareT1NoTarget: Card = {
 };
 
 export const dareT1WithTarget: Card = {
-  id: 4,
+  id: 'fx4',
   type: 'dare',
   tier: 1,
   rawText: 'Dá um abraço a [Target Player].',
@@ -57,7 +57,7 @@ export const dareT1WithTarget: Card = {
 // ─── Tier 2 ───────────────────────────────────────────────────────────────────
 
 export const truthT2: Card = {
-  id: 5,
+  id: 'fx5',
   type: 'truth',
   tier: 2,
   rawText: 'Qual é o teu maior segredo?',
@@ -70,7 +70,7 @@ export const truthT2: Card = {
 };
 
 export const dareT2: Card = {
-  id: 6,
+  id: 'fx6',
   type: 'dare',
   tier: 2,
   rawText: 'Canta uma música.',
@@ -85,7 +85,7 @@ export const dareT2: Card = {
 // ─── Tier 3 ───────────────────────────────────────────────────────────────────
 
 export const truthT3NoTarget: Card = {
-  id: 7,
+  id: 'fx7',
   type: 'truth',
   tier: 3,
   rawText: 'Descreve a tua fantasia mais ousada.',
@@ -98,7 +98,7 @@ export const truthT3NoTarget: Card = {
 };
 
 export const dareT3WithTarget: Card = {
-  id: 8,
+  id: 'fx8',
   type: 'dare',
   tier: 3,
   rawText: 'Dá uma massagem nos ombros a [Target Player].',
@@ -113,7 +113,7 @@ export const dareT3WithTarget: Card = {
 // ─── Tier 4 ───────────────────────────────────────────────────────────────────
 
 export const truthT4NoTarget: Card = {
-  id: 9,
+  id: 'fx9',
   type: 'truth',
   tier: 4,
   rawText: 'Extremo verdade.',
@@ -126,7 +126,7 @@ export const truthT4NoTarget: Card = {
 };
 
 export const dareT4NoTarget: Card = {
-  id: 10,
+  id: 'fx10',
   type: 'dare',
   tier: 4,
   rawText: 'Extremo desafio.',
@@ -141,7 +141,7 @@ export const dareT4NoTarget: Card = {
 // ─── Card with timer ──────────────────────────────────────────────────────────
 
 export const dareT3WithTimer: Card = {
-  id: 50,
+  id: 'fx50',
   type: 'dare',
   tier: 3,
   rawText: 'Dança durante 30 segundos.',
@@ -155,7 +155,7 @@ export const dareT3WithTimer: Card = {
 
 /** Timer above the 60s threshold — must NOT trigger the timer phase. */
 export const dareT3WithTimerOver60: Card = {
-  id: 51,
+  id: 'fx51',
   type: 'dare',
   tier: 3,
   rawText: 'Mantém-te em equilíbrio durante 90 segundos.',
@@ -169,7 +169,7 @@ export const dareT3WithTimerOver60: Card = {
 
 /** Timer boundary at the minimum (1s) — must trigger the timer phase. */
 export const dareT3TimerSeconds1: Card = {
-  id: 52,
+  id: 'fx52',
   type: 'dare',
   tier: 3,
   rawText: 'Fica parado durante 1 segundo.',
@@ -183,7 +183,7 @@ export const dareT3TimerSeconds1: Card = {
 
 /** Timer boundary at the maximum (60s) — must trigger the timer phase. */
 export const dareT3TimerSeconds60: Card = {
-  id: 53,
+  id: 'fx53',
   type: 'dare',
   tier: 3,
   rawText: 'Dança durante 60 segundos.',
@@ -197,7 +197,7 @@ export const dareT3TimerSeconds60: Card = {
 
 /** Timed dare that also lasts multiple rounds — tests effect registration + timer. */
 export const dareT3TimedRounds: Card = {
-  id: 54,
+  id: 'fx54',
   type: 'dare',
   tier: 3,
   rawText: 'Fala com sotaque durante 20 segundos nas próximas 2 rondas.',
@@ -212,7 +212,7 @@ export const dareT3TimedRounds: Card = {
 // ─── Cards requiring a third party (excluded for closed relationships) ────────
 
 export const dareT3RequiresThirdParty: Card = {
-  id: 55,
+  id: 'fx55',
   type: 'dare',
   tier: 3,
   rawText: 'Pede a alguém que não jogue para escolher uma prenda para ti.',
@@ -225,7 +225,7 @@ export const dareT3RequiresThirdParty: Card = {
 };
 
 export const dareT4RequiresThirdPartyTarget: Card = {
-  id: 56,
+  id: 'fx56',
   type: 'dare',
   tier: 4,
   rawText: 'Convida [Target Player] e um terceiro convidado para um jogo.',
@@ -240,7 +240,7 @@ export const dareT4RequiresThirdPartyTarget: Card = {
 // ─── Cards with round duration ──────────────────────────────────────────────
 
 export const dareT1WithRounds: Card = {
-  id: 11,
+  id: 'fx11',
   type: 'dare',
   tier: 1,
   rawText: 'Fala com sotaque estrangeiro durante as próximas 2 rondas.',

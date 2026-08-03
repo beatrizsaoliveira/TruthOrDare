@@ -32,13 +32,15 @@ export type GamePhase =
 // ─── Card ────────────────────────────────────────────────────────────────────
 
 export interface Card {
-  readonly id: number;
+  readonly id: string;
   readonly type: CardType;
   readonly tier: Tier;
   /** Raw text from .md, including the /a gender placeholders */
   readonly rawText: string;
   /** Parsed penalty (null when penalties are absent or tier 1) */
   readonly shots: number | null;
+  /** Shots the player drinks on success (part of the challenge, not penalty). Counts toward ranking. */
+  readonly shotsOnSuccess: number | null;
   /** Whether the text contains a [Target Player] placeholder */
   readonly hasTarget: boolean;
   /** Number of rounds this effect lasts (null when not a round-based card) */
@@ -87,7 +89,7 @@ export type PlayerHistories = Readonly<Record<string, PlayerHistory>>;
 /** Tracks an active round-based card effect for a player. */
 export interface RoundEffect {
   /** The card's id */
-  readonly cardId: number;
+  readonly cardId: string;
   /** Raw text of the card (used for the expiry popup message) */
   readonly cardText: string;
   /** The player who must fulfill this effect */

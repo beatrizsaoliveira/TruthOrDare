@@ -59,9 +59,10 @@ function isEligiblePair(active: Player, candidate: Player): boolean {
   // C1 – both parties must be mutually attracted based on orientation
   if (!mutuallyAttracted(active, candidate)) return false;
 
-  // C3 – open-relationship players must have outside-interaction enabled
-  if (active.relationshipStatus === 'open' && active.openToOutside !== true) return false;
-  if (candidate.relationshipStatus === 'open' && candidate.openToOutside !== true) return false;
+  // C3 – both parties must have outside-interaction enabled (applies to single AND open).
+  // Closed players are already handled above and never reach this check.
+  if (active.openToOutside === false && active.partnerId !== candidate.id) return false;
+  if (candidate.openToOutside === false && candidate.partnerId !== active.id) return false;
 
   // C3 – target-sex preference check (both directions)
   if (!targetSexAllows(active, candidate)) return false;

@@ -1,39 +1,29 @@
 import rawData from '../data/dataset.json';
 import type { Card, CardType, Tier } from '../types/index.js';
 
-type RawEntry = {
-  id: number;
-  type: CardType;
-  tier: Tier;
-  rawText: string;
-  shots: number | null;
-  hasTarget: boolean;
-  roundsCount?: number | null;
-  hasRounds?: boolean;
-  timerSeconds?: number | null;
-  requiresThirdParty?: boolean;
+type RawDataset = {
+  tiers: Record<string, { truth: Card[]; dare: Card[] }>;
 };
 
+const data = rawData as unknown as RawDataset;
+
 /**
- * Returns the full list of cards loaded from the static JSON dataset.
- * The JSON is bundled at build time — no runtime parsing needed.
- * `roundsCount`, `hasRounds`, and `timerSeconds` default to null/false
- * for cards that don't have them set in the dataset.
+ * Returns ALL cards as a flat array. Called once at startup — the nested JSON
+ * structure is the storage/readability format; the flat array is the runtime format.
+ * Cost: ~0.1 ms for 800 cards — negligible.
  */
 export function loadCards(): Card[] {
-  const entries = rawData as unknown as RawEntry[];
-  return entries.map((entry) => ({
-    ...entry,
-    roundsCount: entry.roundsCount ?? null,
-    hasRounds: entry.hasRounds ?? false,
-    timerSeconds: entry.timerSeconds ?? null,
-    requiresThirdParty: entry.requiresThirdParty ?? false,
-  }));
+  const all: Card[] = [];
+  for (const tierData of Object.values(data.tiers)) {
+    for (const card of tierData.truth) all.push(card);
+    for (const card of tierData.dare) all.push(card);
+  }
+  return all;
 }
 
 /**
- * Returns only the cards for the given tier and card type.
- * Useful when narrowing the pool before random selection.
+ * Filters a flat card array by tier and type. Used by the selection engine;
+ * also works with hand-crafted test fixtures passed as `cards`.
  */
 export function filterCards(cards: readonly Card[], tier: Tier, type: CardType): Card[] {
   return cards.filter((c) => c.tier === tier && c.type === type);

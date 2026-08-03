@@ -10,53 +10,43 @@ import { filterCards } from './datasetLoader.js';
 
 // ─── Configuration ────────────────────────────────────────────────────────────
 
-/**
- * Number of most-recent card keys to track per player.
- * Cards appearing in this window receive a heavy penalty.
- */
+/** How many of the player's own recent cards to penalize heavily. */
 const RECENT_WINDOW = 12;
 
-/**
- * Size of the partner's recent window that incurs a couple-shared penalty.
- * If a card was shown to your partner within the last N cards, it is
- * heavily de-prioritised for you.
- */
-const COUPLE_WINDOW = 6;
+/** Partner's recent window — penalize cards recently shown to the partner. */
+const COUPLE_WINDOW = 8;
 
 // ─── Scoring weights ─────────────────────────────────────────────────────────
 
-const SCORE_IN_RECENT = 200; // player just saw this card
-const SCORE_SEEN_EVER = 30; // player has seen it before but not recently
-const SCORE_COUPLE_RECENT = 80; // partner just saw this card
-const SCORE_JITTER_MAX = 15; // random jitter to avoid tie-breaking being deterministic
+const SCORE_SELF_RECENT = 200; // player just saw this card
+const SCORE_SEEN_EVER = 40; // player has seen it before
+const SCORE_COUPLE_RECENT = 120; // partner just saw this card
+const SCORE_ANY_RECENT = 80; // any other player recently saw this card
+const SCORE_JITTER_MAX = 20; // small jitter for tie-breaking
 
-// ─── Debug: force next dare to have a countdown timer ────────────────────────
+// ─── Debug ──────────────────────────────────────────────────────────────────
 
 let _debugForceTimer = false;
 
-/** Sets the debug flag — next dare card will have a timer ≤ 60s. Auto-resets after use. */
 export function setDebugForceTimer(on: boolean): void {
   _debugForceTimer = on;
 }
 
-// ─── Public API ───────────────────────────────────────────────────────────────
+// ─── selectCard ─────────────────────────────────────────────────────────────
 
 /**
- * Selects the best next card for `activePlayer` given the current histories.
+ * Selects the best next card for `activePlayer`.
  *
  * Algorithm:
- *  1. Filter the full card pool to the relevant tier + type.
- *  2. Score every candidate based on:
- *     - Whether the player recently saw it (heavy penalty).
- *     - Whether the player has ever seen it (moderate penalty).
- *     - Whether the player's partner recently saw it (medium penalty).
- *     - A random jitter to add variety when scores are equal.
- *  3. Sort ascending by score.
- *  4. Pick uniformly from the top-5 candidates (avoids always returning the same card
- *     when all cards have been seen).
- *
- * When `hasTarget` must be false (no eligible target exists), the pool is
- * pre-filtered accordingly before scoring.
+ *  1. Filter pool by tier + type.
+ *  2. Score every candidate:
+ *     - +200 if in player's own recent window (last 12)
+ *     - +40  if seen ever (but not recent)
+ *     - +120 if in partner's recent window (last 8)
+ *     - +80  if in ANY other player's recent window
+ *     - +0-20 random jitter
+ *  3. Pick uniformly from ALL cards tied for the lowest score.
+ *     (Previously picked from top-5, which could return duplicates.)
  */
 export function selectCard(
   allCards: readonly Card[],
@@ -69,18 +59,18 @@ export function selectCard(
 ): Card {
   let pool = filterCards(allCards, tier, type);
 
-  // DEBUG: force next dare to have a countdown timer
+  // DEBUG: force timer dare
   if (_debugForceTimer && type === 'dare') {
-    const timerPool = pool.filter(
+    const tp = pool.filter(
       (c) => c.timerSeconds != null && c.timerSeconds > 0 && c.timerSeconds <= 60,
     );
-    if (timerPool.length > 0) {
-      pool = timerPool;
-      _debugForceTimer = false; // auto-reset after use
+    if (tp.length > 0) {
+      pool = tp;
+      _debugForceTimer = false;
     }
   }
 
-  // Exclude cards requiring a third party when the active player is in a closed relationship
+  // Closed relationship: exclude third-party cards
   if (activePlayer.relationshipStatus === 'closed') {
     pool = pool.filter((c) => !c.requiresThirdParty);
   }
@@ -90,51 +80,68 @@ export function selectCard(
   }
 
   if (pool.length === 0) {
-    // Absolute fallback: if filtering left nothing, open it up
     pool = filterCards(allCards, tier, type);
   }
 
   const playerHistory = histories[activePlayer.id];
   const partnerHistory = partner ? histories[partner.id] : null;
 
-  const scored = pool.map((card) => {
+  // Collect keys recently shown to ALL players (for cross-player penalty)
+  const allRecentKeys = new Set<string>();
+  for (const h of Object.values(histories)) {
+    for (const k of h.recentCards.slice(-RECENT_WINDOW)) {
+      allRecentKeys.add(k);
+    }
+  }
+  // Remove the active player's own recent keys (they get a separate penalty)
+  if (playerHistory) {
+    for (const k of playerHistory.recentCards) allRecentKeys.delete(k);
+  }
+  // Remove partner's recent keys (they get couple penalty)
+  if (partnerHistory) {
+    for (const k of partnerHistory.recentCards.slice(-COUPLE_WINDOW)) allRecentKeys.delete(k);
+  }
+
+  // ── Score ──────────────────────────────────────────────────
+  let bestScore = Infinity;
+  const scored: { card: Card; score: number }[] = [];
+
+  for (const card of pool) {
     const key = cardKey(card);
-    let score = 0;
+    let score = Math.random() * SCORE_JITTER_MAX;
 
     if (playerHistory) {
       if (playerHistory.recentCards.includes(key)) {
-        score += SCORE_IN_RECENT;
+        score += SCORE_SELF_RECENT;
       } else if (playerHistory.seenCards.has(key)) {
         score += SCORE_SEEN_EVER;
       }
     }
 
     if (partnerHistory) {
-      const coupledWindow = partnerHistory.recentCards.slice(-COUPLE_WINDOW);
-      if (coupledWindow.includes(key)) {
+      const coupleWindow = partnerHistory.recentCards.slice(-COUPLE_WINDOW);
+      if (coupleWindow.includes(key)) {
         score += SCORE_COUPLE_RECENT;
       }
     }
 
-    score += Math.random() * SCORE_JITTER_MAX;
+    if (allRecentKeys.has(key)) {
+      score += SCORE_ANY_RECENT;
+    }
 
-    return { card, score };
-  });
+    if (score < bestScore) bestScore = score;
+    scored.push({ card, score });
+  }
 
-  scored.sort((a, b) => a.score - b.score);
+  // ── Pick from ALL cards with the lowest score ────────────────
+  const best = scored.filter((s) => s.score <= bestScore + 0.001);
+  const picked = best[Math.floor(Math.random() * best.length)];
 
-  // Pick from the top 5 to maintain variety
-  const topN = scored.slice(0, Math.min(5, scored.length));
-  const picked = topN[Math.floor(Math.random() * topN.length)];
-
-  // picked is always defined because pool.length >= 1 at this point
-  return ((picked ?? scored[0]) as { card: Card; score: number }).card;
+  return (picked ?? scored[0])!.card;
 }
 
-/**
- * Returns an updated `PlayerHistories` map after recording that `playerId`
- * was shown `card`. Mutates nothing — returns a new map.
- */
+// ─── recordCardShown ─────────────────────────────────────────────────────────
+
 export function recordCardShown(
   histories: PlayerHistories,
   playerId: string,
@@ -158,7 +165,7 @@ export function recordCardShown(
   };
 }
 
-// ─── Internal helpers ─────────────────────────────────────────────────────────
+// ─── cardKey ─────────────────────────────────────────────────────────────────
 
 export function cardKey(card: Card): string {
   return `${card.tier}|${card.type}|${card.id}`;
